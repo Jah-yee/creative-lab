@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eyeGuide App</title>
+  <style>
+    /* Base Styles */
+    :root {
+      /* Primary Colors */
+      --primary-dark: #121212;
+      --primary-light: #ffffff;
+      
+      /* Status Colors */
+      --red: #FF3B30;
+      --yellow: #FFCC00;
+      --green: #34C759;
+      
+      /* Accent Colors */
+      --blue: #007AFF;
+      --purple: #5856D6;
+      
+      /* Neutral Colors */
+      --gray-100: #F2F2F7;
+      --gray-200: #E5E5EA;
+      --gray-300: #C7C7CC;
+      --gray-400: #8E8E93;
+      --gray-500: #636366;
+      --gray-600: #48484A;
+      --gray-700: #3A3A3C;
+      --gray-800: #2C2C2E;
+      --gray-900: #1C1C1E;
+      
+      /* Spacing */
+      --space-xxs: 4px;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --space-xxl: 64px;
+      
+      /* Typography */
+      --font-size-xs: 12px;
+      --font-size-sm: 16px;
+      --font-size-md: 20px;
+      --font-size-lg: 24px;
+      --font-size-xl: 32px;
+      --font-size-xxl: 40px;
+      
+      /* Border Radius */
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    body {
+      background-color: var(--primary-dark);
+      color: var(--primary-light);
+    }
+    
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: var(--space-md);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xl);
+      justify-content: center;
+    }
+    
+    .screen {
+      width: 360px;
+      height: 720px;
+      background-color: var(--primary-dark);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--gray-700);
+      margin: 0;
+    }
+    
+    /* Media query for responsive layout */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .screen {
+        width: 100%;
+        max-width: 360px;
+      }
+    }
+    
+    .status-bar {
+      height: 44px;
+      padding: 0 var(--space-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--gray-900);
+      font-size: var(--font-size-xs);
+      color: var(--gray-100);
+    }
+    
+    .status-bar-left, .status-bar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    
+    .header {
+      padding: var(--space-sm) var(--space-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .header-title {
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+    }
+    
+    .button {
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--blue);
+      color: var(--primary-light);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-md);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+    }
+    
+    .button.large {
+      width: 100%;
+      padding: var(--space-sm);
+      font-size: var(--font-size-lg);
+      border-radius: var(--radius-md);
+    }
+    
+    .button.primary {
+      background: var(--blue);
+    }
+    
+    .button.secondary {
+      background: var(--gray-600);
+    }
+    
+    .button.warning {
+      background: var(--red);
+    }
+    
+    .button.success {
+      background: var(--green);
+    }
+    
+    .content {
+      padding: var(--space-sm);
+      height: calc(100% - 44px);
+      overflow-y: auto;
+    }
+    
+    .full-content {
+      height: calc(100% - 44px);
+    }
+    
+    .camera-view {
+      width: 100%;
+      height: 100%;
+      background-color: var(--gray-800);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .camera-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: var(--space-md);
+    }
+    
+    .camera-controls {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .camera-status {
+      background: rgba(0, 0, 0, 0.6);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    
+    .camera-actions {
+      position: absolute;
+      bottom: var(--space-lg);
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      padding: 0 var(--space-md);
+    }
+    
+    .action-button {
+      padding: var(--space-md);
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--primary-light);
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: var(--font-size-md);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+    }
+    
+    .action-button.primary {
+      background: rgba(0, 122, 255, 0.8);
+    }
+    
+    .action-button.danger {
+      background: rgba(255, 59, 48, 0.8);
+    }
+    
+    .action-button.success {
+      background: rgba(52, 199, 89, 0.8);
+    }
+    
+    .action-button.large {
+      padding: var(--space-lg);
+      font-size: var(--font-size-lg);
+    }
+    
+    .action-button.circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto;
+    }
+    
+    .action-row {
+      display: flex;
+      gap: var(--space-sm);
+    }
+    
+    .action-row > * {
+      flex: 1;
+    }
+    
+    .card {
+      background: var(--gray-800);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .card-title {
+      font-size: var(--font-size-md);
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+    }
+    
+    .list-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-sm);
+      border-bottom: 1px solid var(--gray-700);
+    }
+    
+    .list-item-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--gray-700);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: var(--space-sm);
+    }
+    
+    .list-item-content {
+      flex: 1;
+    }
+    
+    .list-item-title {
+      font-weight: 500;
+      font-size: var(--font-size-md);
+    }
+    
+    .list-item-subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--gray-400);
+    }
+    
+    .form-group {
+      margin-bottom: var(--space-md);
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: var(--space-xs);
+      font-size: var(--font-size-sm);
+      color: var(--gray-300);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: var(--space-sm);
+      background: var(--gray-700);
+      border: 1px solid var(--gray-600);
+      border-radius: var(--radius-sm);
+      color: var(--primary-light);
+      font-size: var(--font-size-md);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+    
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--space-sm) center;
+      background-size: 16px;
+      padding-right: var(--space-lg);
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--gray-600);
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--blue);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .onboarding-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      padding: var(--space-lg);
+      text-align: center;
+    }
+    
+    .onboarding-image {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto var(--space-lg);
+      background: var(--gray-800);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .onboarding-title {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+    }
+    
+    .onboarding-text {
+      font-size: var(--font-size-md);
+      color: var(--gray-300);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .onboarding-progress {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--gray-600);
+    }
+    
+    .progress-dot.active {
+      background-color: var(--blue);
+    }
+    
+    .bottom-actions {
+      position: absolute;
+      bottom: var(--space-md);
+      left: var(--space-md);
+      right: var(--space-md);
+    }
+    
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--gray-700);
+    }
+    
+    .settings-label {
+      font-size: var(--font-size-md);
+    }
+    
+    .signal-indicator {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+      margin: 0 auto var(--space-md);
+    }
+    
+    .signal-red {
+      background-color: var(--red);
+      box-shadow: 0 0 30px rgba(255, 59, 48, 0.5);
+    }
+    
+    .signal-yellow {
+      background-color: var(--yellow);
+      box-shadow: 0 0 30px rgba(255, 204, 0, 0.5);
+    }
+    
+    .signal-green {
+      background-color: var(--green);
+      box-shadow: 0 0 30px rgba(52, 199, 89, 0.5);
+    }
+    
+    .walkthrough-steps {
+      position: absolute;
+      bottom: 120px;
+      left: var(--space-md);
+      right: var(--space-md);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+    }
+    
+    .tutorial-highlight {
+      position: absolute;
+      border: 2px dashed var(--primary-light);
+      border-radius: var(--radius-md);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      }
+    }
+    
+    .nav-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--gray-600);
+    }
+    
+    .nav-dot.active {
+      background-color: var(--primary-light);
+    }
+    
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+    }
+    
+    .status-indicator.detecting {
+      background-color: rgba(255, 204, 0, 0.2);
+      color: var(--yellow);
+    }
+    
+    .status-indicator.alert {
+      background-color: rgba(255, 59, 48, 0.2);
+      color: var(--red);
+    }
+    
+    .status-indicator.safe {
+      background-color: rgba(52, 199, 89, 0.2);
+      color: var (--green);
+    }
+    
+    .notification-badge {
+      background-color: var(--red);
+      color: var(--primary-light);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+    }
+    
+    .signal-text {
+      margin-top: var(--space-md);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .countdown {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      margin: var(--space-sm) 0;
+      text-align: center;
+    }
+    
+    .material-icons {
+      font-family: 'Material Icons';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Onboarding Screen 1 -->
+  <div class="screen" id="onboarding-1">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="onboarding-content">
+      <div>
+        <div class="onboarding-image">
+          <span class="material-icons" style="font-size: 100px; color: var(--blue);">visibility</span>
+        </div>
+        <h1 class="onboarding-title">Welcome to eyeGuide</h1>
+        <p class="onboarding-text">Navigate safely with advanced traffic signal detection and multi-sensory guidance.</p>
+      </div>
+      
+      <div>
+        <div class="onboarding-progress">
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+        </div>
+        
+        <a href="#onboarding-2" class="button large primary">
+          Get Started
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Onboarding Screen 2 -->
+  <div class="screen" id="onboarding-2">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="onboarding-content">
+      <div>
+        <div class="onboarding-image">
+          <span class="material-icons" style="font-size: 100px; color: var(--yellow);">traffic</span>
+        </div>
+        <h1 class="onboarding-title">Traffic Signal Detection</h1>
+        <p class="onboarding-text">Our AI can identify traffic lights and pedestrian signals to help you cross safely.</p>
+      </div>
+      
+      <div>
+        <div class="onboarding-progress">
+          <div class="progress-dot"></div>
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+        </div>
+        
+        <div style="display: flex; gap: var(--space-sm);">
+          <a href="#onboarding-1" class="button large secondary" style="flex: 1;">
+            Back
+          </a>
+          <a href="#onboarding-3" class="button large primary" style="flex: 1;">
+            Next
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Onboarding Screen 3 -->
+  <div class="screen" id="onboarding-3">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="onboarding-content">
+      <div>
+        <div class="onboarding-image">
+          <span class="material-icons" style="font-size: 100px; color: var(--green);">volume_up</span>
+        </div>
+        <h1 class="onboarding-title">Multi-Sensory Feedback</h1>
+        <p class="onboarding-text">Receive guidance through your preferred combination of audio, haptic, and visual feedback.</p>
+      </div>
+      
+      <div>
+        <div class="onboarding-progress">
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot active"></div>
+          <div class="progress-dot"></div>
+        </div>
+        
+        <div style="display: flex; gap: var(--space-sm);">
+          <a href="#onboarding-2" class="button large secondary" style="flex: 1;">
+            Back
+          </a>
+          <a href="#onboarding-4" class="button large primary" style="flex: 1;">
+            Next
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Onboarding Screen 4 (Permissions) -->
+  <div class="screen" id="onboarding-4">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="onboarding-content">
+      <div>
+        <div class="onboarding-image">
+          <span class="material-icons" style="font-size: 100px; color: var(--purple);">settings</span>
+        </div>
+        <h1 class="onboarding-title">Enable Permissions</h1>
+        <p class="onboarding-text">eyeGuide needs access to your camera, location, and microphone to provide guidance.</p>
+      </div>
+      
+      <div>
+        <div class="onboarding-progress">
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot active"></div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+          <a href="#setup-accessibility" class="button large primary">
+            Enable Permissions
+          </a>
+          <a href="#onboarding-3" class="button large secondary">
+            Back
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Setup Accessibility -->
+  <div class="screen" id="setup-accessibility">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="header">
+      <div class="header-title">Customize Experience</div>
+    </div>
+    
+    <div class="content">
+      <div class="card">
+        <div class="card-title">Vision Settings</div>
+        
+        <div class="settings-row">
+          <div class="settings-label">High Contrast Mode</div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="settings-row">
+          <div class="settings-label">Font Size</div>
+          <select class="form-select" style="width: 120px;">
+            <option>Normal</option>
+            <option selected>Large</option>
+            <option>Extra Large</option>
+          </select>
+        </div>
+        
+        <div class="settings-row">
+          <div class="settings-label">Color Filters</div>
+          <select class="form-select" style="width: 120px;">
+            <option>None</option>
+            <option selected>Yellow-Blue</option>
+            <option>Red-Green</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Audio Settings</div>
+        
+                <div class="settings-row">
+          <div class="settings-label">Voice Guidance</div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Voice Speed</div>
+          <select class="form-select" style="width: 120px;">
+            <option>Slow</option>
+            <option selected>Normal</option>
+            <option>Fast</option>
+          </select>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Voice Type</div>
+          <select class="form-select" style="width: 120px;">
+            <option selected>Emma (Female)</option>
+            <option>James (Male)</option>
+            <option>Neutral</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Haptic Feedback</div>
+
+        <div class="settings-row">
+          <div class="settings-label">Vibration Intensity</div>
+          <select class="form-select" style="width: 120px;">
+            <option>Light</option>
+            <option selected>Medium</option>
+            <option>Strong</option>
+          </select>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Pattern for Red Light</div>
+          <select class="form-select" style="width: 120px;">
+            <option>Single Long</option>
+            <option selected>Triple Pulse</option>
+            <option>Continuous</option>
+          </select>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Pattern for Green Light</div>
+          <select class="form-select" style="width: 120px;">
+            <option>Single Long</option>
+            <option>Double Pulse</option>
+            <option selected>Continuous</option>
+          </select>
+        </div>
+      </div>
+
+      <a href="#home" class="button large primary" style="margin-top: var(--space-lg); margin-bottom: var(--space-lg);">
+        Save & Continue
+      </a>
+    </div>
+  </div>
+
+  <!-- Home Screen -->
+  <div class="screen" id="home">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="header-title">eyeGuide</div>
+      <a href="#settings">
+        <span class="material-icons" style="font-size: 28px;">settings</span>
+      </a>
+    </div>
+
+    <div class="content">
+      <div style="margin: var(--space-md) 0; text-align: center;">
+        <p style="font-size: var(--font-size-md);">What would you like to do today?</p>
+      </div>
+
+      <a href="#camera" class="button large primary" style="margin-bottom: var(--space-md); padding: var(--space-lg); display: flex; flex-direction: column; align-items: center; height: auto;">
+        <span class="material-icons" style="font-size: 48px; margin-bottom: var(--space-sm);">traffic</span>
+        <span style="font-size: var(--font-size-lg);">Detect Traffic Signals</span>
+        <span style="font-size: var(--font-size-sm); color: var(--gray-300); margin-top: var(--space-xs);">Identify lights and crosswalks</span>
+      </a>
+
+      <a href="#navigation" class="button large secondary" style="margin-bottom: var(--space-md); padding: var(--space-lg); display: flex; flex-direction: column; align-items: center; height: auto;">
+        <span class="material-icons" style="font-size: 48px; margin-bottom: var(--space-sm);">map</span>
+        <span style="font-size: var(--font-size-lg);">Navigation Assistance</span>
+        <span style="font-size: var(--font-size-sm); color: var(--gray-300); margin-top: var(--space-xs);">Get directions and guidance</span>
+      </a>
+
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+          <a href="#sos" style="text-decoration: none; color: inherit;">
+            <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+              <span class="material-icons" style="font-size: 36px; color: var(--red);">emergency</span>
+              <div style="margin-top: var(--space-xs); font-weight: 500;">SOS</div>
+            </div>
+          </a>
+
+          <a href="#tutorial" style="text-decoration: none; color: inherit;">
+            <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+              <span class="material-icons" style="font-size: 36px; color: var(--blue);">school</span>
+              <div style="margin-top: var(--space-xs); font-weight: 500;">Tutorial</div>
+            </div>
+          </a>
+
+          <a href="#profile" style="text-decoration: none; color: inherit;">
+            <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+              <span class="material-icons" style="font-size: 36px; color: var(--purple);">person</span>
+              <div style="margin-top: var(--space-xs); font-weight: 500;">Profile</div>
+            </div>
+          </a>
+
+          <a href="#history" style="text-decoration: none; color: inherit;">
+            <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+              <span class="material-icons" style="font-size: 36px; color: var(--green);">history</span>
+              <div style="margin-top: var(--space-xs); font-weight: 500;">History</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recent Activity</div>
+
+        <div style="font-size: var(--font-size-sm); color: var(--gray-400); padding: var(--space-md); text-align: center;">
+          No recent activity yet. Start using eyeGuide to track your navigation history.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Camera/Detection Screen -->
+  <div class="screen" id="camera">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div class="full-content">
+      <div class="camera-view" style="background-image: url('https://images.unsplash.com/photo-1624378439575-d8705ad7b8b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); background-size: cover;">
+
+        <div class="camera-overlay">
+          <div class="camera-controls">
+            <a href="#home">
+              <div class="camera-status">
+                <span class="material-icons">arrow_back</span>
+                <span>Back</span>
+              </div>
+            </a>
+
+            <div class="status-indicator detecting">
+              <span class="material-icons" style="font-size: 18px; margin-right: 4px;">searching</span>
+              <span>Detecting...</span>
+            </div>
+          </div>
+
+          <!-- Visual indicators overlaid on camera view -->
+          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); border: 3px dashed var(--yellow); width: 200px; height: 100px; border-radius: var(--radius-sm);"></div>
+
+          <div class="camera-actions">
+            <div class="walkthrough-steps">
+              <div style="font-weight: 600; margin-bottom: var(--space-xs);">Point camera at traffic lights</div>
+              <div style="font-size: var(--font-size-sm); color: var(--gray-300);">Hold steady for best results. eyeGuide will announce when a signal is detected.</div>
+            </div>
+
+            <a href="#signal-detected" class="action-button large">
+              <span class="material-icons" style="font-size: 36px; margin-right: var(--space-xs);">center_focus_strong</span>
+              <span>Tap when at crossing</span>
+            </a>
+
+            <div class="action-row">
+              <a href="#home" class="action-button">
+                <span class="material-icons">pause</span>
+              </a>
+              <a href="#sos" class="action-button danger">
+                SOS
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signal Detected Screen -->
+  <div class="screen" id="signal-detected">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div class="full-content">
+      <div class="camera-view" style="background-image: url('https://images.unsplash.com/photo-1517686748843-bb360cfc62b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); background-size: cover;">
+
+        <div class="camera-overlay">
+          <div class="camera-controls">
+            <a href="#camera">
+              <div class="camera-status">
+                <span class="material-icons">arrow_back</span>
+                <span>Back</span>
+              </div>
+            </a>
+
+            <div class="status-indicator safe">
+              <span class="material-icons" style="font-size: 18px; margin-right: 4px;">check_circle</span>
+              <span>Green Light</span>
+            </div>
+          </div>
+
+          <!-- Visual indicators overlaid on camera view -->
+          <div style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
+            <div class="signal-indicator signal-green">
+              <span class="material-icons" style="font-size: 60px;">directions_walk</span>
+            </div>
+            <div class="signal-text">Safe to Cross</div>
+            <div class="countdown">12</div>
+            <div style="font-size: var(--font-size-md); color: var(--gray-200);">seconds remaining</div>
+          </div>
+
+          <!-- Direction arrow -->
+          <div style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);">
+            <span class="material-icons" style="font-size: 100px; color: var(--green);">north</span>
+          </div>
+
+          <div class="camera-actions">
+            <div class="action-row">
+              <a href="#camera" class="action-button">
+                <span class="material-icons">refresh</span>
+                <span>Rescan</span>
+              </a>
+              <a href="#sos" class="action-button danger">
+                <span class="material-icons">emergency</span>
+                <span>SOS</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Red Light Detected Screen -->
+  <div class="screen" id="red-signal">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div class="full-content">
+      <div class="camera-view" style="background-image: url('https://images.unsplash.com/photo-1562094629-eaeb5e3a93d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); background-size: cover;">
+
+        <div class="camera-overlay">
+          <div class="camera-controls">
+            <a href="#camera">
+              <div class="camera-status">
+                <span class="material-icons">arrow_back</span>
+                <span>Back</span>
+              </div>
+            </a>
+
+            <div class="status-indicator alert">
+              <span class="material-icons" style="font-size: 18px; margin-right: 4px;">do_not_disturb</span>
+              <span>Red Light</span>
+            </div>
+          </div>
+
+          <!-- Visual indicators overlaid on camera view -->
+          <div style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
+            <div class="signal-indicator signal-red">
+              <span class="material-icons" style="font-size: 60px;">pan_tool</span>
+            </div>
+            <div class="signal-text">DON'T Cross</div>
+            <div class="countdown">24</div>
+            <div style="font-size: var(--font-size-md); color: var(--gray-200);">estimated wait time</div>
+          </div>
+
+          <div class="camera-actions">
+            <div class="action-row">
+              <a href="#camera" class="action-button">
+                <span class="material-icons">refresh</span>
+                <span>Rescan</span>
+              </a>
+              <a href="#sos" class="action-button danger">
+                <span class="material-icons">emergency</span>
+                <span>SOS</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Screen -->
+  <div class="screen" id="settings">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div class="header">
+      <a href="#home">
+        <span class="material-icons">arrow_back</span>
+      </a>
+      <div class="header-title">Settings</div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div class="card-title">Accessibility</div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">visibility</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Vision Settings</div>
+            <div class="list-item-subtitle">Contrast, colors, and font size</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">volume_up</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Audio Settings</div>
+            <div class="list-item-subtitle">Voice type, speed, and volume</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">vibration</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Haptic Feedback</div>
+            <div class="list-item-subtitle">Vibration patterns and intensity</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Detection Settings</div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">traffic</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Traffic Signal Detection</div>
+            <div class="list-item-subtitle">Sensitivity and alert preferences</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">gesture</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Gesture Controls</div>
+            <div class="list-item-subtitle">Customize app gestures</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Auto-Detection</div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Background Detection</div>
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Account & Privacy</div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">person</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Account Settings</div>
+            <div class="list-item-subtitle">Profile and preferences</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">security</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Privacy Settings</div>
+            <div class="list-item-subtitle">Data and permissions</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">contact_support</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Help & Support</div>
+            <div class="list-item-subtitle">FAQs and contact info</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+      </div>
+
+      <div style="margin: var(--space-xl) 0; text-align: center;">
+        <div style="color: var(--gray-400); font-size: var(--font-size-sm);">eyeGuide v1.0.2</div>
+        <a href="#home" style="color: var(--red); text-decoration: none; margin-top: var(--space-md); display: inline-block;">Sign Out</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency/SOS Screen -->
+  <div class="screen" id="sos">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div style="background: var(--red); height: 100%; display: flex; flex-direction: column; padding: var(--space-lg);">
+      <div style="text-align: center; margin-top: var(--space-xl);">
+        <h1 style="font-size: 36px; margin-bottom: var(--space-md);">Emergency SOS</h1>
+        <p style="font-size: var(--font-size-md); opacity: 0.8; margin-bottom: var(--space-xl);">Help will be requested if you don't cancel</p>
+
+        <div style="width: 120px; height: 120px; background: white; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; animation: pulse 1s infinite;">
+          <span class="material-icons" style="color: var(--red); font-size: 60px;">emergency</span>
+        </div>
+
+        <div style="margin: var(--space-xl) 0;">
+          <div style="font-size: var(--font-size-xl); font-weight: 700; margin-bottom: var(--space-xs);">10</div>
+          <div>seconds</div>
+        </div>
+      </div>
+
+      <div style="flex: 1;"></div>
+
+      <div>
+        <div style="margin-bottom: var(--space-md); font-size: var(--font-size-sm); opacity: 0.8;">
+          Your location and emergency contacts will be notified. Audio recording will start automatically.
+        </div>
+
+        <a href="#home" class="button large" style="background: white; color: var(--red); margin-bottom: var(--space-md);">
+          Cancel Emergency
+        </a>
+
+        <a href="#home" style="color: white; text-decoration: none; text-align: center; display: block; opacity: 0.8;">
+          Return to App
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Assistance Screen -->
+  <div class="screen" id="navigation">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div class="header">
+      <a href="#home">
+        <span class="material-icons">arrow_back</span>
+      </a>
+      <div class="header-title">Navigation</div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div class="card-title">Where do you want to go?</div>
+
+        <div class="form-group">
+          <label class="form-label">Current Location</label>
+          <div class="form-control" style="display: flex; align-items: center; gap: var(--space-sm);">
+            <span class="material-icons" style="color: var(--blue);">my_location</span>
+            <span>Current Location</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Destination</label>
+          <input type="text" class="form-control" placeholder="Enter destination">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Saved Locations</div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">home</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Home</div>
+            <div class="list-item-subtitle">123 Main Street</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">work</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Work</div>
+            <div class="list-item-subtitle">456 Office Plaza</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">local_grocery_store</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Grocery Store</div>
+            <div class="list-item-subtitle">789 Market Street</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Navigation Preferences</div>
+
+        <div class="settings-row">
+          <div class="settings-label">Prefer Accessible Routes</div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Avoid Busy Intersections</div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-label">Route Type</div>
+          <select class="form-select" style="width: 120px;">
+            <option selected>Safest</option>
+            <option>Shortest</option>
+            <option>Balanced</option>
+          </select>
+        </div>
+      </div>
+
+      <a href="#camera" class="button large primary" style="margin: var(--space-lg) 0;">
+        <span class="material-icons" style="margin-right: var(--space-xs);">directions_walk</span>
+        Start Navigation
+      </a>
+    </div>
+  </div>
+
+  <!-- Profile/Account Screen -->
+  <div class="screen" id="profile">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+
+    <div class="header">
+      <a href="#home">
+        <span class="material-icons">arrow_back</span>
+      </a>
+      <div class="header-title">Profile</div>
+    </div>
+
+    <div class="content">
+      <div style="text-align: center; margin: var(--space-lg) 0;">
+        <div style="width: 100px; height: 100px; background: var(--gray-700); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+          <span class="material-icons" style="font-size: 48px;">person</span>
+        </div>
+        <h2 style="margin-top: var(--space-md);">Alex Johnson</h2>
+        <p style="color: var(--gray-400);">alex.johnson@example.com</p>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Personal Information</div>
+        
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" value="Alex Johnson">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" value="alex.johnson@example.com">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-control" value="+1 (555) 123-4567">
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Emergency Contacts</div>
+        
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">contact_phone</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Sarah Johnson</div>
+            <div class="list-item-subtitle">+1 (555) 987-6543 • Wife</div>
+          </div>
+          <span class="material-icons">edit</span>
+        </div>
+        
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">contact_phone</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Michael Smith</div>
+            <div class="list-item-subtitle">+1 (555) 456-7890 • Friend</div>
+          </div>
+          <span class="material-icons">edit</span>
+        </div>
+        
+        <a href="#" class="button secondary" style="margin-top: var(--space-sm);">
+          <span class="material-icons" style="margin-right: var(--space-xs);">add</span>
+          Add Contact
+        </a>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Medical Information</div>
+        
+        <div class="form-group">
+          <label class="form-label">Vision Condition</label>
+          <select class="form-select">
+            <option selected>Low Vision</option>
+            <option>Legally Blind</option>
+            <option>Fully Blind</option>
+            <option>Other</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Medical Notes (for emergencies)</label>
+          <textarea class="form-control" rows="3">Type 2 Diabetes, Allergic to penicillin</textarea>
+        </div>
+        
+        <div class="settings-row">
+          <div class="settings-label">Share with Emergency Services</div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <a href="#home" class="button large primary" style="margin: var(--space-lg) 0;">
+        Save Changes
+      </a>
+    </div>
+  </div>
+  
+  <!-- Tutorial Screen -->
+  <div class="screen" id="tutorial">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="header">
+      <a href="#home">
+        <span class="material-icons">arrow_back</span>
+      </a>
+      <div class="header-title">Tutorial</div>
+    </div>
+    
+    <div class="content">
+      <div style="margin-bottom: var(--space-lg);">
+        <h2 style="margin-bottom: var(--space-sm);">How to Use eyeGuide</h2>
+        <p style="color: var (--gray-300); margin-bottom: var(--space-md);">Follow these simple steps to get the most out of eyeGuide. Select a topic below to learn more.</p>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Signal Detection</div>
+        
+        <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md);">
+          <img src="https://i.imgur.com/8FjO1w4.png" alt="Signal Detection Illustration" style="width: 100%; height: 150px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: var(--space-sm);">
+          <div>
+            <h4 style="margin-bottom: var(--space-xs);">1. Position Camera at Intersection</h4>
+            <p style="font-size: var(--font-size-sm); color: var(--gray-300);">Hold your phone up at eye level, pointing toward traffic signals. Keep the phone steady for best detection.</p>
+          </div>
+        </div>
+        
+        <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md);">
+          <img src="https://i.imgur.com/JzaA792.png" alt="Signal Result Illustration" style="width: 100%; height: 150px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: var(--space-sm);">
+          <div>
+            <h4 style="margin-bottom: var(--space-xs);">2. Receive Feedback</h4>
+            <p style="font-size: var(--font-size-sm); color: var(--gray-300);">eyeGuide will provide audio, haptic, and visual feedback about traffic signal status and when it's safe to cross.</p>
+          </div>
+        </div>
+        
+        <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md);">
+          <img src="https://i.imgur.com/RXszOPC.png" alt="Signal Countdown Illustration" style="width: 100%; height: 150px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: var(--space-sm);">
+          <div>
+            <h4 style="margin-bottom: var(--space-xs);">3. Crossing Guidance</h4>
+            <p style="font-size: var(--font-size-sm); color: var(--gray-300);">The app will help you align with the crosswalk and provide countdown timers for crossing windows.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Tips for Best Results</div>
+        
+        <ul style="list-style: none; padding-left: 0;">
+          <li style="margin-bottom: var(--space-sm); display: flex; align-items: flex-start;">
+            <span class="material-icons" style="margin-right: var(--space-sm); color: var(--blue);">tips_and_updates</span>
+            <div>Hold your phone steady for more accurate signal detection</div>
+          </li>
+          <li style="margin-bottom: var(--space-sm); display: flex; align-items: flex-start;">
+            <span class="material-icons" style="margin-right: var(--space-sm); color: var(--blue);">tips_and_updates</span>
+            <div>Use headphones for clearer audio guidance in noisy environments</div>
+          </li>
+          <li style="margin-bottom: var(--space-sm); display: flex; align-items: flex-start;">
+            <span class="material-icons" style="margin-right: var(--space-sm); color: var(--blue);">tips_and_updates</span>
+            <div>Position yourself directly in front of the crosswalk for best results</div>
+          </li>
+          <li style="display: flex; align-items: flex-start;">
+            <span class="material-icons" style="margin-right: var(--space-sm); color: var(--blue);">tips_and_updates</span>
+            <div>The SOS button is always available during detection mode</div>
+          </li>
+        </ul>
+      </div>
+      
+      <a href="#tutorial-interactive" class="button large primary" style="margin: var(--space-lg) 0;">
+        <span class="material-icons" style="margin-right: var(--space-xs);">play_circle</span>
+        Start Practice Mode
+      </a>
+    </div>
+  </div>
+  
+  <!-- Tutorial Interactive Mode -->
+  <div class="screen" id="tutorial-interactive">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="full-content">
+      <div class="camera-view" style="background-image: url('https://images.unsplash.com/photo-1617525121026-cb97f9e9a688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); background-size: cover;">
+        
+        <div class="camera-overlay">
+          <div class="camera-controls">
+            <a href="#tutorial">
+              <div class="camera-status">
+                <span class="material-icons">arrow_back</span>
+                <span>Tutorial</span>
+              </div>
+            </a>
+            
+            <div class="status-indicator detecting">
+              <span class="material-icons" style="font-size: 18px; margin-right: 4px;">school</span>
+              <span>Practice Mode</span>
+            </div>
+          </div>
+          
+          <!-- Tutorial guidance -->
+          <div class="tutorial-highlight" style="top: 180px; left: 100px; width: 160px; height: 100px;"></div>
+          
+          <div class="walkthrough-steps">
+            <div style="font-weight: 600; margin-bottom: var(--space-xs);">Step 1: Locate Traffic Signals</div>
+            <div style="font-size: var(--font-size-sm); color: var(--gray-300);">Point your camera at the highlighted area where traffic signals are typically located. Hold steady.</div>
+            
+            <div class="nav-dots" style="margin-top: var(--space-md);">
+              <div class="nav-dot active"></div>
+              <div class="nav-dot"></div>
+              <div class="nav-dot"></div>
+            </div>
+          </div>
+          
+          <div class="camera-actions">
+            <a href="#tutorial-step2" class="action-button primary">
+              <span>Continue</span>
+              <span class="material-icons">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- History Screen -->
+  <div class="screen" id="history">
+    <div class="status-bar">
+      <div class="status-bar-left">9:41</div>
+      <div class="status-bar-right">
+        <span class="material-icons" style="font-size: 16px;">signal_cellular_alt</span>
+        <span class="material-icons" style="font-size: 16px;">wifi</span>
+        <span class="material-icons" style="font-size: 16px;">battery_full</span>
+      </div>
+    </div>
+    
+    <div class="header">
+      <a href="#home">
+        <span class="material-icons">arrow_back</span>
+      </a>
+      <div class="header-title">History</div>
+    </div>
+    
+    <div class="content">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
+          <div class="card-title" style="margin-bottom: 0;">Recent Activity</div>
+          <select class="form-select" style="width: 120px;">
+            <option selected>All Types</option>
+            <option>Crossings</option>
+            <option>Navigation</option>
+          </select>
+        </div>
+        
+        <div class="list-item">
+          <div class="list-item-icon" style="background: var(--green);">
+            <span class="material-icons" style="color: white;">check_circle</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Successful Crossing</div>
+            <div class="list-item-subtitle">Main St & 5th Ave • Today, 2:15 PM</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+        
+        <div class="list-item">
+          <div class="list-item-icon" style="background: var(--blue);">
+            <span class="material-icons" style="color: white;">directions_walk</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Navigation Completed</div>
+            <div class="list-item-subtitle">Home to Grocery Store • Today, 1:30 PM</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+        
+        <div class="list-item">
+          <div class="list-item-icon" style="background: var(--yellow);">
+            <span class="material-icons" style="color: var(--gray-900);">traffic</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Signal Detection</div>
+            <div class="list-item-subtitle">Park Ave & Oak St • Yesterday, 4:45 PM</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+        
+        <div class="list-item">
+          <div class="list-item-icon" style="background: var(--green);">
+            <span class="material-icons" style="color: white;">check_circle</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Successful Crossing</div>
+            <div class="list-item-subtitle">Pine St & 10th Ave • Yesterday, 11:20 AM</div>
+          </div>
+          <span class="material-icons">chevron_right</span>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Usage Statistics</div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-md);">
+          <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+            <div style="font-size: var(--font-size-xl); font-weight: 700; color: var(--blue);">24</div>
+            <div style="color: var(--gray-300);">Crossings</div>
+            <div style="font-size: var(--font-size-xs); color: var(--gray-400); margin-top: var(--space-xs);">This Week</div>
+          </div>
+          
+          <div style="background: var (--gray-700); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+            <div style="font-size: var(--font-size-xl); font-weight: 700; color: var(--green);">8</div>
+            <div style="color: var(--gray-300);">Routes</div>
+            <div style="font-size: var(--font-size-xs); color: var(--gray-400); margin-top: var(--space-xs);">This Week</div>
+          </div>
+        </div>
+        
+        <div style="background: var(--gray-700); border-radius: var(--radius-md); padding: var(--space-md); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 500;">Total Distance</div>
+            <div style="font-size: var(--font-size-xs); color: var(--gray-400);">This Month</div>
+          </div>
+          <div style="font-size: var(--font-size-lg); font-weight: 700; color: var(--purple);">5.7 km</div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Most Visited</div>
+        
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">local_grocery_store</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Grocery Store</div>
+            <div class="list-item-subtitle">12 visits this month</div>
+          </div>
+        </div>
+        
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">park</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Central Park</div>
+            <div class="list-item-subtitle">8 visits this month</div>
+          </div>
+        </div>
+        
+        <div class="list-item">
+          <div class="list-item-icon">
+            <span class="material-icons">local_cafe</span>
+          </div>
+          <div class="list-item-content">
+            <div class="list-item-title">Corner Café</div>
+            <div class="list-item-subtitle">5 visits this month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
