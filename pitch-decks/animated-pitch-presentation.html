@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>考就完了 - AI Learning Assistant Pitch</title>
+  
+  <!-- Import Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-color: #38bdf8;
+      --secondary-color: #8b5cf6;
+      --accent-color: #06b6d4;
+      --bg-color: #111111;
+      --grid-color: rgba(64, 224, 208, 0.05);
+      --text-color: #ffffff;
+      --card-bg: #222222;
+      --card-bg-hover: #333333;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      overflow-x: hidden;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Roboto', sans-serif;
+      scroll-behavior: smooth;
+    }
+    
+    .section {
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .grid-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+      z-index: 0;
+    }
+    
+    .section-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .progress-container {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .progress-bar {
+      width: 200px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .progress-indicator {
+      height: 100%;
+      width: 0%;
+      background: var(--primary-color);
+      border-radius: 5px;
+      transition: width 0.3s ease;
+    }
+    
+    .scene-caption {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      max-width: 80%;
+    }
+    
+    .nav-dots {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 100;
+    }
+    
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-dot.active {
+      background-color: var(--primary-color);
+      transform: scale(1.3);
+    }
+    
+    .svg-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    
+    @media (max-width: 768px) {
+      .scene-caption {
+        width: 90%;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Dots -->
+  <div class="nav-dots">
+    <div class="nav-dot active" data-section="1"></div>
+    <div class="nav-dot" data-section="2"></div>
+    <div class="nav-dot" data-section="3"></div>
+    <div class="nav-dot" data-section="4"></div>
+    <div class="nav-dot" data-section="5"></div>
+    <div class="nav-dot" data-section="6"></div>
+  </div>
+
+  <!-- Section 1: Title Sequence -->
+  <section id="section1" class="section">
+    <div class="grid-background"></div>
+    <div class="section-content">
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" class="svg-container">
+        <!-- Definitions -->
+        <defs>
+          <linearGradient id="title-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8"/>
+            <stop offset="100%" stop-color="#0ea5e9"/>
+          </linearGradient>
+          
+          <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0f172a" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0.3"/>
+          </linearGradient>
+          
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+        
+        <!-- Background Geometric Elements -->
+        <g id="background-elements">
+          <!-- Large Background Circle -->
+          <circle cx="960" cy="540" r="500" fill="url(#bg-gradient)" opacity="0" class="bg-circle"/>
+          
+          <!-- Grid Lines -->
+          <g id="grid-lines" opacity="0">
+            <line x1="100" y1="540" x2="1820" y2="540" stroke="rgba(64, 224, 208, 0.1)" stroke-width="1" stroke-dasharray="10,10"/>
+            <line x1="960" y1="100" x2="960" y2="980" stroke="rgba(64, 224, 208, 0.1)" stroke-width="1" stroke-dasharray="10,10"/>
+            
+            <!-- Radial Lines -->
+            <line x1="960" y1="540" x2="1460" y2="240" stroke="rgba(64, 224, 208, 0.1)" stroke-width="1" stroke-dasharray="10,10"/>
+            <line x1="960" y1="540" x2="1460" y2="840" stroke="rgba(64, 224, 208, 0.1)" stroke-width="1" stroke-dasharray="10,10"/>
+            <line x1="960" y1="540" x2="460" y2="240" stroke="rgba(64, 224, 208, 0.1)" stroke-width="1" stroke-dasharray="10,10"/>
+            <line x1="960" y1="540" x2="460" y2="840" stroke="rgba(64, 224, 208, 0.1)" stroke-width="1" stroke-dasharray="10,10"/>
+          </g>
+          
+          <!-- Geometric Decorations -->
+          <g id="geo-decorations">
+            <polygon points="400,300 450,350 400,400 350,350" stroke="#38bdf8" stroke-width="2" fill="none" opacity="0" class="geo-element"/>
+            <circle cx="1520" cy="300" r="50" stroke="#8b5cf6" stroke-width="2" fill="none" opacity="0" class="geo-element"/>
+            <rect x="350" y="750" width="80" height="80" rx="5" stroke="#06b6d4" stroke-width="2" fill="none" opacity="0" class="geo-element" transform="rotate(45, 390, 790)"/>
+            <polygon points="1500,700 1550,750 1500,800 1450,750" stroke="#8b5cf6" stroke-width="2" fill="none" opacity="0" class="geo-element"/>
+          </g>
+        </g>
+        
+        <!-- Main Title Elements -->
+        <g id="title-elements">
+          <!-- Title Logo -->
+          <g id="logo" opacity="0">
+            <circle cx="960" cy="400" r="120" fill="#222" stroke="#38bdf8" stroke-width="3"/>
+            
+            <!-- Stylized Character -->
+            <g transform="translate(900, 340) scale(0.8)">
+              <path d="M60,20 C75,20 85,30 85,45 C85,55 80,60 70,65 L90,90 L75,90 L58,70 L40,70 L40,90 L30,90 L30,20 L60,20 Z M60,30 L40,30 L40,60 L60,60 C70,60 75,55 75,45 C75,35 70,30 60,30 Z" 
+                    fill="#38bdf8" id="kanji"/>
+            </g>
+          </g>
+          
+          <!-- Main Title Text -->
+          <text id="main-title" x="960" y="580" font-family="Roboto, sans-serif" font-size="80" font-weight="bold" text-anchor="middle" fill="url(#title-gradient)" opacity="0">考就完了</text>
+          
+          <!-- Subtitle -->
+          <text id="subtitle" x="960" y="650" font-family="Roboto, sans-serif" font-size="36" text-anchor="middle" fill="#38bdf8" opacity="0">AI驱动的智能学习助手</text>
+          
+          <!-- Tagline -->
+          <text id="tagline" x="960" y="720" font-family="Roboto, sans-serif" font-size="24" text-anchor="middle" fill="#a1a1aa" opacity="0">为学习体验带来无障碍的革命</text>
+          
+          <!-- Hackathon Label -->
+          <text id="hackathon" x="960" y="820" font-family="Roboto, sans-serif" font-size="20" text-anchor="middle" fill="#64748b" opacity="0">无障AI · 黑客松比赛</text>
+        </g>
+        
+        <!-- Brain Network Animation -->
+        <g id="brain-network" opacity="0">
+          <!-- Nodes -->
+          <circle id="node1" cx="960" cy="400" r="8" fill="#38bdf8"/>
+          <circle id="node2" cx="860" cy="320" r="6" fill="#818cf8"/>
+          <circle id="node3" cx="1060" cy="350" r="7" fill="#6366f1"/>
+          <circle id="node4" cx="990" cy="500" r="8" fill="#8b5cf6"/>
+          <circle id="node5" cx="900" cy="450" r="5" fill="#a78bfa"/>
+          <circle id="node6" cx="1050" cy="450" r="6" fill="#c4b5fd"/>
+          <circle id="node7" cx="850" cy="400" r="7" fill="#818cf8"/>
+          <circle id="node8" cx="1100" cy="380" r="6" fill="#6366f1"/>
+          
+          <!-- Connection Lines -->
+          <path id="brain-line1" d="M960,400 L 860,320" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="150" stroke-dashoffset="150"/>
+          <path id="brain-line2" d="M960,400 L 1060,350" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="120" stroke-dashoffset="120"/>
+          <path id="brain-line3" d="M960,400 L 990,500" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="130" stroke-dashoffset="130"/>
+          <path id="brain-line4" d="M960,400 L 900,450" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="80" stroke-dashoffset="80"/>
+          <path id="brain-line5" d="M960,400 L 1050,450" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="160" stroke-dashoffset="160"/>
+          <path id="brain-line6" d="M960,400 L 850,400" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="150" stroke-dashoffset="150"/>
+          <path id="brain-line7" d="M960,400 L 1100,380" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="210" stroke-dashoffset="210"/>
+        </g>
+      </svg>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-indicator" id="progress1"></div>
+      </div>
+      <div class="scene-caption" id="caption1">考就完了 - AI驱动的智能学习助手，重新定义学习体验</div>
+    </div>
+  </section>
+
+  <!-- Section 2: Problem & Market -->
+  <section id="section2" class="section">
+    <div class="grid-background"></div>
+    <div class="section-content">
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" class="svg-container">
+        <defs>
+          <linearGradient id="card-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+          </linearGradient>
+          
+          <filter id="card-shadow">
+            <feDropShadow dx="0" dy="5" stdDeviation="10" flood-opacity="0.3"/>
+          </filter>
+        </defs>
+        
+        <!-- Section Title -->
+        <text id="problem-title" x="200" y="150" font-family="Roboto, sans-serif" font-size="56" font-weight="bold" fill="#ffffff" opacity="0">问题与市场</text>
+        <line id="title-underline" x1="200" y1="180" x2="470" y2="180" stroke="#38bdf8" stroke-width="3" stroke-dasharray="270" stroke-dashoffset="270"/>
+        
+        <!-- Problem Card -->
+        <g id="problem-card" opacity="0">
+          <rect x="200" y="240" width="650" height="550" rx="15" fill="url(#card-gradient)" filter="url(#card-shadow)"/>
+          <text x="250" y="310" font-family="Roboto, sans-serif" font-size="36" font-weight="bold" fill="#38bdf8">学习的障碍</text>
+          
+          <!-- Problem List -->
+          <g id="problem-list">
+            <!-- Problem 1 -->
+            <g class="problem-item" opacity="0">
+              <circle cx="280" cy="380" r="25" fill="#1e3a8a" stroke="#38bdf8" stroke-width="2"/>
+              <text x="280" y="385" font-family="Roboto, sans-serif" font-size="18" text-anchor="middle" fill="white">1</text>
+              <text x="340" y="385" font-family="Roboto, sans-serif" font-size="22" fill="white">学习效率低下</text>
+            </g>
+            
+            <!-- Problem 2 -->
+            <g class="problem-item" opacity="0">
+              <circle cx="280" cy="450" r="25" fill="#1e3a8a" stroke="#38bdf8" stroke-width="2"/>
+              <text x="280" y="455" font-family="Roboto, sans-serif" font-size="18" text-anchor="middle" fill="white">2</text>
+              <text x="340" y="455" font-family="Roboto, sans-serif" font-size="22" fill="white">知识碎片化</text>
+            </g>
+            
+            <!-- Problem 3 -->
+            <g class="problem-item" opacity="0">
+              <circle cx="280" cy="520" r="25" fill="#1e3a8a" stroke="#38bdf8" stroke-width="2"/>
+              <text x="280" y="525" font-family="Roboto, sans-serif" font-size="18" text-anchor="middle" fill="white">3</text>
+              <text x="340" y="525" font-family="Roboto, sans-serif" font-size="22" fill="white">个性化学习缺失</text>
+            </g>
+            
+            <!-- Problem 4 -->
+            <g class="problem-item" opacity="0">
+              <circle cx="280" cy="590" r="25" fill="#1e3a8a" stroke="#38bdf8" stroke-width="2"/>
+              <text x="280" y="595" font-family="Roboto, sans-serif" font-size="18" text-anchor="middle" fill="white">4</text>
+              <text x="340" y="595" font-family="Roboto, sans-serif" font-size="22" fill="white">学习压力大</text>
+            </g>
+            
+            <!-- Problem 5 -->
+            <g class="problem-item" opacity="0">
+              <circle cx="280" cy="660" r="25" fill="#1e3a8a" stroke="#38bdf8" stroke-width="2"/>
+              <text x="280" y="665" font-family="Roboto, sans-serif" font-size="18" text-anchor="middle" fill="white">5</text>
+              <text x="340" y="665" font-family="Roboto, sans-serif" font-size="22" fill="white">信息过载</text>
+            </g>
+          </g>
+          
+          <!-- Problem Highlight -->
+          <rect id="problem-highlight" x="240" y="720" width="570" height="50" rx="8" fill="#38bdf8" fill-opacity="0.15" opacity="0"/>
+          <text id="problem-highlight-text" x="525" y="752" font-family="Roboto, sans-serif" font-size="20" text-anchor="middle" fill="white" opacity="0">传统学习方法浪费40%的时间在低效努力上</text>
+        </g>
+        
+        <!-- Market Card -->
+        <g id="market-card" opacity="0">
+          <rect x="1070" y="240" width="650" height="550" rx="15" fill="url(#card-gradient)" filter="url(#card-shadow)"/>
+          <text x="1120" y="310" font-family="Roboto, sans-serif" font-size="36" font-weight="bold" fill="#38bdf8">市场规模</text>
+          
+          <!-- Market Stats -->
+          <g id="market-stats">
+            <!-- Stat 1 -->
+            <g class="market-stat" opacity="0">
+              <rect x="1120" y="350" width="550" height="70" rx="8" fill="#1e3a8a" fill-opacity="0.5"/>
+              <text x="1150" y="395" font-family="Roboto, sans-serif" font-size="22" fill="white">全国高校</text>
+              <text x="1550" y="395" font-family="Roboto, sans-serif" font-size="22" text-anchor="end" fill="#38bdf8" font-weight="bold">2500+所</text>
+            </g>
+            
+            <!-- Stat 2 -->
+            <g class="market-stat" opacity="0">
+              <rect x="1120" y="440" width="550" height="70" rx="8" fill="#1e3a8a" fill-opacity="0.5"/>
+              <text x="1150" y="485" font-family="Roboto, sans-serif" font-size="22" fill="white">在校大学生</text>
+              <text x="1550" y="485" font-family="Roboto, sans-serif" font-size="22" text-anchor="end" fill="#38bdf8" font-weight="bold">3000万+</text>
+            </g>
+            
+            <!-- Stat 3 -->
+            <g class="market-stat" opacity="0">
+              <rect x="1120" y="530" width="550" height="70" rx="8" fill="#1e3a8a" fill-opacity="0.5"/>
+              <text x="1150" y="575" font-family="Roboto, sans-serif" font-size="22" fill="white">每年期末考试</text>
+              <text x="1550" y="575" font-family="Roboto, sans-serif" font-size="22" text-anchor="end" fill="#38bdf8" font-weight="bold">至少两次</text>
+            </g>
+          </g>
+          
+          <!-- Market Highlight -->
+          <rect id="market-highlight" x="1120" y="640" width="550" height="100" rx="15" fill="#38bdf8" fill-opacity="0.15" opacity="0"/>
+          <text id="market-highlight-text" x="1395" y="695" font-family="Roboto, sans-serif" font-size="26" font-weight="bold" text-anchor="middle" fill="white" opacity="0">目标：提高学习效率30%+</text>
+        </g>
+        
+        <!-- Connection Line -->
+        <path id="connection-line" d="M850,515 C900,515 1020,515 1070,515" stroke="#38bdf8" stroke-width="3" stroke-dasharray="220" stroke-dashoffset="220"/>
+      </svg>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-indicator" id="progress2"></div>
+      </div>
+      <div class="scene-caption" id="caption2">传统学习面临的核心障碍和庞大的市场机会</div>
+    </div>
+  </section>
+
+  <!-- Section 3: Our Solution -->
+  <section id="section3" class="section">
+    <div class="grid-background"></div>
+    <div class="section-content">
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" class="svg-container">
+        <defs>
+          <linearGradient id="solution-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8"/>
+            <stop offset="50%" stop-color="#8b5cf6"/>
+            <stop offset="100%" stop-color="#ec4899"/>
+          </linearGradient>
+          
+          <filter id="glow-effect">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+          
+          <mask id="reveal-mask">
+            <rect width="1920" height="1080" fill="white"/>
+            <circle id="mask-circle" cx="960" cy="540" r="0" fill="black"/>
+          </mask>
+        </defs>
+        
+        <!-- Section Title -->
+        <text id="solution-title" x="200" y="150" font-family="Roboto, sans-serif" font-size="56" font-weight="bold" fill="#ffffff" opacity="0">我们的解决方案</text>
+        <line id="solution-underline" x1="200" y1="180" x2="600" y2="180" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="400" stroke-dashoffset="400"/>
+        
+        <!-- Core Features Icons -->
+        <g id="solution-icons">
+          <!-- AI Dialog Icon -->
+          <g class="solution-icon" opacity="0">
+            <circle cx="384" cy="350" r="70" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+            <path id="dialog-icon" d="M 364 330 C 354 330 344 340 344 350 L 344 380 C 344 390 354 400 364 400 L 384 400 L 394 410 L 404 400 L 424 400 C 434 400 444 390 444 380 L 444 350 C 444 340 434 330 424 330 L 364 330 Z" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="200" stroke-dashoffset="200"/>
+            <text x="384" y="450" font-family="Roboto, sans-serif" font-size="24" text-anchor="middle" fill="white">AI智能对话</text>
+          </g>
+          
+          <!-- Knowledge Graph Icon -->
+          <g class="solution-icon" opacity="0">
+            <circle cx="672" cy="350" r="70" fill="#312e81" stroke="#8b5cf6" stroke-width="2"/>
+            <g id="graph-icon" stroke="#8b5cf6" stroke-width="2" fill="none">
+              <circle cx="672" cy="330" r="20" stroke-dasharray="130" stroke-dashoffset="130"/>
+              <circle cx="632" cy="370" r="15" stroke-dasharray="95" stroke-dashoffset="95"/>
+              <circle cx="712" cy="370" r="15" stroke-dasharray="95" stroke-dashoffset="95"/>
+              <line x1="672" y1="330" x2="632" y2="370" stroke-dasharray="60" stroke-dashoffset="60"/>
+              <line x1="672" y1="330" x2="712" y2="370" stroke-dasharray="60" stroke-dashoffset="60"/>
+            </g>
+            <text x="672" y="450" font-family="Roboto, sans-serif" font-size="24" text-anchor="middle" fill="white">知识图谱</text>
+          </g>
+          
+          <!-- Study Planning Icon -->
+          <g class="solution-icon" opacity="0">
+            <circle cx="960" cy="350" r="70" fill="#4c1d95" stroke="#c4b5fd" stroke-width="2"/>
+            <g id="planning-icon" stroke="#c4b5fd" stroke-width="2" fill="none">
+              <rect x="930" y="320" width="60" height="60" rx="5" stroke-dasharray="240" stroke-dashoffset="240"/>
+              <line x1="940" y1="335" x2="980" y2="335" stroke-dasharray="40" stroke-dashoffset="40"/>
+              <line x1="940" y1="350" x2="980" y2="350" stroke-dasharray="40" stroke-dashoffset="40"/>
+              <line x1="940" y1="365" x2="960" y2="365" stroke-dasharray="20" stroke-dashoffset="20"/>
+            </g>
+            <text x="960" y="450" font-family="Roboto, sans-serif" font-size="24" text-anchor="middle" fill="white">学习规划</text>
+          </g>
+          
+          <!-- Enhanced Reading Icon -->
+          <g class="solution-icon" opacity="0">
+            <circle cx="1248" cy="350" r="70" fill="#0f766e" stroke="#06b6d4" stroke-width="2"/>
+            <g id="reading-icon" stroke="#06b6d4" stroke-width="2" fill="none">
+              <path d="M1228,320 L1268,320 L1268,380 L1228,380 Z" stroke-dasharray="160" stroke-dashoffset="160"/>
+              <line x1="1238" y1="335" x2="1258" y2="335" stroke-width="3" stroke-dasharray="20" stroke-dashoffset="20"/>
+              <line x1="1238" y1="350" x2="1258" y2="350" stroke-width="2" stroke-dasharray="20" stroke-dashoffset="20"/>
+              <line x1="1238" y1="365" x2="1248" y2="365" stroke-width="2" stroke-dasharray="10" stroke-dashoffset="10"/>
+            </g>
+            <text x="1248" y="450" font-family="Roboto, sans-serif" font-size="24" text-anchor="middle" fill="white">增强阅读</text>
+          </g>
+          
+          <!-- File Processing Icon -->
+          <g class="solution-icon" opacity="0">
+            <circle cx="1536" cy="350" r="70" fill="#134e4a" stroke="#14b8a6" stroke-width="2"/>
+            <g id="file-icon" stroke="#14b8a6" stroke-width="2" fill="none">
+              <path d="M1516,320 L1546,320 L1556,330 L1556,380 L1516,380 Z" stroke-dasharray="180" stroke-dashoffset="180"/>
+              <path d="M1546,320 L1546,330 L1556,330" stroke-dasharray="20" stroke-dashoffset="20"/>
+            </g>
+            <text x="1536" y="450" font-family="Roboto, sans-serif" font-size="24" text-anchor="middle" fill="white">文件分析</text>
+          </g>
+        </g>
+        
+        <!-- Features Card -->
+        <g id="features-card" opacity="0">
+          <rect x="250" y="530" width="1420" height="400" rx="15" fill="rgba(17, 24, 39, 0.8)" stroke="url(#solution-gradient)" stroke-width="2"/>
+          <text x="300" y="600" font-family="Roboto, sans-

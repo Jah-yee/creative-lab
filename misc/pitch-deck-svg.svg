@@ -1,0 +1,333 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- Definitions and Patterns -->
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="1"/>
+    </linearGradient>
+    
+    <linearGradient id="title-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    
+    <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    
+    <!-- Patterns -->
+    <pattern id="grid-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect width="40" height="40" fill="none"/>
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(64, 224, 208, 0.05)" stroke-width="1"/>
+    </pattern>
+    
+    <!-- Filters -->
+    <filter id="glow-effect" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Main Background with Grid -->
+  <rect width="1920" height="1080" fill="url(#bg-gradient)"/>
+  <rect width="1920" height="1080" fill="url(#grid-pattern)"/>
+  
+  <!-- Slide 1: Title -->
+  <g id="slide1">
+    <!-- Background Geometric Elements -->
+    <circle cx="960" cy="540" r="300" fill="none" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.2"/>
+    <circle cx="960" cy="540" r="450" fill="none" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.1"/>
+    <polygon points="760,340 960,240 1160,340 1160,740 960,840 760,740" fill="none" stroke="#8b5cf6" stroke-width="1" stroke-opacity="0.2"/>
+    
+    <!-- Title Group -->
+    <g id="title-group">
+      <text x="960" y="350" font-family="Arial, sans-serif" font-size="100" font-weight="bold" fill="url(#title-gradient)" text-anchor="middle">考就完了</text>
+      <text x="960" y="450" font-family="Arial, sans-serif" font-size="48" fill="#38bdf8" text-anchor="middle">AI驱动的智能学习助手</text>
+      <text x="960" y="520" font-family="Arial, sans-serif" font-size="36" fill="#94a3b8" text-anchor="middle">为学习体验带来无障碍的革命</text>
+    </g>
+    
+    <!-- Decorative AI Network -->
+    <g id="network" stroke="#38bdf8" stroke-opacity="0.5" fill="none">
+      <circle cx="800" cy="700" r="6" fill="#38bdf8" fill-opacity="0.8"/>
+      <circle cx="920" cy="650" r="6" fill="#38bdf8" fill-opacity="0.8"/>
+      <circle cx="1000" cy="720" r="6" fill="#38bdf8" fill-opacity="0.8"/>
+      <circle cx="1120" cy="680" r="6" fill="#38bdf8" fill-opacity="0.8"/>
+      <path d="M 800,700 L 920,650" stroke-dasharray="150" stroke-dashoffset="150"/>
+      <path d="M 920,650 L 1000,720" stroke-dasharray="120" stroke-dashoffset="120"/>
+      <path d="M 1000,720 L 1120,680" stroke-dasharray="130" stroke-dashoffset="130"/>
+    </g>
+    
+    <!-- Hackathon Info -->
+    <text x="960" y="900" font-family="Arial, sans-serif" font-size="32" fill="#94a3b8" text-anchor="middle">无障AI - 黑客松比赛</text>
+  </g>
+  
+  <!-- Slide 2: Problem & Market -->
+  <g id="slide2" style="display:none">
+    <!-- Section Title -->
+    <text x="200" y="150" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white">问题与市场</text>
+    <line x1="200" y1="170" x2="500" y2="170" stroke="#38bdf8" stroke-width="3"/>
+    
+    <!-- Problem Card -->
+    <g id="problem-card">
+      <rect x="200" y="220" width="650" height="650" rx="15" fill="#1e293b" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.3"/>
+      <text x="250" y="280" font-family="Arial, sans-serif" font-size="40" fill="#38bdf8">学习的障碍</text>
+      
+      <!-- Problem List -->
+      <g id="problem-list" font-family="Arial, sans-serif">
+        <circle cx="270" cy="350" r="24" fill="#38bdf8" fill-opacity="0.2"/>
+        <text x="270" y="358" font-size="20" text-anchor="middle" fill="white">1</text>
+        <text x="320" y="358" font-size="28" fill="white">学习效率低下</text>
+        
+        <circle cx="270" cy="430" r="24" fill="#38bdf8" fill-opacity="0.2"/>
+        <text x="270" y="438" font-size="20" text-anchor="middle" fill="white">2</text>
+        <text x="320" y="438" font-size="28" fill="white">知识碎片化</text>
+        
+        <circle cx="270" cy="510" r="24" fill="#38bdf8" fill-opacity="0.2"/>
+        <text x="270" y="518" font-size="20" text-anchor="middle" fill="white">3</text>
+        <text x="320" y="518" font-size="28" fill="white">个性化学习缺失</text>
+        
+        <circle cx="270" cy="590" r="24" fill="#38bdf8" fill-opacity="0.2"/>
+        <text x="270" y="598" font-size="20" text-anchor="middle" fill="white">4</text>
+        <text x="320" y="598" font-size="28" fill="white">学习压力大</text>
+        
+        <circle cx="270" cy="670" r="24" fill="#38bdf8" fill-opacity="0.2"/>
+        <text x="270" y="678" font-size="20" text-anchor="middle" fill="white">5</text>
+        <text x="320" y="678" font-size="28" fill="white">信息过载</text>
+      </g>
+    </g>
+    
+    <!-- Market Card -->
+    <g id="market-card">
+      <rect x="1000" y="220" width="650" height="650" rx="15" fill="#1e293b" stroke="#8b5cf6" stroke-width="2" stroke-opacity="0.3"/>
+      <text x="1050" y="280" font-family="Arial, sans-serif" font-size="40" fill="#8b5cf6">市场规模</text>
+      
+      <!-- Market Metrics -->
+      <g id="market-metrics" font-family="Arial, sans-serif">
+        <rect x="1050" y="350" width="550" height="60" rx="5" fill="#0f172a"/>
+        <text x="1080" y="390" font-size="28" fill="white">全国高校:</text>
+        <text x="1400" y="390" font-size="28" fill="#38bdf8">2500+所</text>
+        
+        <rect x="1050" y="450" width="550" height="60" rx="5" fill="#0f172a"/>
+        <text x="1080" y="490" font-size="28" fill="white">在校大学生:</text>
+        <text x="1400" y="490" font-size="28" fill="#8b5cf6">3000万+</text>
+        
+        <rect x="1050" y="550" width="550" height="60" rx="5" fill="#0f172a"/>
+        <text x="1080" y="590" font-size="28" fill="white">考试频率:</text>
+        <text x="1400" y="590" font-size="28" fill="#38bdf8">每年至少两次期末</text>
+        
+        <rect x="1050" y="720" width="550" height="80" rx="8" fill="#38bdf8" fill-opacity="0.1"/>
+        <text x="1325" y="770" font-size="36" font-weight="bold" text-anchor="middle" fill="white">目标：提高学习效率30%+</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Slide 3: Solution -->
+  <g id="slide3" style="display:none">
+    <!-- Section Title -->
+    <text x="200" y="150" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white">我们的解决方案</text>
+    <line x1="200" y1="170" x2="600" y2="170" stroke="#8b5cf6" stroke-width="3"/>
+    
+    <!-- Solution Icons -->
+    <g id="solution-icons">
+      <!-- AI Dialog -->
+      <circle cx="400" cy="320" r="70" fill="#0c4a6e"/>
+      <text x="400" y="330" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="white">AI</text>
+      <text x="400" y="420" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">AI智能对话</text>
+      
+      <!-- Knowledge Graph -->
+      <circle cx="700" cy="320" r="70" fill="#312e81"/>
+      <text x="700" y="330" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="white">KG</text>
+      <text x="700" y="420" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">知识图谱</text>
+      
+      <!-- Learning Plan -->
+      <circle cx="1000" cy="320" r="70" fill="#4c1d95"/>
+      <text x="1000" y="330" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="white">LP</text>
+      <text x="1000" y="420" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">学习规划</text>
+      
+      <!-- Enhanced Reading -->
+      <circle cx="1300" cy="320" r="70" fill="#0f766e"/>
+      <text x="1300" y="330" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="white">BR</text>
+      <text x="1300" y="420" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">增强阅读</text>
+      
+      <!-- File Analysis -->
+      <circle cx="1600" cy="320" r="70" fill="#065f46"/>
+      <text x="1600" y="330" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="white">FA</text>
+      <text x="1600" y="420" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">文件分析</text>
+    </g>
+    
+    <!-- Core Features -->
+    <g id="core-features">
+      <rect x="200" y="500" width="1520" height="400" rx="15" fill="#1e293b"/>
+      <text x="250" y="570" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#38bdf8">核心特色</text>
+      
+      <!-- Left Column -->
+      <text x="300" y="650" font-family="Arial, sans-serif" font-size="28" fill="white">• 专为学术场景优化的AI，非通用型AI</text>
+      <text x="300" y="720" font-family="Arial, sans-serif" font-size="28" fill="white">• 提供完整学习流程支持，而非仅是问答工具</text>
+      <text x="300" y="790" font-family="Arial, sans-serif" font-size="28" fill="white">• 基于认知科学的学习方法论</text>
+      
+      <!-- Right Column -->
+      <text x="1000" y="650" font-family="Arial, sans-serif" font-size="28" fill="white">• 将复杂知识可视化，提升理解效率</text>
+      <text x="1000" y="720" font-family="Arial, sans-serif" font-size="28" fill="white">• 与学生个人资料和知识库深度整合</text>
+      <text x="1000" y="790" font-family="Arial, sans-serif" font-size="28" fill="white">• 解放学习者的创造力和时间</text>
+    </g>
+  </g>
+  
+  <!-- Slide 4: Product Demo -->
+  <g id="slide4" style="display:none">
+    <!-- Section Title -->
+    <text x="200" y="150" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white">产品展示</text>
+    <line x1="200" y1="170" x2="400" y2="170" stroke="#38bdf8" stroke-width="3"/>
+    
+    <!-- Mock UI Interface -->
+    <g id="mock-ui">
+      <!-- Background Frame -->
+      <rect x="250" y="220" width="1420" height="700" rx="20" fill="#1e293b" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.5"/>
+      
+      <!-- Chat Interface -->
+      <rect x="300" y="270" width="800" height="600" rx="10" fill="#0f172a"/>
+      <circle cx="330" cy="300" r="8" fill="#ef4444"/>
+      <circle cx="360" cy="300" r="8" fill="#f97316"/>
+      <circle cx="390" cy="300" r="8" fill="#10b981"/>
+      <text x="550" y="300" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="#94a3b8">考就完了 AI 对话</text>
+      
+      <!-- Chat Messages -->
+      <g id="chat-messages">
+        <rect x="350" y="350" width="300" height="60" rx="10" fill="#1e293b"/>
+        <text x="370" y="385" font-family="Arial, sans-serif" font-size="18" fill="white">请解释量子力学的不确定性原理</text>
+        
+        <rect x="450" y="430" width="600" height="120" rx="10" fill="#38bdf8" fill-opacity="0.2"/>
+        <text x="470" y="460" font-family="Arial, sans-serif" font-size="18" fill="white">海森堡不确定性原理指出，无法同时精确测量</text>
+        <text x="470" y="490" font-family="Arial, sans-serif" font-size="18" fill="white">粒子的位置和动量。数学表达：Δx·Δp ≥ ħ/2</text>
+        <text x="470" y="520" font-family="Arial, sans-serif" font-size="18" fill="white">这意味着观测本身会影响被观测的系统...</text>
+        
+        <rect x="350" y="760" width="700" height="60" rx="10" fill="#1e293b"/>
+        <text x="370" y="795" font-family="Arial, sans-serif" font-size="18" fill="#94a3b8">输入你的问题...</text>
+        <circle cx="1000" cy="790" r="20" fill="#38bdf8"/>
+        <text x="1000" y="795" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="white">→</text>
+      </g>
+      
+      <!-- Knowledge Graph -->
+      <g id="knowledge-graph">
+        <rect x="1150" y="270" width="450" height="600" rx="10" fill="#0f172a"/>
+        <text x="1375" y="310" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">知识图谱</text>
+        
+        <!-- Graph Visualization -->
+        <circle cx="1375" cy="400" r="40" fill="#38bdf8" fill-opacity="0.8"/>
+        <circle cx="1275" cy="500" r="30" fill="#8b5cf6" fill-opacity="0.8"/>
+        <circle cx="1475" cy="500" r="30" fill="#8b5cf6" fill-opacity="0.8"/>
+        <circle cx="1375" cy="600" r="30" fill="#8b5cf6" fill-opacity="0.8"/>
+        
+        <line x1="1375" y1="400" x2="1275" y2="500" stroke="white" stroke-width="2"/>
+        <line x1="1375" y1="400" x2="1475" y2="500" stroke="white" stroke-width="2"/>
+        <line x1="1375" y1="400" x2="1375" y2="600" stroke="white" stroke-width="2"/>
+        
+        <text x="1375" y="405" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="white">不确定性原理</text>
+        <text x="1275" y="505" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="white">位置</text>
+        <text x="1475" y="505" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="white">动量</text>
+        <text x="1375" y="605" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="white">测量</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Slide 5: Business Model -->
+  <g id="slide5" style="display:none">
+    <!-- Section Title -->
+    <text x="200" y="150" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white">商业模式与市场策略</text>
+    <line x1="200" y1="170" x2="700" y2="170" stroke="#8b5cf6" stroke-width="3"/>
+    
+    <!-- Pricing Model -->
+    <g id="pricing-model">
+      <rect x="200" y="220" width="650" height="650" rx="15" fill="#1e293b" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.3"/>
+      <text x="250" y="280" font-family="Arial, sans-serif" font-size="40" fill="#38bdf8">分层定价模型</text>
+      
+      <!-- Pricing Tiers -->
+      <rect x="250" y="320" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="280" y="370" font-family="Arial, sans-serif" font-size="28" fill="white">• 免费基础版</text>
+      
+      <rect x="250" y="420" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="280" y="470" font-family="Arial, sans-serif" font-size="28" fill="white">• 高级学习版: ¥39/月</text>
+      
+      <rect x="250" y="520" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="280" y="570" font-family="Arial, sans-serif" font-size="28" fill="white">• 团队合作版: ¥199/月</text>
+      
+      <rect x="250" y="620" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="280" y="670" font-family="Arial, sans-serif" font-size="28" fill="white">• 学校/机构特别版: 定制价格</text>
+    </g>
+    
+    <!-- Market Strategy -->
+    <g id="market-strategy">
+      <rect x="1000" y="220" width="650" height="650" rx="15" fill="#1e293b" stroke="#8b5cf6" stroke-width="2" stroke-opacity="0.3"/>
+      <text x="1050" y="280" font-family="Arial, sans-serif" font-size="40" fill="#8b5cf6">市场策略</text>
+      
+      <!-- Strategy Points -->
+      <rect x="1050" y="320" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="1080" y="370" font-family="Arial, sans-serif" font-size="28" fill="white">• 校园大使计划</text>
+      
+      <rect x="1050" y="420" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="1080" y="470" font-family="Arial, sans-serif" font-size="28" fill="white">• 开学季与期末前定向营销</text>
+      
+      <rect x="1050" y="520" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="1080" y="570" font-family="Arial, sans-serif" font-size="28" fill="white">• 学习社区运营</text>
+      
+      <rect x="1050" y="620" width="550" height="80" rx="10" fill="#0f172a"/>
+      <text x="1080" y="670" font-family="Arial, sans-serif" font-size="28" fill="white">• 与学生组织合作</text>
+      
+      <rect x="1050" y="720" width="550" height="80" rx="10" fill="#38bdf8" fill-opacity="0.1"/>
+      <text x="1325" y="770" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="white">全方位营销渗透策略</text>
+    </g>
+  </g>
+  
+  <!-- Slide 6: Team & Vision -->
+  <g id="slide6" style="display:none">
+    <!-- Section Title -->
+    <text x="200" y="150" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white">团队与愿景</text>
+    <line x1="200" y1="170" x2="450" y2="170" stroke="#38bdf8" stroke-width="3"/>
+    
+    <!-- Team Section -->
+    <g id="team-section">
+      <rect x="200" y="220" width="1520" height="300" rx="15" fill="#1e293b"/>
+      <text x="960" y="280" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#38bdf8" text-anchor="middle">我们的团队</text>
+      
+      <!-- Team Members -->
+      <g id="team-members">
+        <circle cx="400" cy="380" r="50" fill="#0c4a6e"/>
+        <text x="400" y="450" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">技术负责人</text>
+        
+        <circle cx="700" cy="380" r="50" fill="#312e81"/>
+        <text x="700" y="450" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">产品设计师</text>
+        
+        <circle cx="1000" cy="380" r="50" fill="#4c1d95"/>
+        <text x="1000" y="450" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">教育专家</text>
+        
+        <circle cx="1300" cy="380" r="50" fill="#0f766e"/>
+        <text x="1300" y="450" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">市场运营</text>
+        
+        <circle cx="1600" cy="380" r="50" fill="#065f46"/>
+        <text x="1600" y="450" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">商务拓展</text>
+      </g>
+    </g>
+    
+    <!-- Vision Section -->
+    <g id="vision-section">
+      <rect x="200" y="570" width="1520" height="300" rx="15" fill="#38bdf8" fill-opacity="0.1"/>
+      <text x="960" y="640" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="white" text-anchor="middle">我们的愿景</text>
+      
+      <text x="960" y="710" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle">"创造一个学习不再等同于苦役的世界，</text>
+      <text x="960" y="760" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle">知识获取成为探索与成长的愉悦旅程。"</text>
+      
+      <text x="960" y="840" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#38bdf8" text-anchor="middle">一起解放学习力，重塑学习体验！</text>
+    </g>
+  </g>
+  
+  <!-- Navigation Controls -->
+  <g id="navigation">
+    <circle cx="860" cy="1000" r="10" fill="#38bdf8" opacity="1"/>
+    <circle cx="900" cy="1000" r="10" fill="#64748b" opacity="0.5"/>
+    <circle cx="940" cy="1000" r="10" fill="#64748b" opacity="0.5"/>
+    <circle cx="980" cy="1000" r="10" fill="#64748b" opacity="0.5"/>
+    <circle cx="1020" cy="1000" r="10" fill="#64748b" opacity="0.5"/>
+    <circle cx="1060" cy="1000" r="10" fill="#64748b" opacity="0.5"/>
+  </g>
+</svg>

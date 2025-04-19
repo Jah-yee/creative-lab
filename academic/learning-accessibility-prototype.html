@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习障碍友好型内容设计对比</title>
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline@2.0.2/dist/preline.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef9ff',
+                            100: '#dcf3ff',
+                            200: '#b2e8ff',
+                            300: '#64d6ff',
+                            400: '#1cbdff',
+                            500: '#009eff',
+                            600: '#007bea',
+                            700: '#0063d1',
+                            800: '#0050a6',
+                            900: '#084487',
+                            950: '#052a57',
+                        },
+                        neutral: {
+                            850: '#1f2534',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter var', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+        /* Glassmorphism variables */
+        :root {
+            --glass-lightness: 100%;
+            --glass-opacity: 0.7;
+            --glass-blur: 12px;
+            --glass-border: 1px;
+        }
+
+        .dark {
+            --glass-lightness: 10%;
+            --glass-opacity: 0.7;
+        }
+
+        /* Glassmorphism style */
+        .glassmorphism {
+            background: hsla(0, 0%, var(--glass-lightness), var(--glass-opacity));
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: var(--glass-border) solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        /* Bionic Reading Style */
+        .bionic-text span {
+            font-weight: 700;
+            color: currentColor;
+        }
+
+        .bionic-text span.chinese {
+            font-weight: 700;
+            color: currentColor;
+        }
+
+        /* Progress bar */
+        .reading-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #009eff, #00e5ff);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        /* Disable transition on page load */
+        .no-transition {
+            transition: none !important;
+        }
+
+        /* Animation classes */
+        .draw-svg path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+        .animate-draw path {
+            animation: draw 2s forwards;
+        }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Text highlighting animation */
+        @keyframes highlight {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .highlight-animation {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 50%, rgba(64,224,208,0.15) 50%);
+            background-size: 200% 100%;
+            animation: highlight 2s ease infinite;
+        }
+
+        /* Smooth scrolling for the page */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted #009eff;
+            cursor: help;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gradient-to-br from-gray-50 to-blue-50 dark:from-neutral-950 dark:to-neutral-850 text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Progress Bar -->
+    <div class="reading-progress-bar" id="progressBar"></div>
+
+    <!-- Header Section -->
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphism py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <h1 class="text-xl font-semibold">学习障碍友好设计</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="pt-32 pb-20 px-4 relative">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col items-center text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">
+                    细胞呼吸作用教学内容<br>三种呈现方式对比
+                </h1>
+                <p class="text-xl max-w-3xl text-gray-600 dark:text-gray-300">
+                    如何通过内容设计和交互体验优化，为学习障碍群体提供更友好的学习体验
+                </p>
+            </div>
+
+            <!-- Animated SVG Illustration -->
+            <div class="relative w-full h-64 md:h-80 lg:h-96 mb-16" id="hero-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" class="w-full h-full draw-svg">
+                    <!-- Cell membrane -->
+                    <path d="M400,50 C550,50 650,150 650,200 S550,350 400,350 S150,250 150,200 S250,50 400,50 Z" fill="none" stroke="#009eff" stroke-width="3" />
+                    
+                    <!-- Mitochondria outline -->
+                    <path d="M300,150 C320,120 380,120 400,150 S430,200 450,200 S480,180 500,200 S520,250 500,270 S450,270 430,250 S380,250 350,270 S300,250 280,230 S280,180 300,150 Z" fill="none" stroke="#ff6b6b" stroke-width="2.5" />
+                    
+                    <!-- ATP molecules -->
+                    <circle cx="350" cy="300" r="15" fill="none" stroke="#ffd166" stroke-width="2" />
+                    <circle cx="400" cy="320" r="15" fill="none" stroke="#ffd166" stroke-width="2" />
+                    <circle cx="450" cy="300" r="15" fill="none" stroke="#ffd166" stroke-width="2" />
+                    
+                    <!-- Glucose molecule -->
+                    <path d="M250,100 L270,120 L250,140 L230,120 Z" fill="none" stroke="#06d6a0" stroke-width="2.5" />
+                    
+                    <!-- Oxygen molecules -->
+                    <circle cx="200" cy="180" r="10" fill="none" stroke="#4cc9f0" stroke-width="2" />
+                    <circle cx="220" cy="200" r="10" fill="none" stroke="#4cc9f0" stroke-width="2" />
+                    
+                    <!-- CO2 molecules -->
+                    <circle cx="550" cy="180" r="10" fill="none" stroke="#8338ec" stroke-width="2" />
+                    <circle cx="580" cy="200" r="10" fill="none" stroke="#8338ec" stroke-width="2" />
+                    
+                    <!-- Arrows indicating process -->
+                    <path d="M280,120 L320,150" fill="none" stroke="#aaa" stroke-width="2" stroke-dasharray="5,5" />
+                    <path d="M230,200 L280,200" fill="none" stroke="#aaa" stroke-width="2" stroke-dasharray="5,5" />
+                    <path d="M500,230 L550,200" fill="none" stroke="#aaa" stroke-width="2" stroke-dasharray="5,5" />
+                    <path d="M400,270 L400,300" fill="none" stroke="#aaa" stroke-width="2" stroke-dasharray="5,5" />
+
+                    <!-- Text labels -->
+                    <text x="400" y="30" text-anchor="middle" fill="#009eff" font-size="18" font-weight="bold">细胞 (Cell)</text>
+                    <text x="400" y="190" text-anchor="middle" fill="#ff6b6b" font-size="14">线粒体 (Mitochondria)</text>
+                    <text x="250" cy="80" text-anchor="middle" fill="#06d6a0" font-size="12">葡萄糖 (Glucose)</text>
+                    <text x="200" cy="160" text-anchor="middle" fill="#4cc9f0" font-size="12">氧气 (O₂)</text>
+                    <text x="580" cy="170" text-anchor="middle" fill="#8338ec" font-size="12">二氧化碳 (CO₂)</text>
+                    <text x="400" cy="350" text-anchor="middle" fill="#ffd166" font-size="14">ATP 能量</text>
+                </svg>
+            </div>
+
+            <div class="text-center">
+                <a href="#comparison" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-all transform hover:scale-105 shadow-lg">
+                    查看内容对比
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="py-20 px-4 relative">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">三种内容呈现方式对比</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+                <!-- Traditional Wall of Text -->
+                <div class="relative glassmorphism rounded-xl p-6 shadow-xl transition-transform duration-300 hover:scale-105 min-h-[400px] flex flex-col">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        传统"单段巨帖"
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-center text-red-500">版本 A</h3>
+                    <div class="prose dark:prose-invert max-w-none flex-1">
+                        <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+                            Cellular respiration is a metabolic process that takes place in the cells of organisms to convert biochemical energy from nutrients into adenosine triphosphate (ATP) and release waste products. The reactions involved in cellular respiration are catabolic reactions, which break down large molecules into smaller ones, releasing energy in the process. In eukaryotic cells, cellular respiration begins in the cytoplasm with glycolysis, which does not require oxygen. The products of glycolysis then enter the mitochondria where the citric acid cycle and electron transport chain operate, requiring oxygen. These processes produce carbon dioxide as a waste product and generate large amounts of ATP. The overall reaction can be expressed as: C₆H₁₂O₆ (glucose) + 6O₂ → 6CO₂ + 6H₂O + ~38 ATP.
+                        </p>
+                    </div>
+                    <div class="mt-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                        <h4 class="font-medium text-red-700 dark:text-red-300 mb-2">认知影响分析</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                            <li>无视觉层次，文字密集</li>
+                            <li>缺乏重点标识和结构化</li>
+                            <li>需要强大的工作记忆处理能力</li>
+                            <li>学习障碍者阅读极其困难</li>
+                            <li>容易导致认知超载和挫折感</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ChatGPT Basic Output -->
+                <div class="relative glassmorphism rounded-xl p-6 shadow-xl transition-transform duration-300 hover:scale-105 min-h-[400px] flex flex-col">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        ChatGPT基础结构化
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-center text-yellow-500">版本 B</h3>
+                    <div class="prose dark:prose-invert max-w-none flex-1">
+                        <h4 class="font-bold text-lg">Cellular Respiration</h4>
+                        <p class="mb-2">Cellular respiration is the process that converts nutrients into energy in the form of ATP.</p>
+                        
+                        <h5 class="font-semibold mt-4">Overview</h5>
+                        <ul class="list-disc list-inside mb-4">
+                            <li><strong>Definition</strong>: A metabolic process occurring in cells</li>
+                            <li><strong>Purpose</strong>: Convert biochemical energy into ATP</li>
+                            <li><strong>Location</strong>: Primarily in mitochondria (eukaryotes)</li>
+                            <li><strong>Requires</strong>: Oxygen (for aerobic respiration)</li>
+                        </ul>
+                        
+                        <h5 class="font-semibold">Main Stages</h5>
+                        <ol class="list-decimal list-inside">
+                            <li><strong>Glycolysis</strong>: Splits glucose into pyruvate (occurs in cytoplasm)</li>
+                            <li><strong>Citric Acid Cycle</strong>: Further breaks down pyruvate derivatives</li>
+                            <li><strong>Electron Transport Chain</strong>: Generates most ATP through oxidative phosphorylation</li>
+                        </ol>
+                        
+                        <p class="mt-3">The overall equation is: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ~38 ATP.</p>
+                    </div>
+                    <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                        <h4 class="font-medium text-yellow-700 dark:text-yellow-300 mb-2">认知影响分析</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                            <li>基本结构化，有层级标题</li>
+                            <li>使用项目符号减轻认知负担</li>
+                            <li>关键词未突出显示</li>
+                            <li>无中文对照，语言负担大</li>
+                            <li>缺乏视觉区分和逐层展开功能</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Enhanced Accessible Version -->
+                <div class="relative glassmorphism rounded-xl p-6 shadow-xl transition-transform duration-300 hover:scale-105 min-h-[400px] flex flex-col">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        增强阅读方案
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-center text-green-500">版本 C</h3>
+                    <div class="prose dark:prose-invert max-w-none flex-1" id="enhanced-content">
+                        <h4 class="flex items-center font-bold text-lg mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                            </svg>
+                            📌 <span class="bionic-text"><span>细胞</span>呼吸 | <span>Cell</span>ular <span>Res</span>piration</span>
+                        </h4>
+                        
+                        <!-- Nano-Gist -->
+                        <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg mb-4">
+                            <p class="text-sm font-medium">
+                                <span class="text-green-600 dark:text-green-300 mr-2">超简摘要 (Nano-Gist):</span>
+                                <span class="bionic-text">
+                                    <span>营养</span>物质 → <span>ATP</span>能量转化过程，<span>需氧</span>气，<span>产生</span>二氧化碳和水。
+                                </span>
+                            </p>
+                        </div>
+                        
+                        <!-- Divider -->
+                        <div class="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+                        
+                        <!-- Core Concepts -->
+                        <div class="mb-4">
+                            <h5 class="font-semibold text-green-600 dark:text-green-300 mb-2">核心概念 (3句话记住):</h5>
+                            <ul class="list-none space-y-2">
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span class="bionic-text"><span class="chinese">细胞</span><span>呼吸</span> 是将<span class="chinese">葡萄</span><span>糖</span>转化为<span class="chinese">ATP</span><span>能量</span>的过程</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span class="bionic-text">包含<span>三个</span>主要阶段：<span class="chinese">糖酵</span><span>解</span> → <span class="chinese">柠檬</span><span>酸循环</span> → <span class="chinese">电子</span><span>传递链</span></span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span class="bionic-text">总方程式：<span>C₆H₁₂O₆</span> + 6<span>O₂</span> → 6<span>CO₂</span> + 6<span>H₂O</span> + ~38<span>ATP</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Collapsible Detailed Explanation -->
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-4">
+                            <button class="flex justify-between items-center w-full p-3 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" id="detail-toggle">
+                                <span class="font-medium flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                    详细解释
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" id="detail-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="p-3 hidden" id="detail-content">
+                                <ol class="list-decimal list-inside space-y-4">
+                                    <li>
+                                        <p class="font-medium mb-1 bionic-text"><span>糖酵</span>解 (<span>Glyc</span>olysis)</p>
+                                        <ul class="list-none pl-5 space-y-1 text-sm">
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">位置：</span>
+                                                <span>细胞质</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">过程：</span>
+                                                <span>葡萄糖 → 2丙酮酸</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">产物：</span>
+                                                <span>2 ATP + 2 NADH</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">特点：</span>
+                                                <span>不需氧气</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p class="font-medium mb-1 bionic-text"><span>柠檬</span>酸循环 (<span>Cit</span>ric <span>Ac</span>id <span>Cy</span>cle)</p>
+                                        <ul class="list-none pl-5 space-y-1 text-sm">
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">位置：</span>
+                                                <span>线粒体内</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">过程：</span>
+                                                <span>乙酰CoA → CO₂</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">产物：</span>
+                                                <span>2 ATP + 6 NADH + 2 FADH₂</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p class="font-medium mb-1 bionic-text"><span>电子</span>传递链 (<span>Elec</span>tron <span>Trans</span>port <span>Cha</span>in)</p>
+                                        <ul class="list-none pl-5 space-y-1 text-sm">
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">位置：</span>
+                                                <span>线粒体内膜</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">过程：</span>
+                                                <span>电子传递 → 质子梯度 → ATP合成</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">产物：</span>
+                                                <span>~34 ATP</span>
+                                            </li>
+                                            <li class="flex">
+                                                <span class="text-gray-500 dark:text-gray-400 w-16">特点：</span>
+                                                <span>需要氧气作为最终电子接受体</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <!-- Vocabulary Explanations -->
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                            <h5 class="font-semibold text-blue-600 dark:text-blue-300 mb-2 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                词汇解释:
+                            </h5>
+                            <ul class="list-none space-y-2 text-sm">
+                                <li>
+                                    <span class="tooltip inline-block font-medium">ATP (腺苷三磷酸)
+                                        <span class="tooltip-text">一种能量分子，为细胞提供能量</span>
+                                    </span>: 细胞能量"货币"
+                                </li>
+                                <li>
+                                    <span class="tooltip inline-block font-medium">Mitochondria (线粒体)
+                                        <span class="tooltip-text">细胞器，主要负责能量生产</span>
+                                    </span>: 细胞"发电厂"
+                                </li>
+                                <li>
+                                    <span class="tooltip inline-block font-medium">Pyruvate (丙酮酸)
+                                        <span class="tooltip-text">糖酵解的最终产物</span>
+                                    </span>: 糖酵解产物
+                                </li>
+                                <li>
+                                    <span class="tooltip inline-block font-medium">NADH/FADH₂
+                                        <span class="tooltip-text">携带高能电子的分子</span>
+                                    </span>: 携带电子的分子
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                        <h4 class="font-medium text-green-700 dark:text-green-300 mb-2">认知增强特点</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                            <li>关键词<strong>加粗</strong>并使用Bionic Reading技术</li>
+                            <li>中英文对照，降低语言负担</li>
+                            <li>层级化内容，可折叠展开</li>
+                            <li>视觉分隔符和表情符号作为标记</li>
+                            <li>专业术语即时解释</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Comparison Table -->
+            <div class="glassmorphism rounded-xl overflow-hidden shadow-xl mb-16">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-6 text-center">功能对比表</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-800">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">功能特点</th>
+                                    <th scope="col" class="px-6 py-3 text-center">传统"单段巨帖"</th>
+                                    <th scope="col" class="px-6 py-3 text-center">ChatGPT基础结构化</th>
+                                    <th scope="col" class="px-6 py-3 text-center">增强阅读方案</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white dark:bg-gray-900 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium">内容结构</th>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium">视觉区分</th>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="bg-white dark:bg-gray-900 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium">Bionic Reading</th>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium">中英文对照</th>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="bg-white dark:bg-gray-900 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium">渐进式展示</th>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium">术语解释</th>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr class="bg-white dark:bg-gray-900 border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium">认知负荷</th>
+                                    <td class="px-6 py-4 text-center">
+                                        高
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        中
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        低
+                                    </td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800">
+                                    <th scope="row" class="px-6 py-4 font-medium">学习障碍友好度</th>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="flex justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="flex justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="flex justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Implementation Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Technical Implementation -->
+                <div class="glassmorphism rounded-xl p-6 shadow-xl">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        技术实现
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Prompt Engineering</h4>
+                            <p class="text-sm">指导AI模型按照特定结构输出内容，包括分层组织、关键词突出和术语解释。</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Bionic Reading 处理</h4>
+                            <p class="text-sm">通过自然语言处理自动识别单词前缀和关键部分，使用HTML和CSS增强视觉效果。</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">词汇强化插件</h4>
+                            <p class="text-sm">基于词频统计自动识别低频/专业词汇，提供即时解释和悬停提示。</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">渐进式披露</h4>
+                            <p class="text-sm">通过JavaScript控制内容展开与折叠，允许用户自主控制信息接收速度。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefits -->
+                <div class="glassmorphism rounded-xl p-6 shadow-xl">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        学习障碍用户获益
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 mt-1">•</span>
+                            <div>
+                                <h4 class="font-medium">降低认知负荷</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">分层信息和渐进式披露让用户能够逐步处理内容，减轻工作记忆压力。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 mt-1">•</span>
+                            <div>
+                                <h4 class="font-medium">提高信息可访问性</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">中英文对照和术语解释降低了语言理解障碍，使专业内容更易理解。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 mt-1">•</span>
+                            <div>
+                                <h4 class="font-medium">增强视觉引导</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Bionic Reading和视觉分隔减少了阅读过程中的回视次数，提高阅读流畅度。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 mt-1">•</span>
+                            <div>
+                                <h4 class="font-medium">自主学习控制</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">允许用户控制内容展开速度，适应不同学习节奏和能力水平。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 mt-1">•</span>
+                            <div>
+                                <h4 class="font-medium">自信心提升</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">通过超简摘要提供快速理解，减少学习挫折感，增强学习动力。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 px-4 bg-gradient-to-r from-primary-500 to-blue-700 relative">
+        <div class="absolute inset-0 bg-pattern opacity-10"></div>
+        <div class="container mx-auto max-w-6xl relative">
+            <div class="glassmorphism rounded-xl p-8 text-center">
+                <h2 class="text-3xl font-bold mb-4">打造学习障碍友好的教育体验</h2>
+                <p class="text-lg mb-8 max-w-3xl mx-auto">
+                    通过优化内容呈现方式，我们可以显著提升学习障碍用户的学习体验。
+                    让我们共同创建一个更具包容性的教育环境。
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button class="px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition-colors">
+                        了解更多
+                    </button>
+                    <button class="px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">
+                        加入我们
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 bg-gray-100 dark:bg-gray-900">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <h2 class="text-xl font-semibold">学习障碍友好设计</h2>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        为所有人创造平等的学习机会
+                    </p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400">
+                        <span class="sr-only">关于我们</span>
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400">
+                        <span class="sr-only">Twitter</span>
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400">
+                        <span class="sr-only">LinkedIn</span>
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-600 dark:text-gray-400">
+                <p>&copy; 2025 学习障碍友好设计. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script Section -->
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme on page load
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        
+        // Theme toggle event listener
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        
+        // Progress Bar
+        const progressBar = document.getElementById('progressBar');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+            const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            
+            progressBar.style.width = scrolled + '%';
+        });
+        
+        // Bionic Reading Implementation
+        document.addEventListener('DOMContentLoaded', function() {
+            // For demo purposes, the bionic text is already pre-processed in HTML
+            // In a real implementation, this would be dynamically generated
+            
+            // Detail Toggle Functionality
+            const detailToggle = document.getElementById('detail-toggle');
+            const detailContent = document.getElementById('detail-content');
+            const detailArrow = document.getElementById('detail-arrow');
+            
+            if (detailToggle) {
+                detailToggle.addEventListener('click', () => {
+                    detailContent.classList.toggle('hidden');
+                    detailArrow.classList.toggle('rotate-180');
+                });
+            }
+            
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Hero SVG Animation
+            gsap.from("#hero-svg path, #hero-svg circle", {
+                scrollTrigger: {
+                    trigger: "#hero-svg",
+                    start: "top bottom",
+                    end: "bottom center",
+                    scrub: true
+                },
+                strokeDashoffset: 1000,
+                duration: 2,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
+            
+            // Card Animations
+            gsap.from(".glassmorphism:not(header, footer .glassmorphism)", {
+                scrollTrigger: {
+                    trigger: "#comparison",
+                    start: "top bottom",
+                    end: "center center",
+                    scrub: true
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power2.out"
+            });
+            
+            // Feature Highlight Animation for Enhanced Reading Version
+            const enhancedContent = document.getElementById('enhanced-content');
+            if (enhancedContent) {
+                // Create a timeline for sequential animations
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#enhanced-content",
+                        start: "top center",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+                
+                // Add highlight animation to different elements
+                tl.to(".bionic-text span", {
+                    color: "#10b981",
+                    stagger: 0.05,
+                    duration: 0.3,
+                    repeat: 1,
+                    yoyo: true
+                })
+                .to(".tooltip", {
+                    backgroundColor: "rgba(16, 185, 129, 0.1)",
+                    boxShadow: "0 0 5px rgba(16, 185, 129, 0.5)",
+                    borderColor: "#10b981",
+                    duration: 0.5,
+                    stagger: 0.1,
+                    repeat: 1,
+                    yoyo: true
+                }, "-=0.5");
+            }
+            
+            // Responsive Design Handler
+            const setResponsive = () => {
+                if (window.innerWidth < 768) {
+                    // Mobile optimizations
+                    ScrollTrigger.getAll().forEach(st => st.kill(true));
+                    gsap.set("*", {clearProps: "all"});
+                    
+                    // Simple fade-in animations for mobile
+                    gsap.from("#hero-svg", {
+                        opacity: 0,
+                        y: 20,
+                        duration: 1
+                    });
+                    
+                    gsap.from(".glassmorphism:not(header, footer .glassmorphism)", {
+                        opacity: 0,
+                        y: 20,
+                        duration: 0.5,
+                        stagger: 0.1,
+                        scrollTrigger: {
+                            trigger: "#comparison",
+                            start: "top bottom",
+                            toggleActions: "play none none none"
+                        }
+                    });
+                }
+            };
+            
+            // Check responsive on load and resize
+            window.addEventListener('resize', setResponsive);
+            if (window.innerWidth < 768) setResponsive();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/preline@2.0.2/dist/preline.min.js"></script>
+</body>
+</html>

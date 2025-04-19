@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI对话 | 考就完了 - AI学习助手</title>
+  
+  <!-- External Resources -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          backdropFilter: {
+            'none': 'none',
+            'blur': 'blur(20px)',
+          },
+        }
+      }
+    };
+  </script>
+  
+  <!-- Custom Styles -->
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Glassmorphism Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+    
+    .dark .glass-card {
+      background: rgba(17, 25, 40, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.125);
+    }
+    
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.5);
+      border-radius: 20px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(156, 163, 175, 0.8);
+    }
+    
+    /* Message Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .message-animation {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    
+    /* Typing Indicator Animation */
+    .typing-indicator span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: currentColor;
+      margin: 0 2px;
+      opacity: 0.6;
+    }
+    
+    .typing-indicator span:nth-child(1) {
+      animation: bounce 1s infinite 0.1s;
+    }
+    
+    .typing-indicator span:nth-child(2) {
+      animation: bounce 1s infinite 0.3s;
+    }
+    
+    .typing-indicator span:nth-child(3) {
+      animation: bounce 1s infinite 0.5s;
+    }
+    
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-4px);
+        opacity: 1;
+      }
+    }
+
+    /* Bionic Reading Enhancement Effects */
+    .bionic-text span.highlight {
+      font-weight: 700;
+    }
+    
+    .bionic-text .highlight-yellow {
+      background-color: rgba(255, 236, 153, 0.6);
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    
+    .bionic-text .underline {
+      text-decoration: underline;
+      text-decoration-color: #6366F1;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+    }
+    
+    .bionic-text .italic-emphasis {
+      font-style: italic;
+      font-weight: 500;
+      color: #6366F1;
+    }
+    
+    .bionic-text .formula {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.5px;
+      background-color: rgba(99, 102, 241, 0.1);
+      padding: 0 3px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-indigo-950 transition-colors duration-300">
+  <div class="flex h-screen">
+    <!-- Sidebar - Navigation and Chat History -->
+    <div class="hidden md:flex md:flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-full overflow-hidden">
+      <!-- Logo and Brand -->
+      <div class="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center">
+          <svg class="h-8 w-auto" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5L30 25L20 35L10 25L20 5Z" fill="url(#gradient)" stroke="#6366F1" stroke-width="2" />
+            <defs>
+              <linearGradient id="gradient" x1="20" y1="5" x2="20" y2="35" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#C4B5FD" />
+                <stop offset="1" stop-color="#818CF8" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="ml-2 text-lg font-bold text-gray-800 dark:text-white">考就完了</span>
+        </div>
+        <button class="md:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Navigation Menu -->
+      <div class="flex flex-col flex-1 overflow-y-auto custom-scrollbar">
+        <nav class="flex-1 px-2 py-4 space-y-1">
+          <a href="/dashboard" class="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md">
+            <i class="fas fa-home w-5 h-5 mr-3 text-gray-500 dark:text-gray-400"></i>
+            <span>首页</span>
+          </a>
+          <a href="/chat" class="flex items-center px-4 py-2 text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 rounded-md font-medium">
+            <i class="fas fa-comment-alt w-5 h-5 mr-3 text-indigo-600 dark:text-indigo-400"></i>
+            <span>AI对话</span>
+          </a>
+          <a href="/knowledge" class="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md">
+            <i class="fas fa-project-diagram w-5 h-5 mr-3 text-gray-500 dark:text-gray-400"></i>
+            <span>知识图谱</span>
+          </a>
+          <a href="/learning-plan" class="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md">
+            <i class="fas fa-tasks w-5 h-5 mr-3 text-gray-500 dark:text-gray-400"></i>
+            <span>学习规划</span>
+          </a>
+          <a href="/reader" class="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md">
+            <i class="fas fa-book-reader w-5 h-5 mr-3 text-gray-500 dark:text-gray-400"></i>
+            <span>增强阅读</span>
+          </a>
+          <a href="/files" class="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md">
+            <i class="fas fa-file-alt w-5 h-5 mr-3 text-gray-500 dark:text-gray-400"></i>
+            <span>我的文件</span>
+          </a>
+        </nav>
+        
+        <!-- Recent Conversations -->
+        <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-800">
+          <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">最近对话</h3>
+          <div class="mt-2 space-y-1">
+            <a href="#" class="flex items-center justify-between px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md group">
+              <div class="flex items-center truncate">
+                <i class="fas fa-comment text-gray-400 mr-2"></i>
+                <span class="truncate">微积分习题问题解答</span>
+              </div>
+              <span class="text-xs text-gray-400">昨天</span>
+            </a>
+            <a href="./quantum-mechanics.html" class="flex items-center justify-between px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md group">
+              <div class="flex items-center truncate">
+                <i class="fas fa-comment text-gray-400 mr-2"></i>
+                <span class="truncate">量子力学概念梳理</span>
+              </div>
+              <span class="text-xs text-gray-400">昨天</span>
+            </a>
+            <a href="./cpp-threading.html" class="flex items-center justify-between px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md group">
+              <div class="flex items-center truncate">
+                <i class="fas fa-comment text-gray-400 mr-2"></i>
+                <span class="truncate">C++多线程编程</span>
+              </div>
+              <span class="text-xs text-gray-400">昨天</span>
+            </a>
+            <button class="w-full mt-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium flex items-center justify-center">
+              <i class="fas fa-plus mr-1.5 text-xs"></i>
+              <span>新建对话</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- User Information -->
+      <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="h-8 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm font-medium">
+              ZL
+            </div>
+          </div>
+          <div class="ml-3 overflow-hidden">
+            <p class="text-sm font-medium text-gray-800 dark:text-white truncate">张力</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">高级用户</p>
+          </div>
+          <div class="ml-auto">
+            <button id="user-menu-button" class="p-1 rounded-full text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Content Area -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+      <!-- Top Toolbar -->
+      <header class="bg-white dark:bg-gray-900 shadow-sm z-10">
+        <div class="flex justify-between items-center py-3 px-4 border-b border-gray-200 dark:border-gray-800">
+          <!-- Mobile Menu Button -->
+          <button class="md:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          
+          <!-- Conversation Info -->
+          <div class="flex items-center space-x-4">
+            <span class="text-lg font-semibold text-gray-800 dark:text-white">新对话</span>
+            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+              实时模式
+            </span>
+          </div>
+          
+          <!-- Right Tools Buttons -->
+          <div class="flex items-center space-x-3">
+            <button id="theme-toggle" class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700">
+              <svg class="w-5 h-5 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+              </svg>
+              <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+            
+            <button class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700" title="保存对话">
+              <i class="fas fa-save"></i>
+            </button>
+            
+            <button class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700" title="分享对话">
+              <i class="fas fa-share-alt"></i>
+            </button>
+
+            <button class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700" title="设置对话选项" id="settings-button">
+              <i class="fas fa-cog"></i>
+            </button>
+            
+            <div class="relative">
+              <button class="p-1 rounded-full bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-300">
+                <i class="fas fa-crown"></i>
+              </button>
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">高级版</span>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Messages Area -->
+      <div class="flex-1 overflow-hidden flex flex-col">
+        <div class="flex-1 overflow-y-auto px-4 py-6 custom-scrollbar" id="chat-messages">
+          <!-- Welcome Message -->
+          <div class="max-w-3xl mx-auto">
+            <div class="flex mb-8">
+              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                <i class="fas fa-robot text-white"></i>
+              </div>
+              <div class="ml-3 max-w-xl">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm message-animation">
+                  <p class="text-gray-800 dark:text-gray-200">
+                    欢迎使用 考就完了 AI 学习助手！我已经准备好帮助你解决各种学习问题。你可以：
+                  </p>
+                  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 mt-2 space-y-1">
+                    <li>提出任何学科的问题，我会给出详细解析</li>
+                    <li>上传学习材料（PDF、图片、文本）进行分析</li>
+                    <li>要求我创建知识图谱或学习规划</li>
+                    <li>整理笔记或解释复杂概念</li>
+                  </ul>
+                  <p class="text-gray-800 dark:text-gray-200 mt-3">
+                    有什么我可以帮到你的？
+                  </p>
+                </div>
+                <div class="mt-1 text-xs text-gray-500">10:21</div>
+              </div>
+            </div>
+            
+            <!-- Example User Message -->
+            <div class="flex justify-end mb-8">
+              <div class="mr-3 max-w-xl">
+                <div class="bg-indigo-100 dark:bg-indigo-900 rounded-xl p-4 message-animation">
+                  <p class="text-gray-800 dark:text-gray-200">
+                    你能帮我解释量子力学的不确定性原理吗？尤其是它对微观世界观测的影响。
+                  </p>
+                </div>
+                <div class="mt-1 text-xs text-gray-500 text-right">10:23</div>
+              </div>
+              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+                <span class="text-gray-700 dark:text-gray-300 font-medium">ZL</span>
+              </div>
+            </div>
+            
+            <!-- AI Response Message -->
+            <div class="flex mb-8">
+              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                <i class="fas fa-robot text-white"></i>
+              </div>
+              <div class="ml-3 max-w-xl">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm message-animation">
+                  <h4 class="font-semibold text-gray-900 dark:text-white mb-2">海森堡不确定性原理</h4>
+                  <p class="text-gray-800 dark:text-gray-200 mb-3">
+                    海森堡不确定性原理是量子力学的基本原理之一，由德国物理学家维尔纳·海森堡于1927年提出。这一原理指出，无法同时精确测量粒子的位置和动量。
+                  </p>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg mb-3">
+                    <p class="text-center text-gray-800 dark:text-gray-200 font-mono">
+                      Δx · Δp ≥ ℏ/2
+                    </p>
+                  </div>
+                  <p class="text-gray-800 dark:text-gray-200 mb-3">
+                    其中：
+                  </p>
+                  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 mb-3 space-y-1">
+                    <li>Δx 是位置的不确定度</li>
+                    <li>Δp 是动量的不确定度</li>
+                    <li>ℏ 是约化普朗克常数</li>
+                  </ul>
+                  <h4 class="font-semibold text-gray-900 dark:text-white mb-2">对微观世界观测的影响</h4>
+                  <p class="text-gray-800 dark:text-gray-200 mb-3">
+                    不确定性原理从根本上改变了我们对物理实在的理解：
+                  </p>
+                  <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 space-y-1">
+                    <li>观测行为本身会改变被观测系统的状态</li>
+                    <li>微观粒子在被观测前处于概率分布状态，而非确定状态</li>
+                    <li>挑战了经典物理学的决定论世界观，引入了概率解释</li>
+                    <li>表明了微观粒子的波粒二象性</li>
+                  </ol>
+                  <div class="border-t border-gray-200 dark:border-gray-700 mt-4 pt-3">
+                    <p class="text-gray-700 dark:text-gray-300">
+                      这一原理不仅仅是测量技术的限制，而是微观世界的基本特性。你想深入了解量子力学的哪些方面？或者你对不确定性原理还有其他问题？
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-1 text-xs text-gray-500">10:24</div>
+              </div>
+            </div>
+
+            <!-- Typing Indicator (hidden by default) -->
+            <div class="flex mb-8 opacity-0" id="typing-indicator">
+              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                <i class="fas fa-robot text-white"></i>
+              </div>
+              <div class="ml-3 max-w-xl">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm message-animation">
+                  <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Knowledge Graph Message Example -->
+            <div class="flex mb-8">
+              <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                <i class="fas fa-robot text-white"></i>
+              </div>
+              <div class="ml-3 max-w-xl">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm message-animation">
+                  <h4 class="font-semibold text-gray-900 dark:text-white mb-3">量子力学知识图谱</h4>
+                  <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 mb-3">
+                    <svg width="100%" height="250" viewBox="0 0 600 250">
+                      <!-- Center Node -->
+                      <circle cx="300" cy="125" r="30" fill="url(#node-gradient)" stroke="#6366F1" stroke-width="2" />
+                      <text x="300" y="125" text-anchor="middle" fill="white" font-size="12" font-weight="bold" dominant-baseline="middle">量子力学</text>
+                      
+                      <!-- First Level Nodes -->
+                      <circle cx="180" cy="75" r="22" fill="url(#node-gradient-2)" stroke="#6366F1" stroke-width="2" />
+                      <text x="180" y="75" text-anchor="middle" fill="white" font-size="10" dominant-baseline="middle">波函数</text>
+                      <path d="M280 110 L 200 80" stroke="#8B5CF6" stroke-width="2" />
+                      
+                      <circle cx="150" cy="160" r="22" fill="url(#node-gradient-2)" stroke="#6366F1" stroke-width="2" />
+                      <text x="150" y="160" text-anchor="middle" fill="white" font-size="10" dominant-baseline="middle">测量</text>
+                      <path d="M275 135 L 170 155" stroke="#8B5CF6" stroke-width="2" />
+                      
+                      <circle cx="420" cy="60" r="22" fill="url(#node-gradient-2)" stroke="#6366F1" stroke-width="2" />
+                      <text x="420" y="60" text-anchor="middle" fill="white" font-size="10" dominant-baseline="middle">不确定性</text>
+                      <path d="M320 105 L 405 75" stroke="#8B5CF6" stroke-width="2" />
+                      
+                      <circle cx="450" cy="170" r="22" fill="url(#node-gradient-2)" stroke="#6366F1" stroke-width="2" />
+                      <text x="450" y="170" text-anchor="middle" fill="white" font-size="

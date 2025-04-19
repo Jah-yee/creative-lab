@@ -1,0 +1,258 @@
+<!-- 增强阅读功能 -->
+<div class="flex flex-col md:flex-row items-center gap-8">
+  <div class="w-full md:w-1/2">
+    <div class="glass-card p-4 rounded-xl">
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+        <div class="mb-6">
+          <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Advanced Bionic Reading</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Multiple enhancement techniques for improved comprehension and reading speed</p>
+        </div>
+        
+        <!-- Tabs for different reading modes -->
+        <div class="flex border-b border-gray-200 dark:border-gray-700 mb-5">
+          <button class="px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400" id="tab-bionic">
+            Bionic Reading
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400" id="tab-highlight">
+            Highlighting
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400" id="tab-typography">
+            Typography
+          </button>
+        </div>
+        
+        <!-- Before/After Toggle -->
+        <div class="flex justify-end mb-4">
+          <div class="flex items-center">
+            <span class="text-xs text-gray-500 dark:text-gray-400 mr-2">Before</span>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" id="toggle-compare" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer transition-transform duration-200 ease-in transform translate-x-0"/>
+              <label for="toggle-compare" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 dark:bg-gray-700 cursor-pointer"></label>
+            </div>
+            <span class="text-xs text-gray-800 dark:text-gray-200">After</span>
+          </div>
+        </div>
+        
+        <!-- Bionic Reading Content Tab -->
+        <div id="content-bionic" class="space-y-4">
+          <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 before-content">
+            <p class="text-gray-800 dark:text-gray-300">
+              Quantum mechanics is a fundamental theory in physics that provides a description of the physical properties of nature at the scale of atoms and subatomic particles. It is the foundation of all quantum physics including quantum chemistry, quantum field theory, quantum technology, and quantum information science.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 after-content hidden">
+            <p class="text-gray-800 dark:text-gray-300">
+              <span class="font-bold">Quan</span>tum <span class="font-bold">mech</span>anics <span class="font-bold">is</span> a <span class="font-bold">fund</span>amental <span class="font-bold">the</span>ory <span class="font-bold">in</span> <span class="font-bold">phy</span>sics <span class="font-bold">that</span> <span class="font-bold">pro</span>vides a <span class="font-bold">desc</span>ription <span class="font-bold">of</span> the <span class="font-bold">phys</span>ical <span class="font-bold">prop</span>erties <span class="font-bold">of</span> <span class="font-bold">nat</span>ure <span class="font-bold">at</span> the <span class="font-bold">sc</span>ale <span class="font-bold">of</span> <span class="font-bold">at</span>oms <span class="font-bold">and</span> <span class="font-bold">sub</span>atomic <span class="font-bold">part</span>icles. <span class="font-bold">It</span> is <span class="font-bold">the</span> <span class="font-bold">found</span>ation <span class="font-bold">of</span> all <span class="font-bold">quan</span>tum <span class="font-bold">phy</span>sics <span class="font-bold">incl</span>uding <span class="font-bold">quan</span>tum <span class="font-bold">chem</span>istry, <span class="font-bold">quan</span>tum <span class="font-bold">fi</span>eld <span class="font-bold">the</span>ory, <span class="font-bold">quan</span>tum <span class="font-bold">tech</span>nology, <span class="font-bold">and</span> <span class="font-bold">quan</span>tum <span class="font-bold">info</span>rmation <span class="font-bold">sci</span>ence.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 before-content">
+            <p class="text-gray-800 dark:text-gray-300">
+              Classical physics, the description of physics that existed before the theory of relativity and quantum mechanics, describes many aspects of nature at an ordinary scale, while quantum mechanics explains the aspects of nature at small scales, for which classical mechanics is insufficient.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 after-content hidden">
+            <p class="text-gray-800 dark:text-gray-300">
+              <span class="font-bold">Class</span>ical <span class="font-bold">phy</span>sics, <span class="font-bold">the</span> <span class="font-bold">desc</span>ription <span class="font-bold">of</span> <span class="font-bold">phy</span>sics <span class="font-bold">that</span> <span class="font-bold">exi</span>sted <span class="font-bold">bef</span>ore <span class="font-bold">the</span> <span class="font-bold">the</span>ory <span class="font-bold">of</span> <span class="font-bold">rela</span>tivity <span class="font-bold">and</span> <span class="font-bold">quan</span>tum <span class="font-bold">mech</span>anics, <span class="font-bold">desc</span>ribes <span class="font-bold">ma</span>ny <span class="font-bold">asp</span>ects <span class="font-bold">of</span> <span class="font-bold">nat</span>ure <span class="font-bold">at</span> an <span class="font-bold">ord</span>inary <span class="font-bold">sc</span>ale, <span class="font-bold">wh</span>ile <span class="font-bold">quan</span>tum <span class="font-bold">mech</span>anics <span class="font-bold">exp</span>lains <span class="font-bold">the</span> <span class="font-bold">asp</span>ects <span class="font-bold">of</span> <span class="font-bold">nat</span>ure <span class="font-bold">at</span> <span class="font-bold">sm</span>all <span class="font-bold">sc</span>ales, <span class="font-bold">for</span> <span class="font-bold">wh</span>ich <span class="font-bold">class</span>ical <span class="font-bold">mech</span>anics <span class="font-bold">is</span> <span class="font-bold">insuff</span>icient.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Highlighting Content Tab -->
+        <div id="content-highlight" class="space-y-4 hidden">
+          <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 before-content">
+            <p class="text-gray-800 dark:text-gray-300">
+              The central principle of cognitive psychology is that learning results from what the student thinks about, and only what the student thinks about. This places the focus on the student's mental processes, and how educators can provide learning experiences that optimize those processes.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 after-content hidden">
+            <p class="text-gray-800 dark:text-gray-300">
+              The <mark class="bg-yellow-200 dark:bg-yellow-800/70 px-1">central principle</mark> of cognitive psychology is that <mark class="bg-green-200 dark:bg-green-800/70 px-1">learning results from what the student thinks about</mark>, and <span class="underline decoration-red-500 decoration-2">only what the student thinks about</span>. This places the focus on the <mark class="bg-blue-200 dark:bg-blue-800/70 px-1">student's mental processes</mark>, and how educators can provide <mark class="bg-purple-200 dark:bg-purple-800/70 px-1">learning experiences that optimize those processes</mark>.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 before-content">
+            <p class="text-gray-800 dark:text-gray-300">
+              Effective learning techniques include retrieval practice, spaced repetition, interleaving, and elaboration. These evidence-based strategies are more effective than highlighting, rereading, and cramming, which are commonly used but less effective.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 after-content hidden">
+            <p class="text-gray-800 dark:text-gray-300">
+              <span class="text-red-600 dark:text-red-400 font-semibold">Effective learning techniques</span> include:
+              <br>• <mark class="bg-green-200 dark:bg-green-800/70 px-1">retrieval practice</mark>
+              <br>• <mark class="bg-blue-200 dark:bg-blue-800/70 px-1">spaced repetition</mark>
+              <br>• <mark class="bg-purple-200 dark:bg-purple-800/70 px-1">interleaving</mark>
+              <br>• <mark class="bg-yellow-200 dark:bg-yellow-800/70 px-1">elaboration</mark>
+              <br><br>
+              These <span class="underline decoration-green-500 decoration-2">evidence-based strategies</span> are more effective than <span class="line-through text-gray-500">highlighting, rereading, and cramming</span>, which are commonly used but less effective.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Typography Content Tab -->
+        <div id="content-typography" class="space-y-4 hidden">
+          <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 before-content">
+            <p class="text-gray-800 dark:text-gray-300">
+              Effective time management is essential for academic success. It helps students prioritize tasks, reduce stress, and achieve a better work-life balance. By breaking large projects into smaller tasks and setting realistic deadlines, students can improve both productivity and the quality of their work.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 after-content hidden">
+            <h5 class="text-xl font-semibold text-center mb-3">𝐄𝐟𝐟𝐞𝐜𝐭𝐢𝐯𝐞 𝐓𝐢𝐦𝐞 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭</h5>
+            <p class="text-gray-800 dark:text-gray-300">
+              <span class="text-lg font-bold">Effective time management</span> is <span class="text-red-600 dark:text-red-400">essential</span> for academic success. It helps students:
+              <br><br>
+              <span class="text-blue-600 dark:text-blue-400 text-lg">1.</span> 𝑷𝒓𝒊𝒐𝒓𝒊𝒕𝒊𝒛𝒆 tasks<br>
+              <span class="text-blue-600 dark:text-blue-400 text-lg">2.</span> 𝑹𝒆𝒅𝒖𝒄𝒆 stress<br>
+              <span class="text-blue-600 dark:text-blue-400 text-lg">3.</span> 𝑨𝒄𝒉𝒊𝒆𝒗𝒆 better work-life balance
+              <br><br>
+              By breaking large projects into <span class="uppercase tracking-wider text-sm">SMALLER TASKS</span> and setting <span class="italic">realistic deadlines</span>, students can improve both <span class="underline decoration-green-500 decoration-2">productivity</span> and the <span class="underline decoration-blue-500 decoration-2">quality of their work</span>.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 before-content">
+            <p class="text-gray-800 dark:text-gray-300">
+              Memory formation involves three key processes: encoding, storage, and retrieval. Understanding these processes can help students develop more effective study strategies. The most successful learners actively engage with material, connect it to existing knowledge, and test their understanding regularly.
+            </p>
+          </div>
+          
+          <div class="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 after-content hidden">
+            <p class="text-gray-800 dark:text-gray-300 leading-relaxed">
+              <span class="text-2xl">𝕄</span>𝔼𝕄𝕆ℝ𝕐 <span class="text-2xl">𝔽</span>𝕆ℝ𝕄𝔸𝕋𝕀𝕆ℕ<br>
+              involves three key processes:
+              <br><br>
+              <span class="font-bold text-red-600 dark:text-red-400 text-lg">① ENCODING</span><br>
+              <span class="font-bold text-blue-600 dark:text-blue-400 text-lg">② STORAGE</span><br>
+              <span class="font-bold text-green-600 dark:text-green-400 text-lg">③ RETRIEVAL</span>
+              <br><br>
+              Understanding these processes can help students develop more effective study strategies. The most successful learners:
+              <br><br>
+              <span class="text-purple-600 dark:text-purple-400">✓</span> 𝓐𝓬𝓽𝓲𝓿𝓮𝓵𝔂 engage with material<br>
+              <span class="text-purple-600 dark:text-purple-400">✓</span> 𝓒𝓸𝓷𝓷𝓮𝓬𝓽 it to existing knowledge<br>
+              <span class="text-purple-600 dark:text-purple-400">✓</span> 𝓣𝓮𝓼𝓽 their understanding regularly
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex justify-between mt-6">
+          <div>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Reading efficiency boost:</span>
+            <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">+35-50%</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm px-3 py-1 rounded">
+              <i class="fas fa-font mr-1"></i> Font Size
+            </button>
+            <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm font-medium">
+              Customize <i class="fas fa-sliders-h ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-full md:w-1/2">
+    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Advanced Reading Enhancement</h3>
+    <p class="text-gray-700 dark:text-gray-300 mb-6">
+      Our cutting-edge reading tools transform how you absorb information. Using cognitive science principles, we enhance text visualization to reduce eye fatigue, increase focus, and dramatically improve comprehension and retention.
+    </p>
+    <ul class="space-y-3">
+      <li class="flex items-start">
+        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+        <span class="text-gray-700 dark:text-gray-300"><span class="font-medium">Bionic Reading</span> - Highlights word beginnings to guide eye movement and create fixation points, increasing reading speed by 25-50%</span>
+      </li>
+      <li class="flex items-start">
+        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+        <span class="text-gray-700 dark:text-gray-300"><span class="font-medium">Smart Highlighting</span> - AI identifies and emphasizes key concepts, connections, and critical information using color psychology</span>
+      </li>
+      <li class="flex items-start">
+        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+        <span class="text-gray-700 dark:text-gray-300"><span class="font-medium">Advanced Typography</span> - Strategic font variations, spacing, and visual hierarchy techniques to enhance information processing</span>
+      </li>
+      <li class="flex items-start">
+        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+        <span class="text-gray-700 dark:text-gray-300"><span class="font-medium">Personalized Settings</span> - Customize intensity, style, and format to match your learning preferences and reading needs</span>
+      </li>
+    </ul>
+    <a href="#" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium mt-6 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+      <span>Try it with your own text</span>
+      <i class="fas fa-arrow-right ml-2"></i>
+    </a>
+  </div>
+</div>
+
+<!-- JavaScript for tabs and toggle functionality -->
+<script>
+  // Tab functionality
+  document.getElementById('tab-bionic').addEventListener('click', function() {
+    setActiveTab('bionic');
+  });
+  
+  document.getElementById('tab-highlight').addEventListener('click', function() {
+    setActiveTab('highlight');
+  });
+  
+  document.getElementById('tab-typography').addEventListener('click', function() {
+    setActiveTab('typography');
+  });
+  
+  function setActiveTab(tabName) {
+    // Hide all content
+    document.getElementById('content-bionic').classList.add('hidden');
+    document.getElementById('content-highlight').classList.add('hidden');
+    document.getElementById('content-typography').classList.add('hidden');
+    
+    // Remove active class from all tabs
+    document.getElementById('tab-bionic').classList.remove('text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'dark:border-indigo-400');
+    document.getElementById('tab-bionic').classList.add('text-gray-500', 'dark:text-gray-400');
+    document.getElementById('tab-highlight').classList.remove('text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'dark:border-indigo-400');
+    document.getElementById('tab-highlight').classList.add('text-gray-500', 'dark:text-gray-400');
+    document.getElementById('tab-typography').classList.remove('text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'dark:border-indigo-400');
+    document.getElementById('tab-typography').classList.add('text-gray-500', 'dark:text-gray-400');
+    
+    // Show selected content
+    document.getElementById('content-' + tabName).classList.remove('hidden');
+    
+    // Set active tab
+    document.getElementById('tab-' + tabName).classList.remove('text-gray-500', 'dark:text-gray-400');
+    document.getElementById('tab-' + tabName).classList.add('text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'dark:border-indigo-400', 'border-b-2');
+    
+    // Reset toggle to show "before" content
+    document.getElementById('toggle-compare').checked = false;
+    toggleBeforeAfter();
+  }
+  
+  // Before/After toggle functionality
+  document.getElementById('toggle-compare').addEventListener('change', toggleBeforeAfter);
+  
+  function toggleBeforeAfter() {
+    const isAfter = document.getElementById('toggle-compare').checked;
+    const beforeElements = document.querySelectorAll('.before-content');
+    const afterElements = document.querySelectorAll('.after-content');
+    
+    beforeElements.forEach(el => {
+      el.classList.toggle('hidden', isAfter);
+    });
+    
+    afterElements.forEach(el => {
+      el.classList.toggle('hidden', !isAfter);
+    });
+  }
+  
+  // Initialize
+  setActiveTab('bionic');
+</script>
+
+<style>
+  /* Toggle switch styles */
+  .toggle-checkbox:checked {
+    @apply transform translate-x-full border-indigo-500;
+  }
+  .toggle-checkbox:checked + .toggle-label {
+    @apply bg-indigo-500;
+  }
+</style>

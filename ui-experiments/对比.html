@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A11y‑Learning Assistant – Immersive Prototype</title>
+
+  <!-- TailwindCSS CDN (w/ dark‑mode class support) -->
+  <script src="https://cdn.tailwindcss.com/3.4.4"></script>
+  <script>
+    // design‑token quick‑patch (in lieu of custom build)
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5E4AE3',
+            secondary: '#64DFDF',
+            surface: 'rgba(255,255,255,0.15)',
+            surfaceDark: 'rgba(30,41,59,0.15)'
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui']
+          },
+          backdropBlur: {
+            xs: '2px'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Preline UI -->
+  <script src="https://unpkg.com/@preline/overlay@latest/dist/overlay.js"></script>
+  <!-- FontAwesome -->
+  <script src="https://kit.fontawesome.com/1ce5b4e1a0.js" crossorigin="anonymous"></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  
+  <style>
+    /* Glassmorphism helper */
+    .glass {
+      background: var(--tw-glass-bg, rgba(255,255,255,0.25));
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    @media(prefers-color-scheme:dark){
+      .glass{background:rgba(30,41,59,0.35);border-color:rgba(255,255,255,0.05)}
+    }
+  </style>
+</head>
+<body class="antialiased bg-gradient-to-br from-slate-50 to-white text-slate-800 dark:from-slate-900 dark:to-slate-800 dark:text-slate-100">
+<!-- Theme toggle (top‑right) -->
+<button id="themeToggle" aria-label="Toggle dark mode" class="fixed z-50 top-5 right-5 p-3 rounded-full glass shadow-lg">
+  <i class="fa-solid fa-circle-half-stroke"></i>
+</button>
+
+<!-- ================= HERO :: Cinematic SVG ================= -->
+<section id="hero" class="relative h-screen w-full overflow-hidden">
+  <!-- Fullscreen SVG animation canvas -->
+  <svg id="heroSvg" viewBox="0 0 1440 900" class="absolute inset-0 w-full h-full">
+    <!-- Layer 1 :: background parallax hills -->
+    <g id="bgHills" fill="#5E4AE3" opacity="0.2">
+      <path d="M0 500 Q400 300 800 500 T1600 500 V900 H0Z" />
+    </g>
+    <!-- Layer 2 :: morphing molecule icon → book icon -->
+    <g id="morphLayer" fill="none" stroke="#64DFDF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path id="molecule" d="M720 300 l40 70 m0 -70 l-40 70 M720 300a30 30 0 1 0 0.1 0Z"/>
+      <path id="book" d="M660 240 h120 v150 h-120 Z m60 0 v150" visibility="hidden" />
+    </g>
+    <!-- Layer 3 :: typing cursor line (drawSVG) -->
+    <line id="cursorLine" x1="720" y1="600" x2="820" y2="600" stroke="#ffffff" stroke-width="4" stroke-dasharray="120 120" stroke-dashoffset="120" />
+  </svg>
+
+  <!-- Overlay headline card (glassmorphism) -->
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="glass px-10 py-8 rounded-3xl shadow-2xl max-w-lg text-center">
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">A11y‑Learning Assistant</h1>
+      <p class="text-lg md:text-xl">Immersive, adaptive studying for every mind.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="py-24 md:py-32 container mx-auto px-6 lg:px-12">
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div class="space-y-6 order-2 md:order-1">
+      <h2 class="text-3xl md:text-4xl font-extrabold">Why Accessibility First?</h2>
+      <p class="leading-relaxed">We believe learning tools should adapt to <span class="font-semibold">you</span>, not vice‑versa. By combining cognitive science and modern UI we cut extraneous load and boost retention.</p>
+      <ul class="space-y-3">
+        <li class="flex items-start"><i class="fa-solid fa-circle-check text-primary mr-3 mt-1"></i><span>Dynamic text complexity & lexical gating</span></li>
+        <li class="flex items-start"><i class="fa-solid fa-circle-check text-primary mr-3 mt-1"></i><span>Scroll‑driven storytelling animations for deep focus</span></li>
+        <li class="flex items-start"><i class="fa-solid fa-circle-check text-primary mr-3 mt-1"></i><span>Dark‑mode & glass UI for low visual strain</span></li>
+      </ul>
+    </div>
+
+    <!-- Illustrative SVG (undraw) -->
+    <div class="order-1 md:order-2">
+      <img src="https://undraw.co/api/illustrations/8cf106bf-22ab-4f1e-959a-f4cd7e3a5140" alt="Adaptive study" class="w-full max-w-md mx-auto" loading="lazy"/>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section id="features" class="bg-white/40 dark:bg-slate-800/40 backdrop-blur py-24 md:py-32">
+  <div class="container mx-auto px-6 lg:px-12">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12">Core Features</h2>
+    <div class="grid md:grid-cols-3 gap-10">
+      <!-- card -->
+      <div class="glass p-8 rounded-2xl shadow-lg" data-anim>
+        <i class="fa-solid fa-pen-fancy text-3xl text-secondary mb-4"></i>
+        <h3 class="font-bold text-xl mb-2">Lexical Dial</h3>
+        <p class="text-sm leading-relaxed">Real‑time simplification & jargon expansion matched to your reading speed.</p>
+      </div>
+      <div class="glass p-8 rounded-2xl shadow-lg" data-anim>
+        <i class="fa-solid fa-vial-circle-check text-3xl text-secondary mb-4"></i>
+        <h3 class="font-bold text-xl mb-2">Cognitive Load Sentinel</h3>
+        <p class="text-sm leading-relaxed">Detect overload via interaction telemetry and suggest micro‑breaks.</p>
+      </div>
+      <div class="glass p-8 rounded-2xl shadow-lg" data-anim>
+        <i class="fa-solid fa-book-open-reader text-3xl text-secondary mb-4"></i>
+        <h3 class="font-bold text-xl mb-2">Scroll‑Cinema Tutorials</h3>
+        <p class="text-sm leading-relaxed">Chapter‑based SVG stories turning theory into animated journeys.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq" class="py-24 md:py-32 container mx-auto px-6 lg:px-12">
+  <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-10">FAQ</h2>
+  <div class="space-y-6 max-w-3xl mx-auto" id="accordion">
+    <!-- accordion item -->
+    <div class="border border-slate-200 dark:border-slate-600 rounded-xl overflow-hidden" data-accordion>
+      <button class="w-full flex items-center justify-between p-6 text-left" data-trigger>
+        <span class="font-semibold">Does the platform work offline?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="px-6 pb-6 hidden" data-content>
+        Yes. Core reading modules cache the latest materials to keep you productive sans internet.
+      </div>
+    </div>
+    <!-- more items ... -->
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="py-12 text-center text-sm text-slate-500 dark:text-slate-400">
+  © 2025 A11y‑Learning Assistant. Crafted with ♡ and research.
+</footer>
+
+<!-- ================= JS :: Animation & UI ================= -->
+<script>
+  /* ---------- Dark‑mode toggle ---------- */
+  const htmlEl = document.documentElement;
+  const themeBtn = document.getElementById('themeToggle');
+  const setTheme = () => {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    htmlEl.classList.toggle('dark', isDark);
+  }
+  setTheme();
+  themeBtn.addEventListener('click', () => htmlEl.classList.toggle('dark'));
+
+  /* ---------- GSAP animations ---------- */
+  gsap.registerPlugin(ScrollTrigger);
+
+  // HERO master timeline
+  const heroTL = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true
+    }
+  });
+  // Parallax bg hills
+  heroTL.to('#bgHills path', { y: -150, duration: 1 }, 0);
+  // Molecule -> Book morph using opacity swap (simple placeholder for morphSVG)
+  heroTL.to('#molecule', { opacity: 0, duration: 0.5 }, 0.2)
+        .to('#book', { opacity: 1, duration: 0.5, visibility: 'visible' }, 0.3);
+  // Draw cursor line
+  heroTL.to('#cursorLine', { strokeDashoffset: 0, duration: 1 }, 0.4);
+
+  // Feature cards entrance
+  document.querySelectorAll('[data-anim]').forEach((el, i) => {
+    gsap.from(el, {
+      y: 60,
+      opacity: 0,
+      duration: .8,
+      delay: i * 0.15,
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 85%',
+        toggleActions: 'play none none reset'
+      }
+    });
+  });
+
+  // Accordion logic (Preline overlay helper not used here to keep code vanilla)
+  document.querySelectorAll('[data-accordion]').forEach(acc => {
+    const trigger = acc.querySelector('[data-trigger]');
+    const content = acc.querySelector('[data-content]');
+    trigger.addEventListener('click', () => {
+      const expanded = !content.classList.contains('hidden');
+      content.classList.toggle('hidden');
+      trigger.querySelector('i').classList.toggle('rotate-180', !expanded);
+    });
+  });
+</script>
+</body>
+</html>
