@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习状态监测系统 - 增强版</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f8fa;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .video-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #000;
+        }
+        #webcam {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        #debug-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #startBtn {
+            background-color: #27ae60;
+            color: white;
+        }
+        #startBtn:hover {
+            background-color: #2ecc71;
+        }
+        #stopBtn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        #stopBtn:hover {
+            background-color: #f05545;
+        }
+        .results {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 640px;
+        }
+        .status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .active { background-color: #27ae60; }
+        .inactive { background-color: #e74c3c; }
+        .metrics {
+            margin: 15px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        .metric-box {
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .high { color: #27ae60; }
+        .medium { color: #f39c12; }
+        .low { color: #e74c3c; }
+        #history {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .history-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        #expression-container {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        #expression-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>学习状态监测系统</h1>
+    <div class="container">
+        <div class="video-container">
+            <video id="webcam" autoplay muted playsinline></video>
+            <canvas id="debug-canvas"></canvas>
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn">开始监测</button>
+            <button id="stopBtn" disabled>停止监测</button>
+        </div>
+        
+        <div class="results">
+            <div class="status">
+                <div id="status-dot" class="status-dot inactive"></div>
+                <span id="status-text">监测未启动</span>
+            </div>
+            
+            <h2>监测结果</h2>
+            <div class="metrics">
+                <div class="metric-box">
+                    <div>注意力评分</div>
+                    <div id="attention-score" class="metric-value">--</div>
+                </div>
+                <div class="metric-box">
+                    <div>状态</div>
+                    <div id="attention-state" class="metric-value">--</div>
+                </div>
+                <div class="metric-box">
+                    <div>上次更新</div>
+                    <div id="last-update" class="metric-value">--</div>
+                </div>
+            </div>
+            
+            <div id="expression-container">
+                <h3>面部表情</h3>
+                <div id="expression-value">--</div>
+            </div>
+            
+            <h2>活动指标</h2>
+            <div id="activity-metrics">等待分析...</div>
+            
+            <h2>历史记录</h2>
+            <div id="history"></div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let webcam;
+        let debugCanvas;
+        let debugCtx;
+        let analysisInterval;
+        let lastFrameData;
+        let movementHistory = [];
+        let attentionResults = [];
+        let isMonitoring = false;
+        let showDebug = false; // 设置为true可以显示调试可视化
+        
+        // DOM元素
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const attentionScore = document.getElementById('attention-score');
+        const attentionState = document.getElementById('attention-state');
+        const lastUpdate = document.getElementById('last-update');
+        const expressionValue = document.getElementById('expression-value');
+        const activityMetrics = document.getElementById('activity-metrics');
+        const historyContainer = document.getElementById('history');
+        
+        // 初始化
+        async function init() {
+            try {
+                // 设置摄像头
+                webcam = document.getElementById('webcam');
+                debugCanvas = document.getElementById('debug-canvas');
+                debugCtx = debugCanvas.getContext('2d');
+                
+                // 请求摄像头权限
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    }
+                });
+                
+                webcam.srcObject = stream;
+                
+                // 等待视频加载
+                await new Promise(resolve => {
+                    webcam.onloadedmetadata = () => {
+                        // 设置Canvas尺寸与视频相同
+                        debugCanvas.width = webcam.videoWidth;
+                        debugCanvas.height = webcam.videoHeight;
+                        resolve();
+                    };
+                });
+                
+                console.log('摄像头初始化完成, 分辨率:', webcam.videoWidth, 'x', webcam.videoHeight);
+                
+                // 启用开始按钮
+                startBtn.disabled = false;
+                
+                // 设置事件监听器
+                startBtn.addEventListener('click', startMonitoring);
+                stopBtn.addEventListener('click', stopMonitoring);
+                
+            } catch (error) {
+                console.error('初始化失败:', error);
+                statusText.textContent = '初始化失败: ' + error.message;
+            }
+        }
+        
+        // 开始监测
+        function startMonitoring() {
+            if (isMonitoring) return;
+            
+            isMonitoring = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            
+            statusDot.classList.remove('inactive');
+            statusDot.classList.add('active');
+            statusText.textContent = '监测中...';
+            
+            // 立即进行一次分析
+            analyzeFrame();
+            
+            // 设置定时分析 (每5秒)
+            analysisInterval = setInterval(analyzeFrame, 500);
+        }
+        
+        // 停止监测
+        function stopMonitoring() {
+            if (!isMonitoring) return;
+            
+            isMonitoring = false;
+            clearInterval(analysisInterval);
+            
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            
+            statusDot.classList.remove('active');
+            statusDot.classList.add('inactive');
+            statusText.textContent = '监测已停止';
+        }
+        
+        // 分析视频帧
+        function analyzeFrame() {
+            if (!webcam || !webcam.videoWidth) {
+                console.log('摄像头未就绪');
+                return;
+            }
+            
+            // 绘制当前帧到Canvas
+            debugCtx.drawImage(webcam, 0, 0, debugCanvas.width, debugCanvas.height);
+            
+            // 获取图像数据
+            const imageData = debugCtx.getImageData(0, 0, debugCanvas.width, debugCanvas.height);
+            const currentFrameData = imageData.data;
+            
+            // 计算运动量
+            const movementMetrics = calculateMovement(currentFrameData);
+            
+            // 检测面部区域和表情
+            const faceData = detectFaceAndExpression(imageData);
+            
+            // 添加到历史记录
+            movementHistory.push({
+                ...movementMetrics,
+                faceData: faceData
+            });
+            
+            // 只保留最近10个样本
+            if (movementHistory.length > 10) {
+                movementHistory.shift();
+            }
+            
+            // 计算注意力分数
+            const attentionMetrics = calculateAttention(movementHistory);
+            
+            // 更新UI
+            updateUI(attentionMetrics, faceData);
+            
+            // 保存结果
+            attentionResults.push({
+                timestamp: new Date(),
+                metrics: attentionMetrics,
+                movementData: movementMetrics,
+                faceData: faceData
+            });
+            
+            // 保存当前帧作为下一次比较的基准
+            lastFrameData = currentFrameData;
+        }
+        
+        // 计算两帧之间的运动量
+        function calculateMovement(currentFrameData) {
+            if (!lastFrameData) {
+                return {
+                    pixelChanges: 0,
+                    avgChangeMagnitude: 0,
+                    centerOfMassShift: 0
+                };
+            }
+            
+            let totalChanges = 0;
+            let changeMagnitude = 0;
+            
+            // 采样点，而不是处理所有像素（性能优化）
+            const sampleRate = 20; // 每20个像素采样一次
+            let samples = 0;
+            
+            // 计算像素变化
+            for (let i = 0; i < currentFrameData.length; i += 4 * sampleRate) {
+                const r1 = currentFrameData[i];
+                const g1 = currentFrameData[i + 1];
+                const b1 = currentFrameData[i + 2];
+                
+                const r2 = lastFrameData[i];
+                const g2 = lastFrameData[i + 1];
+                const b2 = lastFrameData[i + 2];
+                
+                // 计算颜色差异
+                const diff = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
+                
+                if (diff > 30) { // 阈值，忽略微小变化
+                    totalChanges++;
+                    changeMagnitude += diff;
+                }
+                
+                samples++;
+            }
+            
+            // 规范化
+            const pixelChanges = (totalChanges / samples) * 100;
+            const avgChangeMagnitude = changeMagnitude / (totalChanges || 1);
+            
+            return {
+                pixelChanges: pixelChanges,
+                avgChangeMagnitude: avgChangeMagnitude,
+                timestamp: new Date()
+            };
+        }
+        
+        // 检测面部和表情
+        function detectFaceAndExpression(imageData) {
+            const width = debugCanvas.width;
+            const height = debugCanvas.height;
+            const data = imageData.data;
+            
+            // 1. 找到可能的面部区域（使用肤色检测）
+            let skinPixels = [];
+            let nonSkinPixels = [];
+            
+            // 低分辨率扫描以提高性能
+            const scanStep = 4;
+            
+            for (let y = 0; y < height; y += scanStep) {
+                for (let x = 0; x < width; x += scanStep) {
+                    const idx = (y * width + x) * 4;
+                    const r = data[idx];
+                    const g = data[idx + 1];
+                    const b = data[idx + 2];
+                    
+                    if (isSkinColor(r, g, b)) {
+                        skinPixels.push({ x, y, r, g, b });
+                    } else {
+                        nonSkinPixels.push({ x, y, r, g, b });
+                    }
+                }
+            }
+            
+            // 如果没有足够的肤色像素，认为没有面部
+            if (skinPixels.length < 100) {
+                return {
+                    faceDetected: false,
+                    expression: '未检测到面部',
+                    confidence: 0
+                };
+            }
+            
+            // 2. 确定面部边界框
+            let minX = width, maxX = 0, minY = height, maxY = 0;
+            
+            skinPixels.forEach(pixel => {
+                minX = Math.min(minX, pixel.x);
+                maxX = Math.max(maxX, pixel.x);
+                minY = Math.min(minY, pixel.y);
+                maxY = Math.max(maxY, pixel.y);
+            });
+            
+            // 扩大边界框以包含完整面部
+            const boxWidth = maxX - minX;
+            const boxHeight = maxY - minY;
+            
+            minX = Math.max(0, minX - boxWidth * 0.1);
+            maxX = Math.min(width, maxX + boxWidth * 0.1);
+            minY = Math.max(0, minY - boxHeight * 0.1);
+            maxY = Math.min(height, maxY + boxHeight * 0.1);
+            
+            // 3. 估计面部区域
+            const faceBox = {
+                x: minX,
+                y: minY,
+                width: maxX - minX,
+                height: maxY - minY,
+                centerX: (minX + maxX) / 2,
+                centerY: (minY + maxY) / 2
+            };
+            
+            // 4. 估计眼睛和嘴巴区域
+            const eyeRegionY = minY + (maxY - minY) * 0.3; // 面部上部1/3处
+            const eyeRegionHeight = (maxY - minY) * 0.2;
+            
+            const mouthRegionY = minY + (maxY - minY) * 0.7; // 面部下部1/3处
+            const mouthRegionHeight = (maxY - minY) * 0.2;
+            
+            // 5. 分析眼睛区域
+            let eyeRegionPixels = [];
+            let eyeRegionBrightness = 0;
+            let eyeRegionPixelCount = 0;
+            
+            // 6. 分析嘴巴区域
+            let mouthRegionPixels = [];
+            let mouthRegionBrightness = 0;
+            let mouthRegionPixelCount = 0;
+            
+            // 收集眼睛和嘴巴区域的数据
+            for (let y = eyeRegionY; y < eyeRegionY + eyeRegionHeight; y += scanStep) {
+                for (let x = minX; x < maxX; x += scanStep) {
+                    const idx = (Math.floor(y) * width + Math.floor(x)) * 4;
+                    if (idx >= 0 && idx < data.length) {
+                        const r = data[idx];
+                        const g = data[idx + 1];
+                        const b = data[idx + 2];
+                        const brightness = (r + g + b) / 3;
+                        
+                        eyeRegionPixels.push({ x, y, brightness });
+                        eyeRegionBrightness += brightness;
+                        eyeRegionPixelCount++;
+                    }
+                }
+            }
+            
+            for (let y = mouthRegionY; y < mouthRegionY + mouthRegionHeight; y += scanStep) {
+                for (let x = minX; x < maxX; x += scanStep) {
+                    const idx = (Math.floor(y) * width + Math.floor(x)) * 4;
+                    if (idx >= 0 && idx < data.length) {
+                        const r = data[idx];
+                        const g = data[idx + 1];
+                        const b = data[idx + 2];
+                        const brightness = (r + g + b) / 3;
+                        
+                        mouthRegionPixels.push({ x, y, brightness });
+                        mouthRegionBrightness += brightness;
+                        mouthRegionPixelCount++;
+                    }
+                }
+            }
+            
+            // 计算平均亮度
+            const avgEyeBrightness = eyeRegionBrightness / (eyeRegionPixelCount || 1);
+            const avgMouthBrightness = mouthRegionBrightness / (mouthRegionPixelCount || 1);
+            
+            // 7. 检测表情特征
+            // 计算眼睛区域亮度变异性
+            let eyeBrightnessVariance = 0;
+            eyeRegionPixels.forEach(pixel => {
+                eyeBrightnessVariance += Math.pow(pixel.brightness - avgEyeBrightness, 2);
+            });
+            eyeBrightnessVariance /= (eyeRegionPixelCount || 1);
+            
+            // 计算嘴部区域亮度变异性
+            let mouthBrightnessVariance = 0;
+            mouthRegionPixels.forEach(pixel => {
+                mouthBrightnessVariance += Math.pow(pixel.brightness - avgMouthBrightness, 2);
+            });
+            mouthBrightnessVariance /= (mouthRegionPixelCount || 1);
+            
+            // 8. 检测表情
+            // 计算表情指标
+            const smileIndicator = mouthBrightnessVariance;
+            const surpriseIndicator = eyeBrightnessVariance;
+            
+            let expression = '中性';
+            let confidence = 0.5;
+            
+            // 微笑: 嘴部区域变异性高
+            if (smileIndicator > 1500) {
+                expression = '微笑';
+                confidence = Math.min(1, smileIndicator / 3000);
+            } 
+            // 惊讶: 眼睛区域变异性高
+            else if (surpriseIndicator > 1200) {
+                expression = '惊讶';
+                confidence = Math.min(1, surpriseIndicator / 2400);
+            }
+            // 无聊/低注意: 整体变异性低
+            else if (smileIndicator < 500 && surpriseIndicator < 500) {
+                expression = '无聊';
+                confidence = 1 - Math.max(smileIndicator, surpriseIndicator) / 500;
+            }
+            
+            // 检测是否低头或看向一侧
+            const faceWidthHeightRatio = faceBox.width / faceBox.height;
+            if (faceWidthHeightRatio < 0.6) {
+                // 可能是低头
+                expression = '低头';
+                confidence = 0.7;
+            } else if (skinPixels.length < width * height / 20) {
+                // 可能是看向一侧
+                expression = '看向一侧';
+                confidence = 0.6;
+            }
+            
+            // 如果启用了调试，在Canvas上绘制检测结果
+            if (showDebug) {
+                // 清除之前的绘制
+                debugCtx.clearRect(0, 0, width, height);
+                
+                // 绘制面部边界框
+                debugCtx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
+                debugCtx.lineWidth = 2;
+                debugCtx.strokeRect(faceBox.x, faceBox.y, faceBox.width, faceBox.height);
+                
+                // 绘制眼睛区域
+                debugCtx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
+                debugCtx.strokeRect(faceBox.x, eyeRegionY, faceBox.width, eyeRegionHeight);
+                
+                // 绘制嘴巴区域
+                debugCtx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+                debugCtx.strokeRect(faceBox.x, mouthRegionY, faceBox.width, mouthRegionHeight);
+                
+                // 显示检测的表情
+                debugCtx.font = '16px Arial';
+                debugCtx.fillStyle = 'white';
+                debugCtx.fillText(`表情: ${expression} (${Math.round(confidence * 100)}%)`, 10, 30);
+            }
+            
+            return {
+                faceDetected: true,
+                faceBox: faceBox,
+                expression: expression,
+                confidence: confidence,
+                metrics: {
+                    eyeBrightness: avgEyeBrightness,
+                    mouthBrightness: avgMouthBrightness,
+                    eyeVariance: eyeBrightnessVariance,
+                    mouthVariance: mouthBrightnessVariance,
+                    faceWidthHeightRatio: faceWidthHeightRatio
+                }
+            };
+        }
+        
+        // 简单的肤色检测
+        function isSkinColor(r, g, b) {
+            // 简化的肤色检测规则
+            return (r > 60 && g > 40 && b > 20 && // 不是太暗
+                    r > g && g > b && // 红色分量最高，蓝色分量最低（典型肤色特征）
+                    r - g > 15 && // 红绿差异
+                    r - b > 30 && // 红蓝差异
+                    r < 220 && g < 210 && b < 200); // 不是太亮（避免检测白色区域）
+        }
+        
+        // 计算注意力得分
+        function calculateAttention(history) {
+            if (history.length === 0) {
+                return {
+                    score: 0,
+                    state: '未知',
+                    facePresent: false
+                };
+            }
+            
+            // 获取最新的面部数据
+            const latestSample = history[history.length - 1];
+            const faceData = latestSample.faceData;
+            const facePresent = faceData.faceDetected;
+            
+            // 如果没有检测到面部，注意力分数低
+            if (!facePresent) {
+                return {
+                    score: 15,
+                    state: '低注意力',
+                    facePresent: false,
+                    expression: '未检测到面部'
+                };
+            }
+            
+            // 计算最近样本的平均运动量
+            let totalPixelChanges = 0;
+            let samples = 0;
+            
+            for (const sample of history) {
+                totalPixelChanges += sample.pixelChanges;
+                samples++;
+            }
+            
+            const avgPixelChanges = totalPixelChanges / samples;
+            
+            // 注意力评分规则
+            // 1. 有面部存在 = 基本分50分
+            // 2. 适度运动 = 最多20分
+            // 3. 面部表情 = 最多30分
+            let score = 50; // 基本分
+            
+            // 根据运动评分
+            if (avgPixelChanges < 1) {
+                // 没有运动，可能是离开或过度静止
+                score -= 15;
+            } else if (avgPixelChanges > 15) {
+                // 过多运动，可能分心
+                score -= Math.min(20, (avgPixelChanges - 15) * 1.5);
+            } else {
+                // 适度运动，加分
+                score += 20 * (1 - Math.abs((avgPixelChanges - 7) / 7));
+            }
+            
+            // 根据表情评分
+            const expression = faceData.expression;
+            switch (expression) {
+                case '中性':
+                    score += 25; // 中性表情通常表示专注
+                    break;
+                case '微笑':
+                    score += 15; // 微笑可能表示参与度高，但也可能是分心
+                    break;
+                case '惊讶':
+                    score += 10; // 惊讶可能表示关注，但也可能是分心
+                    break;
+                case '无聊':
+                    score -= 20; // 无聊表示低注意力
+                    break;
+                case '低头':
+                    score += 20; // 低头可能是在看书或做笔记
+                    break;
+                case '看向一侧':
+                    score -= 15; // 看向一侧可能表示分心
+                    break;
+            }
+            
+            // 限制分数范围
+            score = Math.max(0, Math.min(100, Math.round(score)));
+            
+            // 确定注意力状态
+            let state;
+            if (score >= 75) {
+                state = '高注意力';
+            } else if (score >= 50) {
+                state = '中等注意力';
+            } else {
+                state = '低注意力';
+            }
+            
+            return {
+                score: score,
+                state: state,
+                facePresent: facePresent,
+                expression: expression,
+                avgMovement: avgPixelChanges
+            };
+        }
+        
+        // 更新UI
+        function updateUI(attentionMetrics, faceData) {
+            // 更新注意力分数
+            attentionScore.textContent = attentionMetrics.score;
+            
+            // 根据注意力状态设置颜色
+            attentionState.textContent = attentionMetrics.state;
+            attentionState.className = 'metric-value';
+            
+            if (attentionMetrics.state === '高注意力') {
+                attentionState.classList.add('high');
+            } else if (attentionMetrics.state === '中等注意力') {
+                attentionState.classList.add('medium');
+            } else {
+                attentionState.classList.add('low');
+            }
+            
+            // 更新表情显示
+            expressionValue.textContent = attentionMetrics.expression || '未知';
+            
+            // 更新时间戳
+            const now = new Date();
+            lastUpdate.textContent = now.toLocaleTimeString();
+            
+            // 更新活动指标
+            let metricsHTML = `
+                <p><strong>面部检测:</strong> ${attentionMetrics.facePresent ? '已检测到面部' : '未检测到面部'}</p>
+                <p><strong>平均运动量:</strong> ${attentionMetrics.avgMovement ? attentionMetrics.avgMovement.toFixed(2) + '%' : '未知'}</p>
+            `;
+            
+            if (faceData && faceData.faceDetected) {
+                metricsHTML += `
+                    <p><strong>表情:</strong> ${faceData.expression} (置信度: ${Math.round(faceData.confidence * 100)}%)</p>
+                `;
+                
+                // 添加面部指标细节
+                if (faceData.metrics) {
+                    metricsHTML += `
+                        <p><strong>面部宽高比:</strong> ${faceData.metrics.faceWidthHeightRatio.toFixed(2)}</p>
+                    `;
+                }
+            }
+            
+            activityMetrics.innerHTML = metricsHTML;
+            
+            // 添加到历史记录
+            addToHistory(attentionMetrics);
+        }
+        
+        // 添加到历史记录
+        function addToHistory(attentionMetrics) {
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            
+            const now = new Date();
+            item.innerHTML = `
+                <strong>${now.toLocaleTimeString()}</strong> - 
+                得分: ${attentionMetrics.score} (${attentionMetrics.state}) | 
+                表情: ${attentionMetrics.expression || '未知'}
+            `;
+            
+            // 添加到历史记录顶部
+            if (historyContainer.firstChild) {
+                historyContainer.insertBefore(item, historyContainer.firstChild);
+            } else {
+                historyContainer.appendChild(item);
+            }
+            
+            // 限制历史记录数量（最多显示10条）
+            while (historyContainer.children.length > 10) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+        }
+        
+        // 获取全部结果的API函数
+        function getAllResults() {
+            return attentionResults;
+        }
+        
+        // 切换调试可视化
+        function toggleDebug() {
+            showDebug = !showDebug;
+            debugCanvas.style.display = showDebug ? 'block' : 'none';
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
