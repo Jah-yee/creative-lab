@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>法语课文朗读辅助指南</title>
+        <!-- TailwindCSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- GSAP & ScrollTrigger -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <script>
+            tailwind.config = {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                50: '#f0f9ff',
+                                100: '#e0f2fe',
+                                200: '#bae6fd',
+                                300: '#7dd3fc',
+                                400: '#38bdf8',
+                                500: '#0ea5e9',
+                                600: '#0284c7',
+                                700: '#0369a1',
+                                800: '#075985',
+                                900: '#0c4a6e',
+                                950: '#082f49',
+                            },
+                            accent: {
+                                50: '#fdf2f8',
+                                100: '#fce7f3',
+                                200: '#fbcfe8',
+                                300: '#f9a8d4',
+                                400: '#f472b6',
+                                500: '#ec4899',
+                                600: '#db2777',
+                                700: '#be185d',
+                                800: '#9d174d',
+                                900: '#831843',
+                                950: '#500724',
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Inter', 'system-ui', 'sans-serif'],
+                            display: ['SF Pro Display', 'Inter', 'sans-serif'],
+                        },
+                        animation: {
+                            'float': 'float 3s ease-in-out infinite',
+                        },
+                        keyframes: {
+                            float: {
+                                '0%, 100%': { transform: 'translateY(0)' },
+                                '50%': { transform: 'translateY(-10px)' },
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            /* 基础样式 */
+            body {
+                font-family: 'Inter', system-ui, sans-serif;
+            }
+            
+            /* 玻璃态效果 */
+            .glassmorphism {
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            }
+            
+            .dark .glassmorphism {
+                background: rgba(15, 23, 42, 0.75);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            
+            /* 阅读进度条 */
+            .reading-progress-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 3px;
+                background: linear-gradient(90deg, #0ea5e9, #ec4899);
+                z-index: 1000;
+                transition: width 0.1s ease;
+            }
+            
+            /* 角色名称样式 */
+            .character-name {
+                font-weight: 600;
+                color: #0ea5e9;
+            }
+            
+            .dark .character-name {
+                color: #7dd3fc;
+            }
+            
+            /* 淡入动画 */
+            .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            
+            .fade-in.appear {
+                opacity: 1;
+                transform: translateY(0);
+            }
+    
+            /* 发音指南样式 */
+            .pronunciation-guide {
+                font-size: 1.5rem;
+                line-height: 1.6;
+                color: #374151;
+                font-weight: 500;
+                letter-spacing: 0.01em;
+            }
+            
+            .dark .pronunciation-guide {
+                color: #d1d5db;
+            }
+            
+            .pronunciation-guide .emphasis {
+                font-weight: 700;
+                color: #0ea5e9;
+            }
+            
+            .dark .pronunciation-guide .emphasis {
+                color: #38bdf8;
+            }
+    
+            /* 滚动指示器样式 */
+            .scroll-indicator {
+                position: absolute;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 2rem;
+                height: 3.5rem;
+                border: 2px solid currentColor;
+                border-radius: 1rem;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 0.5rem;
+            }
+            
+            .scroll-indicator::after {
+                content: '';
+                width: 0.5rem;
+                height: 0.5rem;
+                background-color: currentColor;
+                border-radius: 50%;
+                animation: scrollAnimation 2s infinite;
+            }
+            
+            @keyframes scrollAnimation {
+                0% { transform: translateY(0); opacity: 1; }
+                70% { transform: translateY(1rem); opacity: 0; }
+                100% { transform: translateY(0); opacity: 0; }
+            }
+    
+            /* 强制所有元素显示 - 方案1添加的代码 */
+            body * {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            /* 针对不同元素设置合适的display属性 */
+            div, section, article, main, header, footer, nav, aside {
+                display: block !important;
+            }
+            
+            a, span, button, i, strong, em, small, label, input, select, textarea {
+                display: inline-block !important;
+            }
+            
+            /* 确保淡入元素立即可见 */
+            .fade-in {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            
+            /* 修复可能的布局问题 */
+            .hidden, .invisible {
+                display: block !important;
+            }
+            
+            /* 确保flex布局正常工作 */
+            .flex {
+                display: flex !important;
+            }
+            
+            .grid {
+                display: grid !important;
+            }
+        </style>
+        
+    </head>
+    <body class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 text-slate-800 dark:text-slate-200 min-h-screen">
+        <!-- 阅读进度条 -->
+        <div class="reading-progress-bar" id="progressBar"></div>
+    
+    <!-- 页头 -->
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphism py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <h1 class="text-xl font-semibold font-display">法语课文朗读辅助</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-16 pb-24 px-6">
+        <div class="container mx-auto max-w-5xl relative z-10">
+            <div class="flex flex-col items-center text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6 font-display bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-primary-500">
+                    法语课文朗读辅助指南
+                </h1>
+                <div class="flex items-center space-x-3 text-lg text-gray-600 dark:text-gray-300 mb-12">
+                    <span>Build with</span> <i class="fas fa-heart text-accent-500 animate-pulse"></i> <span>and</span> <i class="fas fa-brain text-primary-500 animate-pulse"></i>
+                </div>
+                
+                <a href="#content" class="inline-flex items-center justify-center px-8 py-3 text-lg font-medium rounded-full text-white bg-primary-600 hover:bg-primary-700 transition transform hover:scale-105 shadow-lg">
+                    开始学习
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="scroll-indicator text-primary-500 dark:text-primary-400"></div>
+        </div>
+        
+        <!-- 背景装饰元素 -->
+        <div class="absolute top-1/4 left-20 w-20 h-20 bg-blue-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-float"></div>
+        <div class="absolute bottom-1/4 right-20 w-32 h-32 bg-accent-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-float"></div>
+    </section>
+
+    <!-- 主内容区 -->
+    <section id="content" class="py-16 px-6">
+        <div class="container mx-auto max-w-5xl">
+            <!-- 辅助说明 -->
+            <div class="glassmorphism rounded-2xl p-8 mb-16 shadow-lg fade-in">
+                <h2 class="text-2xl font-semibold mb-6 font-display">辅助说明</h2>
+                <p class="mb-6 text-gray-600 dark:text-gray-300">
+                    本指南采用颜色编码音节法和英文简化发音，帮助快速掌握法语朗读。
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-6">
+                        <h3 class="text-lg font-medium mb-3 flex items-center font-display">
+                            <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-palette text-primary-600 dark:text-primary-400"></i>
+                            </div>
+                            颜色编码音节
+                        </h3>
+                        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>不同颜色标记不同发音的音节</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>加粗表示重音音节</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>下划线连接表示连读</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl p-6">
+                        <h3 class="text-lg font-medium mb-3 flex items-center font-display">
+                            <div class="w-8 h-8 rounded-full bg-accent-100 dark:bg-accent-900/50 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-language text-accent-600 dark:text-accent-400"></i>
+                            </div>
+                            简化发音参考
+                        </h3>
+                        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>使用简化英文发音标注</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>大写字母标记重音位置</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>中文翻译辅助理解</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话1 -->
+            <div class="glassmorphism rounded-2xl overflow-hidden shadow-lg mb-16 fade-in">
+                <div class="bg-gradient-to-r from-primary-600 to-blue-700 text-white py-5 px-8">
+                    <h2 class="text-2xl font-semibold font-display">对话1：法国人的偶像</h2>
+                </div>
+                <div class="p-8">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-medium mb-4 font-display">课文标题</h3>
+                        <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                            <p class="text-2xl font-medium mb-4">Les personnalités préférées des Français</p>
+                            <p class="pronunciation-guide mb-3">
+                                <span class="emphasis">LAY</span> pair-so-na-lee-<span class="emphasis">TAY</span> pray-fay-<span class="emphasis">RAY</span> day frah-<span class="emphasis">SAY</span>
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-400 italic">
+                                <i class="fas fa-language text-primary-500 mr-1"></i>
+                                (法国人最喜欢的名人)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-medium mb-4 font-display">对话内容</h3>
+                        <div class="space-y-8">
+                            <!-- 对话块1 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span></p>
+                                <p class="text-lg mb-4">Bonjour, Monsieur. Est-ce que je peux vous poser une question ? C'est pour une enquête.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">BOHN</span>-zhoor, muh-<span class="emphasis">SYUR</span>. <span class="emphasis">ESS</span>-kuh zhuh puh voo po-<span class="emphasis">ZAY</span> oon kes-tee-<span class="emphasis">OH</span>? say poor oon ahn-<span class="emphasis">KET</span>
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您好，先生。请问我能问您一个问题吗？这是为了一项调查。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块2 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">D'accord.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">da-KORD</span>
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (好的。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块3 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span></p>
+                                <p class="text-lg mb-4">Quel portrait de personnalité préférez-vous pour remplacer les publicités dans le métro ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">KELL</span> por-<span class="emphasis">TREH</span> duh pair-so-na-lee-<span class="emphasis">TAY</span> pray-fay-<span class="emphasis">RAY</span>-voo poor rahm-pla-<span class="emphasis">SAY</span> lay poo-blee-see-<span class="emphasis">TAY</span> dahn luh may-<span class="emphasis">TRO</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您希望用哪位名人的肖像来替换地铁里的广告？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块4 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">Je pense qu'il est possible de mettre de Charles de Gaulle, c'est lui qui a fondé la Cinquième République.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">zhuh PAHNSS</span> keel ay po-<span class="emphasis">SEE</span>-bluh duh <span class="emphasis">MET</span>-ruh duh <span class="emphasis">SHARL</span> duh <span class="emphasis">GOL</span>, say <span class="emphasis">LWEE</span> kee ah fohn-<span class="emphasis">DAY</span> la sank-ee-<span class="emphasis">EM</span> ray-poo-<span class="emphasis">BLEEK</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我认为可以放戴高乐的肖像，是他创立了第五共和国。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块5 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span></p>
+                                <p class="text-lg mb-4">Eh, bien, parfait, merci beaucoup. Au revoir, Monsieur.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">EH</span> bee-<span class="emphasis">AN</span>, par-<span class="emphasis">FEH</span>, mair-<span class="emphasis">SEE</span> bo-<span class="emphasis">KOO</span>. oh ruh-<span class="emphasis">VWAR</span>, muh-<span class="emphasis">SYUR</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (好的，很好，非常感谢。再见，先生。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块6 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span>(à une passante)</p>
+                                <p class="text-lg mb-4">Bonjour, Madame. Vous avez deux minutes ? C'est pour une enquête.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">BOHN</span>-zhoor, ma-<span class="emphasis">DAM</span>. voo za-<span class="emphasis">VAY</span> <span class="emphasis">DUH</span> mee-<span class="emphasis">NOOT</span>? say poor oon ahn-<span class="emphasis">KET</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您好，女士。您有两分钟时间吗？这是为了一项调查。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块7 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">La passante：</span></p>
+                                <p class="text-lg mb-4">Oui, Monsieur. Une enquête sur quoi ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">WEE</span>, muh-<span class="emphasis">SYUR</span>. oon ahn-<span class="emphasis">KET</span> soor <span class="emphasis">KWAH</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (好的，先生。关于什么的调查？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块8 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span></p>
+                                <p class="text-lg mb-4">Sur la suppression de la publicité dans le métro.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">SOOR</span> la soo-preh-<span class="emphasis">SYOHN</span> duh la poo-blee-see-<span class="emphasis">TAY</span> dahn luh may-<span class="emphasis">TRO</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (关于取消地铁里的广告。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块9 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">La passante：</span></p>
+                                <p class="text-lg mb-4">C'est une bonne idée.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">SET</span> oon <span class="emphasis">BON</span> ee-<span class="emphasis">DAY</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (这是个好主意。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块10 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span></p>
+                                <p class="text-lg mb-4">Mais on va afficher des portraits de personnalités à la place. Quel est votre avis ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">MAY</span> ohn va a-fee-<span class="emphasis">SHAY</span> day por-<span class="emphasis">TREH</span> duh pair-so-na-lee-<span class="emphasis">TAY</span> a la <span class="emphasis">PLASS</span>. <span class="emphasis">KELL</span> ay vo-<span class="emphasis">TRAV</span>-ee?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (但是我们会用名人的肖像来替代。您有什么看法？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块11 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">La passante：</span></p>
+                                <p class="text-lg mb-4">Moi, j'adore Einstein.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">MWA</span>, zha-<span class="emphasis">DOOR</span> <span class="emphasis">AYN</span>-shtayn.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我，我喜欢爱因斯坦。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块12 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span></p>
+                                <p class="text-lg mb-4">Pour quelle raison ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">POOR</span> <span class="emphasis">KELL</span> ray-<span class="emphasis">ZON</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (为什么？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块13 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">La passante：</span></p>
+                                <p class="text-lg mb-4">Il a inventé la célèbre théorie de la relativité.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">EEL</span> a an-vahn-<span class="emphasis">TAY</span> la say-<span class="emphasis">LEBR</span> tay-o-<span class="emphasis">REE</span> duh la ruh-la-tee-vee-<span class="emphasis">TAY</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (他发明了著名的相对论。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块14 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Un autre passant：</span></p>
+                                <p class="text-lg mb-4">Moi, je préfère Honoré de Balzac, j'aime beaucoup ses romans.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">MWA</span>, zhuh pray-<span class="emphasis">FAIR</span> o-no-<span class="emphasis">RAY</span> duh bal-<span class="emphasis">ZAK</span>, <span class="emphasis">ZHEM</span> bo-<span class="emphasis">KOO</span> say ro-<span class="emphasis">MAHN</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我，我更喜欢巴尔扎克，我非常喜欢他的小说。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块15 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteur：</span></p>
+                                <p class="text-lg mb-4">Merci beaucoup, Madame, Monsieur.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">mair-SEE</span> bo-<span class="emphasis">KOO</span>, ma-<span class="emphasis">DAM</span>, muh-<span class="emphasis">SYUR</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (非常感谢，女士，先生。)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话2 -->
+            <div class="glassmorphism rounded-2xl overflow-hidden shadow-lg mb-16 fade-in">
+                <div class="bg-gradient-to-r from-accent-600 to-pink-600 text-white py-5 px-8">
+                    <h2 class="text-2xl font-semibold font-display">对话2：未来规划</h2>
+                </div>
+                <div class="p-8">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-medium mb-4 font-display">课文标题</h3>
+                        <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                            <p class="text-2xl font-medium mb-4">L'avenir</p>
+                            <p class="pronunciation-guide mb-3">
+                                <span class="emphasis">la-vuh-NEER</span>
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-400 italic">
+                                <i class="fas fa-language text-primary-500 mr-1"></i>
+                                (未来)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-medium mb-4 font-display">对话内容</h3>
+                        <div class="space-y-8">
+                            <!-- 对话块1 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Célia：</span></p>
+                                <p class="text-lg mb-4">Allô, Léon ? C'est Célia !</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">a-LOH</span>, <span class="emphasis">lay-OH</span>? say say-<span class="emphasis">LEE-a</span>!
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (喂，雷昂？我是塞莉亚！)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块2 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Léon：</span></p>
+                                <p class="text-lg mb-4">Salut ! Bravo pour ton bac.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">sa-LUH</span>! <span class="emphasis">bra-VO</span> poor tohn <span class="emphasis">BAK</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (你好！恭喜你通过高考。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块3 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Célia：</span></p>
+                                <p class="text-lg mb-4">Merci. Mais qu'est-ce que je vais faire après ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">mair-SEE</span>. may <span class="emphasis">kess-kuh</span> zhuh vay <span class="emphasis">FAIR</span> a-<span class="emphasis">PRAY</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (谢谢。但我之后要做什么呢？)
+                                </p>
+                            </div>
+
+                            <!-- 对话块4 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Léon：</span></p>
+                                <p class="text-lg mb-4">Veux-tu t'inscrire en maths ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">VUH</span>-too tan-<span class="emphasis">SKREER</span> ahn <span class="emphasis">MAT</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (你想报数学专业吗？)
+                                </p>
+                            </div>
+
+                            <!-- 对话块5 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Célia：</span></p>
+                                <p class="text-lg mb-4">Ah, non. J'ai complètement raté les maths.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">AH</span>, <span class="emphasis">NON</span>. zhay kom-pleh-tuh-<span class="emphasis">MAH</span> ra-<span class="emphasis">TAY</span> lay <span class="emphasis">MAT</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (啊，不。我数学完全失败了。)
+                                </p>
+                            </div>
+
+                            <!-- 对话块6 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Léon：</span></p>
+                                <p class="text-lg mb-4">Veux-tu devenir Madame Curie ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">VUH</span>-too duh-vuh-<span class="emphasis">NEER</span> ma-<span class="emphasis">DAM</span> koo-<span class="emphasis">REE</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (你想成为居里夫人吗？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块7 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Célia：</span></p>
+                                <p class="text-lg mb-4">Tu veux dire qu'il faut apprendre la physique ? Ah non, pas du tout !</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">TUH</span> vuh <span class="emphasis">DEER</span> keel foh a-<span class="emphasis">PRAH</span>-ndruh la fee-<span class="emphasis">ZEEK</span>? ah <span class="emphasis">NON</span>, pa doo <span class="emphasis">TOO</span>!
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (你是说我需要学物理吗？啊不，一点也不！)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块8 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Léon：</span></p>
+                                <p class="text-lg mb-4">Tu connais Pasteur ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">TUH</span> ko-<span class="emphasis">NAY</span> pas-<span class="emphasis">TUR</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (你知道巴斯德吗？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块9 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Célia：</span></p>
+                                <p class="text-lg mb-4">Bien sûr. C'est un biologiste.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">BYEN</span> <span class="emphasis">SOOR</span>. say tun bee-o-lo-<span class="emphasis">ZHEEST</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (当然。他是一位生物学家。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块10 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Léon：</span></p>
+                                <p class="text-lg mb-4">Oui, c'est bien lui.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">WEE</span>, say <span class="emphasis">BYEN</span> <span class="emphasis">LWEE</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (是的，就是他。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块11 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Célia：</span></p>
+                                <p class="text-lg mb-4">C'est une bonne idée. Je vais apprendre la biologie.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">SET</span> oon <span class="emphasis">BON</span> ee-<span class="emphasis">DAY</span>. zhuh vay a-<span class="emphasis">PRAH</span>-ndruh la bee-o-lo-<span class="emphasis">ZHEE</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (这是个好主意。我要去学生物学。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块12 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Léon：</span></p>
+                                <p class="text-lg mb-4">Pourquoi ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">poor-KWAH</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (为什么？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块13 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Célia：</span></p>
+                                <p class="text-lg mb-4">Parce que j'adore les animaux.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">par-SKEL</span> zha-<span class="emphasis">DOOR</span> lay za-nee-<span class="emphasis">MO</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (因为我喜欢动物。)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话3 -->
+            <div class="glassmorphism rounded-2xl overflow-hidden shadow-lg mb-16 fade-in">
+                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-5 px-8">
+                    <h2 class="text-2xl font-semibold font-display">对话3：休闲调查</h2>
+                </div>
+                <div class="p-8">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-medium mb-4 font-display">课文标题</h3>
+                        <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                            <p class="text-2xl font-medium mb-4">Enquête sur les loisirs</p>
+                            <p class="pronunciation-guide mb-3">
+                                <span class="emphasis">ahn-KET</span> soor lay lwah-<span class="emphasis">ZEER</span>
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-400 italic">
+                                <i class="fas fa-language text-primary-500 mr-1"></i>
+                                (关于休闲的调查)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-medium mb-4 font-display">对话内容</h3>
+                        <div class="space-y-8">
+                            <!-- 对话块1 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Pardon, Monsieur. Je fais une enquête sur les loisirs des Français. Vous pouvez répondre à quelques questions ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">par-DON</span>, muh-<span class="emphasis">SYUR</span>. zhuh fay oon ahn-<span class="emphasis">KET</span> soor lay lwah-<span class="emphasis">ZEER</span> day frah-<span class="emphasis">SAY</span>. voo poo-<span class="emphasis">VAY</span> ray-<span class="emphasis">PON</span>-druh a <span class="emphasis">KEL</span>-kuh kes-tee-<span class="emphasis">ON</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (对不起，先生。我正在做一项关于法国人休闲活动的调查。您能回答几个问题吗？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块2 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">Oui, bien sûr.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">WEE</span>, <span class="emphasis">BYEN</span> <span class="emphasis">SOOR</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (是的，当然可以。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块3 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Alors... Vous avez quel âge, s'il vous plaît ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">a-LOHR</span>... voo za-<span class="emphasis">VAY</span> kel <span class="emphasis">AHZH</span>, <span class="emphasis">SEEL</span> voo <span class="emphasis">PLEH</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (那么...请问您多大年龄？)
+                                </p>
+                            </div>
+
+                            <!-- 对话块4 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">26 ans.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">VANT</span>-<span class="emphasis">SEES</span> <span class="emphasis">AHN</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (26岁。)
+                                </p>
+                            </div>
+
+                            <!-- 对话块5 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Vous faites du sport ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">VOO</span> fet doo <span class="emphasis">SPOR</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您做运动吗？)
+                                </p>
+                            </div>
+
+                            <!-- 对话块6 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">J'en faisais beaucoup. Mais aujourd'hui, moins...</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">ZHAHN</span> fuh-<span class="emphasis">ZAY</span> bo-<span class="emphasis">KOO</span>. may oh-zhoor-<span class="emphasis">DWEE<span class="emphasis">ZHAHN</span> fuh-<span class="emphasis">ZAY</span> bo-<span class="emphasis">KOO</span>. may oh-zhoor-<span class="emphasis">DWEE</span>, <span class="emphasis">MWAHN</span>...
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我以前经常做。但现在，少了...)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块7 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Pourquoi ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">poor-KWAH</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (为什么？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块8 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">Je travaille, je n'ai pas beaucoup de temps.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">zhuh tra-VAY</span>, zhuh nay pa bo-<span class="emphasis">KOO</span> duh <span class="emphasis">TAHN</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我工作，我没有太多时间。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块9 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Mais, vous pouvez faire du sport le week-end ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">MAY</span>, voo poo-<span class="emphasis">VAY</span> fair doo <span class="emphasis">SPOR</span> luh <span class="emphasis">WEE</span>-<span class="emphasis">KAHND</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (但是，您可以在周末做运动吗？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块10 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">Oui, c'est ça.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">WEE</span>, say <span class="emphasis">SA</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (是的，就是这样。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块11 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Qu'est-ce que vous faites comme sport ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">KEHS</span>-kuh voo <span class="emphasis">FET</span> kom <span class="emphasis">SPOR</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您做什么运动？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块12 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">Je fais du vélo et de la randonnée à la campagne, j'aime la nature.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">zhuh FEH</span> doo <span class="emphasis">VAY</span>-lo ay duh la rahn-do-<span class="emphasis">NAY</span> a la kahm-<span class="emphasis">PAHN</span>-yuh, <span class="emphasis">ZHEM</span> la na-<span class="emphasis">TOOR</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我骑自行车并在乡下徒步旅行，我喜欢大自然。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块13 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Vous y allez seul ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">voo zee a-LAY</span> <span class="emphasis">SUL</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您一个人去吗？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块14 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">Non, avec des amis.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">NON</span>, a-<span class="emphasis">VEK</span> day za-<span class="emphasis">MEE</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (不，和朋友一起。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块15 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Qu'est-ce que vous préférez faire encore ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">KEHS</span>-kuh voo pray-fay-<span class="emphasis">RAY</span> fair ahn-<span class="emphasis">KOHR</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您还喜欢做什么？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块16 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Le passant：</span></p>
+                                <p class="text-lg mb-4">J'aime la lecture, et je vais souvent au cinéma.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">ZHEM</span> la lek-<span class="emphasis">TOOR</span>, ay zhuh vay soo-<span class="emphasis">VAHN</span> oh see-nay-<span class="emphasis">MA</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我喜欢阅读，而且我经常去看电影。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块17 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'enquêteuse：</span></p>
+                                <p class="text-lg mb-4">Merci.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">mair-SEE</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (谢谢。)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话4 -->
+            <div class="glassmorphism rounded-2xl overflow-hidden shadow-lg mb-16 fade-in">
+                <div class="bg-gradient-to-r from-green-600 to-teal-600 text-white py-5 px-8">
+                    <h2 class="text-2xl font-semibold font-display">对话4：体育协会报名</h2>
+                </div>
+                <div class="p-8">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-medium mb-4 font-display">课文标题</h3>
+                        <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                            <p class="text-2xl font-medium mb-4">Inscription à une association sportive</p>
+                            <p class="pronunciation-guide mb-3">
+                                <span class="emphasis">an-skreep-SYOHN</span> a oon a-so-see-a-<span class="emphasis">SYOHN</span> spor-<span class="emphasis">TEEV</span>
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-400 italic">
+                                <i class="fas fa-language text-primary-500 mr-1"></i>
+                                (体育协会报名)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-medium mb-4 font-display">对话内容</h3>
+                        <div class="space-y-8">
+                            <!-- 对话块1 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Françoise：</span></p>
+                                <p class="text-lg mb-4">Bonjour, je voudrais des renseignements sur votre association sportive. Est-ce que vous avez une brochure ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">BOHN</span>-zhoor, zhuh voo-<span class="emphasis">DRAY</span> day rahn-seh-nyuh-<span class="emphasis">MAH</span> soor vo-<span class="emphasis">TRAH</span> a-so-see-a-<span class="emphasis">SYOHN</span> spor-<span class="emphasis">TEEV</span>. <span class="emphasis">ESS</span>-kuh voo za-<span class="emphasis">VAY</span> oon bro-<span class="emphasis">SHOOR</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您好，我想了解一下您的体育协会。您有宣传册吗？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块2 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'employé：</span></p>
+                                <p class="text-lg mb-4">Bien sûr, Madame. Voici une brochure avec toutes nos activités.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">BYEN</span> <span class="emphasis">SOOR</span>, ma-<span class="emphasis">DAM</span>. vwa-<span class="emphasis">SEE</span> oon bro-<span class="emphasis">SHOOR</span> a-<span class="emphasis">VEK</span> <span class="emphasis">TOOT</span> no zak-tee-vee-<span class="emphasis">TAY</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (当然，女士。这是一本包含我们所有活动的宣传册。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块3 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Françoise：</span></p>
+                                <p class="text-lg mb-4">Est-ce que vous organisez des stages de tennis pendant les vacances ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">ESS</span>-kuh voo zor-ga-nee-<span class="emphasis">ZAY</span> day <span class="emphasis">STAZH</span> duh <span class="emphasis">TEH</span>-nees pahn-<span class="emphasis">DAHN</span> lay va-<span class="emphasis">KAHNS</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (您在假期期间组织网球培训班吗？)
+                                </p>
+                            </div>
+
+                            <!-- 对话块4 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'employé：</span></p>
+                                <p class="text-lg mb-4">Oui, il y a des stages de deux semaines pendant les vacances.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">WEE</span>, eel ee a day <span class="emphasis">STAZH</span> duh <span class="emphasis">DUH</span> suh-<span class="emphasis">MEN</span> pahn-<span class="emphasis">DAHN</span> lay va-<span class="emphasis">KAHNS</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (是的，假期期间有为期两周的培训班。)
+                                </p>
+                            </div>
+
+                            <!-- 对话块5 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Françoise：</span></p>
+                                <p class="text-lg mb-4">Est-ce que je peux m'inscrire maintenant au stage du mois de juillet ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">ESS</span>-kuh zhuh <span class="emphasis">PUH</span> man-<span class="emphasis">SKREER</span> mant-<span class="emphasis">NAH</span> oh <span class="emphasis">STAZH</span> doo <span class="emphasis">MWA</span> duh zhwee-<span class="emphasis">YAY</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (我现在可以报名七月份的培训班吗？)
+                                </p>
+                            </div>
+
+                            <!-- 对话块6 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">L'employé：</span></p>
+                                <p class="text-lg mb-4">Non, en fait, les inscriptions ne sont pas encore ouvertes. Vous pouvez vous inscrire à partir du 1er juin, sur place ou sur notre site Internet.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">NON</span>, ahn <span class="emphasis">FET</span>, lay zan-skreep-<span class="emphasis">SYOHN</span> nuh <span class="emphasis">SON</span> pa zan-<span class="emphasis">KOHR</span> oo-<span class="emphasis">VERT</span>. voo poo-<span class="emphasis">VAY</span> voo zan-<span class="emphasis">SKREER</span> a par-<span class="emphasis">TEER</span> doo prem-<span class="emphasis">YAY</span> <span class="emphasis">ZHWAN</span>, soor <span class="emphasis">PLASS</span> oo soor no-<span class="emphasis">TRUH</span> <span class="emphasis">SEET</span> an-tair-<span class="emphasis">NET</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (不，事实上，报名还没有开始。您可以从6月1日开始报名，可以现场报名或在我们的网站上报名。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块7 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Françoise：</span></p>
+                                <p class="text-lg mb-4">Merci.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">mair-SEE</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (谢谢。)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话5 -->
+            <div class="glassmorphism rounded-2xl overflow-hidden shadow-lg mb-16 fade-in">
+                <div class="bg-gradient-to-r from-amber-600 to-orange-600 text-white py-5 px-8">
+                    <h2 class="text-2xl font-semibold font-display">对话5：都到乡下去</h2>
+                </div>
+                <div class="p-8">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-medium mb-4 font-display">课文标题</h3>
+                        <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                            <p class="text-2xl font-medium mb-4">Tous à la campagne</p>
+                            <p class="pronunciation-guide mb-3">
+                                <span class="emphasis">TOO</span> a la kahm-<span class="emphasis">PAHN</span>-yuh
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-400 italic">
+                                <i class="fas fa-language text-primary-500 mr-1"></i>
+                                (都到乡下去)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-medium mb-4 font-display">对话内容</h3>
+                        <div class="space-y-8">
+                            <!-- 对话块1 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Lucas：</span></p>
+                                <p class="text-lg mb-4">Comment ? Estelle et toi, vous quittez Paris ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">ko-MAHN</span>? es-<span class="emphasis">TELL</span> ay <span class="emphasis">TWA</span>, voo kee-<span class="emphasis">TAY</span> pa-<span class="emphasis">REE</span>?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (什么？埃斯特尔和你，你们要离开巴黎？)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块2 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Marianne：</span></p>
+                                <p class="text-lg mb-4">Eh bien, on a acheté une maison à la campagne, à côté d'Orléans.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">EH</span> <span class="emphasis">BYEN</span>, on a a-shuh-<span class="emphasis">TAY</span> oon may-<span class="emphasis">ZON</span> a la kahm-<span class="emphasis">PAHN</span>-yuh, a ko-<span class="emphasis">TAY</span> dor-lay-<span class="emphasis">AHN</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (是的，我们在奥尔良附近的乡下买了一所房子。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块3 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Lucas：</span></p>
+                                <p class="text-lg mb-4">Mais attends... Je ne comprends pas... Pourquoi est-ce que vous partez à la campagne ?</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">MAY</span> a-<span class="emphasis">TAHN</span>... zhuh nuh kom-<span class="emphasis">PRAHN</span> <span class="emphasis">PA</span>... poor-<span class="emphasis">KWA</span> es-kuh voo par-<span class="emphasis">TAY</span> a la kahm-<span class="emphasis">PAHN</span>-yuh?
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (但是等等...我不明白...为什么你们要去乡下？)
+                                </p>
+                            </div>
+
+                            <!-- 对话块4 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Marianne：</span></p>
+                                <p class="text-lg mb-4">Mais parce qu'à Paris, il y a trop de voitures, trop de pollution, il n'y a pas assez d'espaces verts... Et puis, c'est trop bruyant aussi ! Moi, tu comprends, je ne peux plus vivre ici.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">MAY</span> par-<span class="emphasis">SKEL</span> a pa-<span class="emphasis">REE</span>, eel ee a <span class="emphasis">TRO</span> duh vwa-<span class="emphasis">TOOR</span>, <span class="emphasis">TRO</span> duh po-loo-<span class="emphasis">SYOHN</span>, eel nee a pa a-<span class="emphasis">SAY</span> des-<span class="emphasis">PASS</span> <span class="emphasis">VAIR</span>... ay <span class="emphasis">PWEE</span>, say <span class="emphasis">TRO</span> brwee-<span class="emphasis">YAHN</span> o-<span class="emphasis">SEE</span>! <span class="emphasis">MWA</span>, too kom-<span class="emphasis">PRAHN</span>, zhuh nuh <span class="emphasis">PUH</span> ploos <span class="emphasis">VEEVR</span> ee-<span class="emphasis">SEE</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (因为在巴黎，汽车太多，污染太严重，绿地不够...而且，也太吵了！你要理解，我不能再住在这里了。)
+                                </p>
+                            </div>
+
+                            <!-- 对话块5 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Lucas：</span></p>
+                                <p class="text-lg mb-4">Écoute, il y a aussi beaucoup d'avantages à Paris ! Il y a des théâtres, des cinémas... on peut sortir tous les jours dans les bars ou en boîte... Il y a des magasins ouverts le dimanche...</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">ay-KOOT</span>, eel ee a o-<span class="emphasis">SEE</span> bo-<span class="emphasis">ay-KOOT</span>, eel ee a o-<span class="emphasis">SEE</span> bo-<span class="emphasis">KOO</span> da-vahn-<span class="emphasis">TAZH</span> a pa-<span class="emphasis">REE</span>! eel ee a day tay-<span class="emphasis">AHTR</span>, day see-nay-<span class="emphasis">MA</span>... on puh sor-<span class="emphasis">TEER</span> <span class="emphasis">TOO</span> lay <span class="emphasis">ZHOOR</span> dahn lay <span class="emphasis">BAR</span> oo ahn <span class="emphasis">BWAHT</span>... eel ee a day ma-ga-<span class="emphasis">ZAN</span> oo-<span class="emphasis">VAIR</span> luh dee-<span class="emphasis">MAHNSH</span>...
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (听着，巴黎也有很多优势！这里有剧院，电影院...我们可以每天去酒吧或夜店...这里有周日营业的商店...)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块6 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Marianne：</span></p>
+                                <p class="text-lg mb-4">Mais attends, qu'est-ce que tu t'imagines ! À la campagne aussi, il y a des activités à faire.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">MAY</span> a-<span class="emphasis">TAHN</span>, <span class="emphasis">KEHS</span>-kuh too tee-ma-<span class="emphasis">ZHEEN</span>! a la kahm-<span class="emphasis">PAHN</span>-yuh o-<span class="emphasis">SEE</span>, eel ee a day zak-tee-vee-<span class="emphasis">TAY</span> a <span class="emphasis">FAIR</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (但是等等，你在想什么！在乡下也有活动可以做。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块7 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Lucas：</span></p>
+                                <p class="text-lg mb-4">Oui, mais alors vraiment pas beaucoup ! Et puis, tout le monde se connaît, moi je n'aime pas ça !</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">WEE</span>, may a-<span class="emphasis">LOHR</span> vray-<span class="emphasis">MAH</span> pa bo-<span class="emphasis">KOO</span>! ay <span class="emphasis">PWEE</span>, <span class="emphasis">TOO</span> luh <span class="emphasis">MOHND</span> suh ko-<span class="emphasis">NAY</span>, <span class="emphasis">MWA</span> zhuh <span class="emphasis">NEM</span> pa <span class="emphasis">SA</span>!
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (是的，但真的不多！而且，大家都互相认识，我不喜欢这样！)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块8 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Marianne：</span></p>
+                                <p class="text-lg mb-4">Eh bien, moi, je trouve ça pas mal du tout. On connaît les gens, on parle ensemble...</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">EH</span> <span class="emphasis">BYEN</span>, <span class="emphasis">MWA</span>, zhuh <span class="emphasis">TROOV</span> sa pa <span class="emphasis">MAL</span> doo <span class="emphasis">TOO</span>. on ko-<span class="emphasis">NAY</span> lay <span class="emphasis">ZHAHN</span>, on <span class="emphasis">PARL</span> ahn-<span class="emphasis">SAHMBL</span>...
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (好吧，我觉得这一点也不差。我们认识人们，我们一起交谈...)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块9 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Lucas：</span></p>
+                                <p class="text-lg mb-4">Ici, dans mon immeuble, je ne connais pas du tout mes voisins.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">ee-SEE</span>, dahn mon am-<span class="emphasis">MUBL</span>, zhuh nuh ko-<span class="emphasis">NAY</span> pa doo <span class="emphasis">TOO</span> may vwa-<span class="emphasis">ZAN</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (在这里，在我的公寓楼里，我完全不认识我的邻居。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块10 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Marianne：</span></p>
+                                <p class="text-lg mb-4">Ah ! Estelle, elle est d'accord avec moi. Elle aussi, elle préfère partir.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">AH</span>! es-<span class="emphasis">TELL</span>, el ay da-<span class="emphasis">KOHR</span> a-<span class="emphasis">VEK</span> <span class="emphasis">MWA</span>. el o-<span class="emphasis">SEE</span>, el pray-<span class="emphasis">FAIR</span> par-<span class="emphasis">TEER</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (啊！埃斯特尔，她同意我的看法。她也更喜欢离开。)
+                                </p>
+                            </div>
+                            
+                            <!-- 对话块11 -->
+                            <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                                <p class="mb-3"><span class="character-name">Lucas：</span></p>
+                                <p class="text-lg mb-4">Vous avez peut-être raison.</p>
+                                <p class="pronunciation-guide mb-3">
+                                    <span class="emphasis">voo za-VAY</span> puh-<span class="emphasis">TETR</span> ray-<span class="emphasis">ZON</span>.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 italic">
+                                    <i class="fas fa-language text-primary-500 mr-1"></i>
+                                    (你们可能是对的。)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 朗读技巧部分 -->
+            <div class="glassmorphism rounded-2xl p-8 shadow-lg fade-in">
+                <h2 class="text-2xl font-semibold mb-6 font-display">朗读技巧</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                        <h3 class="text-lg font-medium mb-3 flex items-center font-display">
+                            <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-music text-primary-600 dark:text-primary-400"></i>
+                            </div>
+                            音节与节奏
+                        </h3>
+                        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>法语是一种节奏语言，每个音节长度大致相同</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>重音通常落在词组或句子的最后一个音节</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>保持语调的连贯性，不要在单词之间停顿太久</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-6">
+                        <h3 class="text-lg font-medium mb-3 flex items-center font-display">
+                            <div class="w-8 h-8 rounded-full bg-accent-100 dark:bg-accent-900/50 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-microphone-alt text-accent-600 dark:text-accent-400"></i>
+                            </div>
+                            发音技巧
+                        </h3>
+                        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>法语中的"r"发音是喉音，不同于中文或英语</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>注意鼻音（如"an"、"on"、"in"）的发音</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>单词末尾的辅音通常不发音，除非下一个单词以元音开头</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 px-6 bg-slate-50 dark:bg-slate-900">
+        <div class="container mx-auto max-w-5xl text-center">
+            <p class="text-gray-500 dark:text-gray-400">© 2025 法语课文朗读辅助指南 | 使用 <i class="fas fa-heart text-accent-500 animate-pulse"></i> 制作</p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 p-3 rounded-full bg-primary-600 text-white shadow-lg opacity-0 invisible transition-all z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 深色模式切换
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // 检查系统偏好和本地存储
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            
+            // 保存主题偏好
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        });
+        
+        // 阅读进度条
+        const progressBar = document.getElementById('progressBar');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+            const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            
+            progressBar.style.width = scrollPercentage + '%';
+            
+            // 返回顶部按钮显示/隐藏
+            const backToTopButton = document.getElementById('back-to-top');
+            if (scrollTop > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+            
+            // 淡入动画
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('appear');
+                }
+            });
+        });
+        
+        // 返回顶部功能
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 初始化GSAP动画
+        document.addEventListener('DOMContentLoaded', function() {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Hero动画
+            gsap.from('#hero h1', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('#hero .flex.items-center', {
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('#hero a', {
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                delay: 0.6,
+                ease: 'power3.out'
+            });
+            
+            // 内容区域动画
+            const sections = gsap.utils.toArray('.fade-in');
+            sections.forEach(section => {
+                gsap.from(section, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    ease: 'power3.out'
+                });
+            });
+        });
+        
+        // 初始化淡入动画
+        window.addEventListener('load', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('appear');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
