@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人学术兴趣陈述与研究计划 - 张子妍</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/DrawSVGPlugin.min.js"></script>
+    
+    <!-- Preline UI -->
+    <script src="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --bg-glass: rgba(255, 255, 255, 0.1);
+            --bg-glass-hover: rgba(255, 255, 255, 0.15);
+        }
+        
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+        }
+        
+        /* Glassmorphism Effect */
+        .glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .glass:hover {
+            background: var(--bg-glass-hover);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* SVG Animation Container */
+        .svg-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 100;
+        }
+        
+        /* Timeline */
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        /* Card Hover Effects */
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold gradient-text">张子妍</a>
+            <div class="space-x-6">
+                <a href="#interest" class="hover:text-blue-400 transition">学术兴趣</a>
+                <a href="#research" class="hover:text-blue-400 transition">研究计划</a>
+                <a href="#future" class="hover:text-blue-400 transition">未来展望</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section with SVG Animation -->
+    <section class="svg-container flex items-center justify-center">
+        <div class="text-center relative z-10">
+            <h1 class="text-6xl font-bold mb-6 opacity-0">个人学术兴趣与研究计划</h1>
+            <p class="text-xl text-gray-300 mb-8 opacity-0">探索智能育种的无限可能</p>
+            <div class="opacity-0">
+                <a href="#interest" class="inline-block px-8 py-3 bg-blue-600 rounded-full hover:bg-blue-700 transition">
+                    开始探索 <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- SVG Background Animation -->
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#2563eb;stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0.8" />
+                </linearGradient>
+                <mask id="reveal-mask">
+                    <rect width="100%" height="100%" fill="white" />
+                </mask>
+            </defs>
+            
+            <!-- DNA Helix Animation -->
+            <g id="dna-helix" mask="url(#reveal-mask)">
+                <path id="helix1" d="M200,100 Q500,300 800,100 T1400,100" 
+                      stroke="url(#grad1)" stroke-width="4" fill="none" opacity="0"/>
+                <path id="helix2" d="M200,150 Q500,350 800,150 T1400,150" 
+                      stroke="#06b6d4" stroke-width="4" fill="none" opacity="0"/>
+            </g>
+            
+            <!-- Circuit Pattern -->
+            <g id="circuit" opacity="0">
+                <line x1="100" y1="200" x2="900" y2="200" stroke="#64748b" stroke-width="2"/>
+                <circle cx="100" cy="200" r="8" fill="#2563eb"/>
+                <circle cx="300" cy="200" r="8" fill="#7c3aed"/>
+                <circle cx="500" cy="200" r="8" fill="#06b6d4"/>
+                <circle cx="700" cy="200" r="8" fill="#2563eb"/>
+                <circle cx="900" cy="200" r="8" fill="#7c3aed"/>
+            </g>
+            
+            <!-- Plant Growth Animation -->
+            <g id="plant-growth" transform="translate(500, 600)">
+                <path id="stem" d="M0,0 L0,-200" stroke="#34d399" stroke-width="4" opacity="0"/>
+                <path id="leaf1" d="M0,-100 Q-50,-150 0,-200" fill="#34d399" opacity="0"/>
+                <path id="leaf2" d="M0,-50 Q50,-100 0,-150" fill="#34d399" opacity="0"/>
+            </g>
+        </svg>
+    </section>
+    
+    <!-- Academic Interest Section -->
+    <section id="interest" class="py-24 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center gradient-text">我的学术成长之路</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Timeline Cards -->
+                <div class="glass rounded-2xl p-6 timeline-item">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-seedling text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold ml-4">启蒙阶段</h3>
+                    </div>
+                    <p class="text-gray-300">大一植物学实验课上首次观察到植物细胞的染色体结构，开启了对植物遗传学的兴趣之门。</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 timeline-item">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-dna text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold ml-4">理论学习</h3>
+                    </div>
+                    <p class="text-gray-300">大二选修《遗传学》、《分子生物学》，系统学习基因组结构与遗传规律，奠定专业基础。</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 timeline-item">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-cyan-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-flask text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold ml-4">实践探索</h3>
+                    </div>
+                    <p class="text-gray-300">阎良蔬菜基地实习，亲身参与田间性状调查、病虫害监测，深刻认识到传统育种的挑战。</p>
+                </div>
+            </div>
+            
+            <!-- Modern Breeding Technologies -->
+            <div class="mt-16">
+                <h3 class="text-3xl font-bold mb-8 text-center">现代育种技术探索</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="glass rounded-xl p-6 card">
+                        <i class="fas fa-microscope text-3xl text-blue-400 mb-4"></i>
+                        <h4 class="text-lg font-semibold mb-2">分子标记选择</h4>
+                        <p class="text-sm text-gray-400">提高育种效率，缩短周期</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 card">
+                        <i class="fas fa-cut text-3xl text-purple-400 mb-4"></i>
+                        <h4 class="text-lg font-semibold mb-2">基因编辑技术</h4>
+                        <p class="text-sm text-gray-400">精准育种的革命性突破</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 card">
+                        <i class="fas fa-chart-bar text-3xl text-cyan-400 mb-4"></i>
+                        <h4 class="text-lg font-semibold mb-2">高通量表型组学</h4>
+                        <p class="text-sm text-gray-400">大规模性状评价新手段</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 card">
+                        <i class="fas fa-robot text-3xl text-green-400 mb-4"></i>
+                        <h4 class="text-lg font-semibold mb-2">人工智能应用</h4>
+                        <p class="text-sm text-gray-400">数据驱动的智能育种</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Research Plan Section -->
+    <section id="research" class="py-24 px-6 bg-gradient-to-b from-gray-900/50 to-gray-900/30">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center gradient-text">研究计划</h2>
+            
+            <!-- Research Title -->
+            <div class="glass rounded-2xl p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-4">基于多组学数据整合的十字花科蔬菜抗病育种智能决策系统研究</h3>
+                <p class="text-gray-300">融合传统育种智慧与现代技术手段，构建数据驱动的智能育种平台</p>
+            </div>
+            
+            <!-- Research Architecture -->
+            <div class="glass rounded-2xl p-8 mb-12">
+                <h4 class="text-xl font-semibold mb-6">研究架构</h4>
+                <div class="relative">
+                    <svg class="w-full h-96" viewBox="0 0 800 400">
+                        <!-- Data Layer -->
+                        <g transform="translate(100, 50)">
+                            <rect x="0" y="0" width="120" height="60" rx="8" fill="#1e40af" opacity="0"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-size="14">表型数据</text>
+                        </g>
+                        <g transform="translate(250, 50)">
+                            <rect x="0" y="0" width="120" height="60" rx="8" fill="#1e40af" opacity="0"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-size="14">基因组数据</text>
+                        </g>
+                        <g transform="translate(400, 50)">
+                            <rect x="0" y="0" width="120" height="60" rx="8" fill="#1e40af" opacity="0"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-size="14">转录组数据</text>
+                        </g>
+                        <g transform="translate(550, 50)">
+                            <rect x="0" y="0" width="120" height="60" rx="8" fill="#1e40af" opacity="0"/>
+                            <text x="60" y="35" text-anchor="middle" fill="white" font-size="14">代谢组数据</text>
+                        </g>
+                        
+                        <!-- Processing Layer -->
+                        <g transform="translate(200, 150)">
+                            <rect x="0" y="0" width="400" height="60" rx="8" fill="#7c3aed" opacity="0"/>
+                            <text x="200" y="35" text-anchor="middle" fill="white" font-size="14">数据预处理与特征提取</text>
+                        </g>
+                        
+                        <!-- Model Layer -->
+                        <g transform="translate(250, 250)">
+                            <rect x="0" y="0" width="300" height="60" rx="8" fill="#059669" opacity="0"/>
+                            <text x="150" y="35" text-anchor="middle" fill="white" font-size="14">深度学习模型训练与优化</text>
+                        </g>
+                        
+                        <!-- Application Layer -->
+                        <g transform="translate(300, 350)">
+                            <rect x="0" y="0" width="200" height="40" rx="8" fill="#dc2626" opacity="0"/>
+                            <text x="100" y="25" text-anchor="middle" fill="white" font-size="14">智能育种决策系统</text>
+                        </g>
+                        
+                        <!-- Connecting Lines -->
+                        <path d="M160,110 L400,150" stroke="#64748b" stroke-width="2" opacity="0"/>
+                        <path d="M310,110 L400,150" stroke="#64748b" stroke-width="2" opacity="0"/>
+                        <path d="M460,110 L400,150" stroke="#64748b" stroke-width="2" opacity="0"/>
+                        <path d="M610,110 L400,150" stroke="#64748b" stroke-width="2" opacity="0"/>
+                        <path d="M400,210 L400,250" stroke="#64748b" stroke-width="2" opacity="0"/>
+                        <path d="M400,310 L400,350" stroke="#64748b" stroke-width="2" opacity="0"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Research Timeline -->
+            <div class="glass rounded-2xl p-8">
+                <h4 class="text-xl font-semibold mb-6">研究时间线</h4>
+                <div class="relative">
+                    <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-700"></div>
+                    
+                    <div class="space-y-12">
+                        <div class="relative flex items-center">
+                            <div class="flex-1 text-right pr-8">
+                                <h5 class="font-semibold">第1-2月</h5>
+                                <p class="text-sm text-gray-400">文献调研，确定研究方案</p>
+                            </div>
+                            <div class="w-4 h-4 bg-blue-500 rounded-full absolute left-1/2 transform -translate-x-1/2"></div>
+                            <div class="flex-1"></div>
+                        </div>
+                        
+                        <div class="relative flex items-center">
+                            <div class="flex-1"></div>
+                            <div class="w-4 h-4 bg-purple-500 rounded-full absolute left-1/2 transform -translate-x-1/2"></div>
+                            <div class="flex-1 pl-8">
+                                <h5 class="font-semibold">第3-4月</h5>
+                                <p class="text-sm text-gray-400">数据收集与整理</p>
+                            </div>
+                        </div>
+                        
+                        <div class="relative flex items-center">
+                            <div class="flex-1 text-right pr-8">
+                                <h5 class="font-semibold">第5-6月</h5>
+                                <p class="text-sm text-gray-400">模型开发与优化</p>
+                            </div>
+                            <div class="w-4 h-4 bg-cyan-500 rounded-full absolute left-1/2 transform -translate-x-1/2"></div>
+                            <div class="flex-1"></div>
+                        </div>
+                        
+                        <div class="relative flex items-center">
+                            <div class="flex-1"></div>
+                            <div class="w-4 h-4 bg-green-500 rounded-full absolute left-1/2 transform -translate-x-1/2"></div>
+                            <div class="flex-1 pl-8">
+                                <h5 class="font-semibold">第7-8月</h5>
+                                <p class="text-sm text-gray-400">实验验证</p>
+                            </div>
+                        </div>
+                        
+                        <div class="relative flex items-center">
+                            <div class="flex-1 text-right pr-8">
+                                <h5 class="font-semibold">第9-10月</h5>
+                                <p class="text-sm text-gray-400">论文撰写与修改</p>
+                            </div>
+                            <div class="w-4 h-4 bg-red-500 rounded-full absolute left-1/2 transform -translate-x-1/2"></div>
+                            <div class="flex-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Future Prospects Section -->
+    <section id="future" class="py-24 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center gradient-text">未来展望</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass rounded-2xl p-8 text-center">
+                    <i class="fas fa-graduation-cap text-4xl text-blue-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">继续深造</h3>
+                    <p class="text-gray-300">攻读硕士/博士学位，深入智能育种领域研究</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 text-center">
+                    <i class="fas fa-globe text-4xl text-purple-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">国际合作</h3>
+                    <p class="text-gray-300">拓展国际视野，参与全球育种技术创新</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 text-center">
+                    <i class="fas fa-industry text-4xl text-cyan-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">产业应用</h3>
+                    <p class="text-gray-300">推动研究成果产业化，服务现代农业发展</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 glass">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-400">© 2025 张子妍 - 个人学术兴趣陈述与研究计划</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Register GSAP plugins
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hero section animations
+            const heroTimeline = gsap.timeline();
+            heroTimeline
+                .to('.hero h1', { opacity: 1, y: 0, duration: 1 })
+                .to('.hero p', { opacity: 1, y: 0, duration: 1 }, '-=0.5')
+                .to('.hero a', { opacity: 1, y: 0, duration: 1 }, '-=0.5');
+            
+            // SVG Animation
+            const svgTimeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.svg-container',
+                    start: 'top top',
+                    end: '+=2000',
+                    pin: true,
+                    scrub: 1,
+                    markers: false
+                }
+            });
+            
+            svgTimeline
+                .to('#helix1', { opacity: 1, strokeDasharray: '1000', strokeDashoffset: 0, duration: 2 })
+                .to('#helix2', { opacity: 1, strokeDasharray: '1000', strokeDashoffset: 0, duration: 2 }, '-=1')
+                .to('#circuit', { opacity: 1, duration: 1 })
+                .to('#circuit circle', { scale: 1.2, duration: 0.5, stagger: 0.1 })
+                .to('#stem', { opacity: 1, strokeDasharray: '200', strokeDashoffset: 0, duration: 1 })
+                .to('#leaf1', { opacity: 1, duration: 0.5 })
+                .to('#leaf2', { opacity: 1, duration: 0.5 }, '-=0.3');
+            
+            // Timeline items animation
+            gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+                gsap.to(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top bottom-=100',
+                        toggleActions: 'play none none reverse'
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.2
+                });
+            });
+            
+            // Research architecture animation
+            const archElements = document.querySelectorAll('#research svg rect, #research svg path');
+            archElements.forEach((el, i) => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: '#research',
+                        start: 'top center',
+                        toggleActions: 'play none none reverse'
+                    },
+                    opacity: 1,
+                    duration: 0.5,
+                    delay: i * 0.1
+                });
+            });
+            
+            // Progress bar animation
+            gsap.to('.progress-bar', {
+                width: '100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.5
+                }
+            });
+            
+            // Smooth scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
