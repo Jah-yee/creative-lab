@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Biology - Free Response Questions Guide</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Preline UI -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.css" />
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <style>
+    :root {
+      --primary-color: #4263eb;
+      --secondary-color: #3b82f6;
+      --accent-color: #10b981;
+      --dark-bg: #0f172a;
+      --light-bg: #f8fafc;
+      --card-bg-light: rgba(255, 255, 255, 0.8);
+      --card-bg-dark: rgba(15, 23, 42, 0.8);
+    }
+    
+    .dark {
+      --bg-color: var(--dark-bg);
+      --text-color: #f1f5f9;
+      --card-bg: var(--card-bg-dark);
+    }
+    
+    .light {
+      --bg-color: var(--light-bg);
+      --text-color: #1e293b;
+      --card-bg: var(--card-bg-light);
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    h1, h2, h3, h4, h5 {
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .glassmorphism {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.125);
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+    
+    .question-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(31, 38, 135, 0.2);
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+      transform-origin: 0%;
+      z-index: 1000;
+    }
+    
+    .svg-container {
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    #geneSvg path {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+    }
+
+    /* Custom animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fadeInUp {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    /* Stagger delays for multiple items */
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    
+    .hidden-element {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Tabs styling */
+    .tab-active {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+  </style>
+</head>
+<body class="light">
+  <!-- Progress bar -->
+  <div class="progress-bar" id="progressBar"></div>
+  
+  <!-- Navigation -->
+  <header class="fixed w-full z-50 glassmorphism bg-opacity-70 backdrop-blur-lg shadow-sm">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <svg class="w-8 h-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+        <h1 class="text-xl font-bold">AP Biology Guide</h1>
+      </div>
+      
+      <nav class="hidden md:flex space-x-8">
+        <a href="#overview" class="hover:text-blue-600 transition-colors">Overview</a>
+        <a href="#gene-regulation" class="hover:text-blue-600 transition-colors">Gene Regulation</a>
+        <a href="#chromatography" class="hover:text-blue-600 transition-colors">Chromatography</a>
+        <a href="#phylogeny" class="hover:text-blue-600 transition-colors">Phylogeny</a>
+        <a href="#fish-experiment" class="hover:text-blue-600 transition-colors">Fish Experiment</a>
+        <a href="#microbiology" class="hover:text-blue-600 transition-colors">Microbiology</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <i class="fas fa-moon dark:hidden"></i>
+          <i class="fas fa-sun hidden dark:block"></i>
+        </button>
+        
+        <div class="md:hidden">
+          <button id="mobileMenuBtn" class="p-2">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden absolute w-full bg-white dark:bg-gray-900 shadow-lg">
+      <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+        <a href="#overview" class="hover:text-blue-600 transition-colors">Overview</a>
+        <a href="#gene-regulation" class="hover:text-blue-600 transition-colors">Gene Regulation</a>
+        <a href="#chromatography" class="hover:text-blue-600 transition-colors">Chromatography</a>
+        <a href="#phylogeny" class="hover:text-blue-600 transition-colors">Phylogeny</a>
+        <a href="#fish-experiment" class="hover:text-blue-600 transition-colors">Fish Experiment</a>
+        <a href="#microbiology" class="hover:text-blue-600 transition-colors">Microbiology</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="overview" class="pt-24 pb-16 min-h-screen flex items-center relative">
+    <div class="absolute inset-0 z-0">
+      <svg class="w-full h-full opacity-10" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:var(--primary-color);stop-opacity:1" />
+            <stop offset="100%" style="stop-color:var(--accent-color);stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path d="M0,0 C300,150 400,250 500,350 C600,450 700,550 1000,500 L1000,1000 L0,1000 Z" fill="url(#grad1)"/>
+        <circle cx="250" cy="150" r="50" fill="url(#grad1)" opacity="0.5"/>
+        <circle cx="750" cy="350" r="100" fill="url(#grad1)" opacity="0.3"/>
+        <circle cx="150" cy="750" r="120" fill="url(#grad1)" opacity="0.2"/>
+      </svg>
+    </div>
+    
+    <div class="container mx-auto px-4 z-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="order-2 md:order-1 hidden-element">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6">Master AP Biology Free Response</h1>
+          <p class="text-xl md:text-2xl mb-8">Comprehensive guide to understanding and answering Section II questions with confidence.</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#gene-regulation" class="glassmorphism px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              Start Learning
+            </a>
+            <button class="glassmorphism px-6 py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors">
+              Download Guide
+            </button>
+          </div>
+        </div>
+        
+        <div class="order-1 md:order-2 hidden-element">
+          <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=800&auto=format&fit=crop" alt="AP Biology Lab Concept" class="rounded-xl shadow-xl glassmorphism w-full">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gene Regulation Section with SVG Animation -->
+  <section id="gene-regulation" class="py-16 relative">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12 hidden-element">Question 1: E. coli Gene Regulation</h2>
+      
+      <!-- SVG Animation Container -->
+      <div class="svg-container glassmorphism mb-12">
+        <svg id="geneSvg" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+          <!-- These elements will be animated with GSAP -->
+          <defs>
+            <clipPath id="visibleArea">
+              <rect x="0" y="0" width="0" height="500" />
+            </clipPath>
+          </defs>
+          
+          <!-- DNA Background -->
+          <path d="M100,250 C150,200 250,300 300,250 S350,200 400,250 S450,300 500,250 S550,200 600,250 S650,300 700,250 S750,200 800,250 S850,300 900,250" 
+                stroke="#3b82f6" fill="none" stroke-width="3" opacity="0.3" />
+          
+          <!-- Without Sugar (Repressed State) -->
+          <g class="gene-group">
+            <text x="100" y="50" font-size="24" fill="#3b82f6">Without Inducer Sugar</text>
+            
+            <!-- DNA Strand -->
+            <rect x="100" y="100" width="300" height="20" fill="#94a3b8" rx="5" />
+            
+            <!-- Promoter -->
+            <rect id="promoter1" x="150" y="90" width="40" height="40" fill="#f59e0b" rx="5" />
+            <text x="150" y="150" font-size="16">Promoter</text>
+            
+            <!-- Operator -->
+            <rect id="operator1" x="200" y="90" width="40" height="40" fill="#10b981" rx="5" />
+            <text x="200" y="150" font-size="16">Operator</text>
+            
+            <!-- Structural genes -->
+            <rect id="genes1" x="250" y="100" width="120" height="20" fill="#3b82f6" rx="5" />
+            <text x="275" y="150" font-size="16">Pigment Genes</text>
+            
+            <!-- Repressor -->
+            <circle id="repressor1" cx="200" cy="110" r="25" fill="#ef4444" />
+            <text x="185" y="115" font-size="14" fill="white">R</text>
+            <text x="120" y="200" font-size="16">Repressor bound to operator</text>
+            <text x="120" y="220" font-size="16">No transcription occurs</text>
+            
+            <!-- RNA Polymerase (blocked) -->
+            <polygon id="rnap1" points="120,110 135,95 135,125" fill="#6366f1" />
+            <text x="80" y="115" font-size="16">RNA Pol</text>
+            <line x1="135" y1="110" x2="150" y2="110" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,5" />
+          </g>
+          
+          <!-- With Sugar (Expressed State) -->
+          <g class="gene-group">
+            <text x="500" y="50" font-size="24" fill="#3b82f6">With Inducer Sugar</text>
+            
+            <!-- DNA Strand -->
+            <rect x="500" y="100" width="300" height="20" fill="#94a3b8" rx="5" />
+            
+            <!-- Promoter -->
+            <rect id="promoter2" x="550" y="90" width="40" height="40" fill="#f59e0b" rx="5" />
+            <text x="550" y="150" font-size="16">Promoter</text>
+            
+            <!-- Operator -->
+            <rect id="operator2" x="600" y="90" width="40" height="40" fill="#10b981" rx="5" />
+            <text x="600" y="150" font-size="16">Operator</text>
+            
+            <!-- Structural genes -->
+            <rect id="genes2" x="650" y="100" width="120" height="20" fill="#3b82f6" rx="5" />
+            <text x="675" y="150" font-size="16">Pigment Genes</text>
+            
+            <!-- Inducer Sugar -->
+            <circle id="sugar" cx="450" cy="200" r="20" fill="#8b5cf6" />
+            <text x="442" y="205" font-size="14" fill="white">S</text>
+            <text x="420" y="240" font-size="16">Inducer Sugar</text>
+            
+            <!-- Repressor (detached) -->
+            <circle id="repressor2" cx="450" cy="250" r="25" fill="#ef4444" />
+            <text x="435" y="255" font-size="14" fill="white">R</text>
+            
+            <!-- Sugar-Repressor Complex -->
+            <circle id="complex" cx="450" cy="250" r="30" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5,5" />
+            <text x="420" y="290" font-size="16">Sugar-Repressor Complex</text>
+            <text x="420" y="310" font-size="16">Cannot bind operator</text>
+            
+            <!-- RNA Polymerase (active) -->
+            <polygon id="rnap2" points="520,110 535,95 535,125" fill="#6366f1" />
+            <text x="480" y="115" font-size="16">RNA Pol</text>
+            
+            <!-- Transcription -->
+            <path id="mrna" d="M650,150 Q670,180 690,150 Q710,120 730,150 Q750,180 770,150" stroke="#ec4899" stroke-width="3" fill="none" />
+            <text x="690" y="200" font-size="16" fill="#ec4899">mRNA</text>
+            
+            <!-- Pigment Production -->
+            <circle id="pigment" cx="730" cy="250" r="30" fill="#9333ea" />
+            <text x="700" y="290" font-size="16">Purple Pigment</text>
+            <text x="530" y="330" font-size="16">Transcription and translation produce pigment</text>
+          </g>
+          
+          <!-- Table Data -->
+          <g class="table-group" transform="translate(200, 350)">
+            <rect x="0" y="0" width="600" height="30" fill="#3b82f6" rx="5" />
+            <text x="20" y="20" font-size="16" fill="white">Culture Condition</text>
+            <text x="400" y="20" font-size="16" fill="white">Pigment Production (AU/mL)</text>
+            
+            <rect x="0" y="30" width="600" height="30" fill="#e2e8f0" rx="0" />
+            <text x="20" y="50" font-size="16" fill="#1e293b">No inducer sugar added</text>
+            <text x="400" y="50" font-size="16" fill="#1e293b">0.1</text>
+            
+            <rect x="0" y="60" width="600" height="30" fill="#f1f5f9" rx="0" />
+            <text x="20" y="80" font-size="16" fill="#1e293b">Inducer sugar added</text>
+            <text x="400" y="80" font-size="16" fill="#1e293b">4.5</text>
+            
+            <rect x="0" y="90" width="600" height="30" fill="#e2e8f0" rx="0" />
+            <text x="20" y="110" font-size="16" fill="#1e293b">Inducer added, promoter mutated</text>
+            <text x="400" y="110" font-size="16" fill="#1e293b">0.2</text>
+          </g>
+          
+          <!-- Animation Stage Indicators -->
+          <circle id="stage1" cx="50" cy="250" r="10" fill="#3b82f6" />
+          <circle id="stage2" cx="50" cy="280" r="10" fill="#94a3b8" />
+          <circle id="stage3" cx="50" cy="310" r="10" fill="#94a3b8" />
+          <text x="70" y="255" font-size="16">Repression</text>
+          <text x="70" y="285" font-size="16">Induction</text>
+          <text x="70" y="315" font-size="16">Data Analysis</text>
+        </svg>
+        
+        <!-- SVG Overlay for Instructions -->
+        <div class="absolute bottom-8 left-0 right-0 text-center">
+          <p class="text-lg font-medium bg-gray-900 bg-opacity-70 text-white py-2 px-4 rounded-full inline-block">
+            <i class="fas fa-mouse-pointer mr-2"></i> Scroll to animate
+          </p>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Question Parts -->
+        <div class="glassmorphism p-6 hidden-element">
+          <h3 class="text-2xl font-bold mb-4">Question Components</h3>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 shrink-0">a</div>
+              <p>Regulation Mechanism: Describe how the inducible promoter system controls gene expression and explain the roles of inducer sugar and repressor.</p>
+            </div>
+            <div class="flex items-start">
+              <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 shrink-0">b</div>
+              <p>Data Analysis: Compare pigment production in normal versus promoter mutant bacteria with sugar present and explain what it indicates.</p>
+            </div>
+            <div class="flex items-start">
+              <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 shrink-0">c</div>
+              <p>Experimental Design: Propose an experiment to determine minimum concentration of inducer sugar required for visible pigment production.</p>
+            </div>
+            <div class="flex items-start">
+              <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 shrink-0">d</div>
+              <p>Gene Regulation Diagram: Draw a diagram showing the regulatory system in presence and absence of inducer sugar.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Sample Answers Tab Interface -->
+        <div class="glassmorphism p-6 hidden-element">
+          <h3 class="text-2xl font-bold mb-4">Sample Answers</h3>
+          
+          <!-- Tabs Navigation -->
+          <div class="flex border-b border-gray-200 dark:border-gray-700 mb-4">
+            <button class="tab-button py-2 px-4 focus:outline-none tab-active" data-tab="tab-a">Part A</button>
+            <button class="tab-button py-2 px-4 focus:outline-none" data-tab="tab-b">Part B</button>
+            <button class="tab-button py-2 px-4 focus:outline-none" data-tab="tab-c">Part C</button>
+            <button class="tab-button py-2 px-4 focus:outline-none" data-tab="tab-d">Part D</button>
+          </div>
+          
+          <!-- Tab Content -->
+          <div>
+            <div id="tab-a" class="tab-content">
+              <p class="mb-4">In the inducible promoter system, gene expression is regulated through a repressor protein that controls transcription of the pigment genes. In the absence of inducer sugar, the repressor protein binds to the operator region, physically blocking RNA polymerase from transcribing the pigment genes. This creates a default "off" state where minimal pigment is produced (as shown by the 0.1 AU/mL baseline production).</p>
+              <p>When inducer sugar is added to the environment, it binds to the repressor protein, causing a conformational change that prevents the repressor from binding to the operator. This conformational change effectively removes the blockage, allowing RNA polymerase to bind to the promoter and initiate transcription of the pigment genes. Translation of the resulting mRNA leads to the production of enzymes that synthesize the purple pigment.</p>
+              <p>The inducer sugar thus acts as a molecular switch that turns gene expression "on" by inactivating the repressor, while the repressor serves as a negative control element that keeps the system turned "off" in the absence of inducer. This mechanism allows the bacterium to produce pigment only when the specific sugar is present in the environment, conserving energy and resources when the pigment is not needed.</p>
+            </div>
+            
+            <div id="tab-b" class="tab-content hidden">
+              <p class="mb-4">The data shows a dramatic difference in pigment production between normal bacteria with inducer sugar (4.5 AU/mL) and promoter mutant bacteria with inducer sugar (0.2 AU/mL). This represents a 22.5-fold reduction in pigment production when the promoter is mutated.</p>
+              <p>This significant difference indicates that an intact, functional promoter is absolutely essential for effective gene expression, even when the repressor is inactivated by the inducer sugar. The promoter sequence contains critical binding sites for RNA polymerase and associated transcription factors. When mutated, these binding sites are likely altered or destroyed, preventing RNA polymerase from properly recognizing and binding to the DNA.</p>
+              <p>The small amount of pigment production in the promoter mutant (0.2 AU/mL) suggests that either: (1) the mutation did not completely abolish promoter function, allowing minimal transcription; or (2) there may be some basal transcription occurring from alternative, weaker promoters elsewhere in the DNA sequence. Regardless, the data clearly demonstrates that the intact promoter structure is necessary for the inducible system to function properly and produce significant levels of pigment.</p>
+            </div>
+            
+            <div id="tab-c" class="tab-content hidden">
+              <p class="mb-4"><strong>Experimental Design:</strong></p>
+              <ol class="list-decimal ml-5 space-y-2 mb-4">
+                <li>Prepare 10 test tubes containing equal volumes of the engineered E. coli culture.</li>
+                <li>Create a concentration gradient of inducer sugar: 0, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1.0, 5.0, and 10.0 mM.</li>
+                <li>Add the appropriate volume of inducer stock solution to each tube to achieve these concentrations.</li>
+                <li>Incubate all cultures under identical conditions (37°C with shaking) for 24 hours.</li>
+                <li>After incubation, observe each tube visually to determine the lowest concentration at which purple pigment is visible to the naked eye.</li>
+                <li>Measure pigment production quantitatively using a spectrophotometer at the appropriate wavelength for the purple pigment (likely 500-600 nm).</li>
+              </ol>
+              <p><strong>Data Collection:</strong></p>
+              <ul class="list-disc ml-5 space-y-2">
