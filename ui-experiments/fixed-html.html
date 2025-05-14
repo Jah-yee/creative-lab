@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玉藻前阅读学习情况研讨会 - 学习障碍友好型会议纪要</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline/dist/preline.min.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#fdf4ff',
+                            100: '#fae8ff',
+                            200: '#f5d0fe',
+                            300: '#f0abfc',
+                            400: '#e879f9',
+                            500: '#d946ef',
+                            600: '#c026d3',
+                            700: '#a21caf',
+                            800: '#86198f',
+                            900: '#701a75',
+                        },
+                        tertiary: {
+                            500: '#8b5cf6' // 添加第三颜色
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                    },
+                    animation: {
+                        'floating': 'floating 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        floating: {
+                          '0%, 100%': { transform: 'translateY(0)' },
+                          '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Glassmorphism variables */
+        :root {
+            --glass-lightness: 100%;
+            --glass-opacity: 0.7;
+            --glass-blur: 12px;
+            --glass-border: 1px;
+        }
+        
+        .dark {
+            --glass-lightness: 10%;
+            --glass-opacity: 0.7;
+        }
+        
+        /* Glassmorphism style */
+        .glassmorphism {
+            background: hsla(0, 0%, var(--glass-lightness), var(--glass-opacity));
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: var(--glass-border) solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        
+        /* Bionic Reading Style - First few letters of each word are bold */
+        .bionic-text span {
+            font-weight: 700;
+        }
+        
+        /* Progress bar */
+        .reading-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0ea5e9, #d946ef);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+        
+        /* SVG Animation Styles */
+        .draw-svg path,
+        .draw-svg circle,
+        .draw-svg rect,
+        .draw-svg line,
+        .draw-svg polyline,
+        .draw-svg polygon {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+        
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted #0ea5e9;
+            cursor: help;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -120px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Smooth scrolling for the page */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Animation for cognitive load breaks */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .breathe-animation {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        /* Paper texture background */
+        .paper-texture {
+            background-color: #f8f9fa;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.03' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        .dark .paper-texture {
+            background-color: #1e1e2e;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ffffff' fill-opacity='0.03' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        /* Custom scrollbar for better user experience */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(14, 165, 233, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(14, 165, 233, 0.8);
+        }
+        
+        /* Custom highlight color */
+        ::selection {
+            background: rgba(14, 165, 233, 0.3);
+        }
+        
+        /* Mind map connection lines */
+        .mind-map-connection {
+            position: absolute;
+            height: 2px;
+            background-color: #ccc;
+            transform-origin: left center;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased paper-texture text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Progress Bar -->
+    <div class="reading-progress-bar" id="progressBar"></div>
+    
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 glassmorphism">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span class="text-lg font-semibold hidden sm:inline">学习障碍友好型会议纪要</span>
+                <span class="text-lg font-semibold sm:hidden">友好型纪要</span>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <!-- 辅助功能控制面板 -->
+                <div class="relative">
+                    <button id="accessibility-menu-button" class="p-2 bg-primary-100 dark:bg-primary-900/50 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg flex items-center" aria-expanded="false" aria-haspopup="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                        </svg>
+                        <span class="hidden sm:inline text-sm font-medium">辅助功能</span>
+                    </button>
+                    
+                    <div id="accessibility-menu" class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 hidden z-50 border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">阅读辅助设置</h3>
+                        
+                        <!-- 字体大小控制 -->
+                        <div class="mb-4">
+                            <label class="block text-xs text-gray-600 dark:text-gray-400 mb-1">字体大小</label>
+                            <div class="flex items-center">
+                                <button id="text-size-decrease" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-l-lg" title="减小字体" aria-label="减小字体">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                    </svg>
+                                </button>
+                                <div id="font-size-display" class="px-3 py-1 bg-gray-50 dark:bg-gray-800 text-center text-sm w-12">16px</div>
+                                <button id="text-size-increase" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-r-lg" title="增大字体" aria-label="增大字体">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 行间距控制 -->
+                        <div class="mb-4">
+                            <label class="block text-xs text-gray-600 dark:text-gray-400 mb-1">行间距</label>
+                            <div class="flex items-center">
+                                <button id="line-spacing-decrease" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-l-lg" title="减小行间距" aria-label="减小行间距">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                    </svg>
+                                </button>
+                                <div id="line-spacing-display" class="px-3 py-1 bg-gray-50 dark:bg-gray-800 text-center text-sm w-12">1.5</div>
+                                <button id="line-spacing-increase" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-r-lg" title="增大行间距" aria-label="增大行间距">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 阅读模式切换 -->
+                        <div class="mb-4">
+                            <label class="block text-xs text-gray-600 dark:text-gray-400 mb-1">阅读模式</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="bionic-reading-toggle" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg flex items-center justify-center" title="Bionic Reading 模式" aria-label="切换 Bionic Reading 模式">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span class="text-xs">生物阅读</span>
+                                </button>
+                                <button id="focus-mode-toggle" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg flex items-center justify-center" title="专注模式" aria-label="切换专注模式">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                    </svg>
+                                    <span class="text-xs">专注模式</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 颜色对比度 -->
+                        <div class="mb-4">
+                            <label class="block text-xs text-gray-600 dark:text-gray-400 mb-1">颜色对比度</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="high-contrast-toggle" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg flex items-center justify-center" title="高对比度模式" aria-label="切换高对比度模式">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                                    </svg>
+                                    <span class="text-xs">高对比度</span>
+                                </button>
+                                <button id="theme-toggle" class="p-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg flex items-center justify-center" title="切换主题" aria-label="切换明暗主题">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                    </svg>
+                                    <span class="text-xs">明暗主题</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 重置按钮 -->
+                        <button id="reset-accessibility" class="w-full p-2 bg-primary-100 dark:bg-primary-900/50 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg text-sm font-medium text-primary-700 dark:text-primary-300 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            重置所有设置
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 导航菜单 -->
+                <div class="relative">
+                    <button id="nav-menu-button" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg" aria-expanded="false" aria-haspopup="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    
+                    <div id="nav-menu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-2 hidden z-50 border border-gray-200 dark:border-gray-700">
+                        <a href="#hero" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">会议概览</a>
+                        <a href="#discussion" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">核心讨论</a>
+                        <a href="#reading-preferences" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">阅读偏好</a>
+                        <a href="#learning-methods" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">学习方法</a>
+                        <a href="#marking-methods" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">标记方式</a>
+                        <a href="#knowledge-system" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">知识体系</a>
+                        <a href="#mindmap" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">思维导图</a>
+                        <a href="#conclusion" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">总结与期望</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 阅读进度指示器 -->
+        <div class="flex justify-center py-1 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+            <div class="w-full max-w-4xl px-4 flex items-center text-xs text-gray-500 dark:text-gray-400">
+                <span>阅读进度:</span>
+                <div class="relative w-full h-2 mx-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div id="progressBar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full" style="width: 0%"></div>
+                </div>
+                <span id="progress-percentage">0%</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Hero Section with SVG Animation -->
+        <section id="hero" class="mb-12">
+            <div class="glassmorphism rounded-2xl p-8 relative overflow-hidden">
+                <div class="absolute -top-16 -right-16 opacity-10">
+                    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="draw-svg">
+                        <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="2" />
+                        <circle cx="100" cy="100" r="60" stroke="currentColor" stroke-width="2" />
+                        <circle cx="100" cy="100" r="40" stroke="currentColor" stroke-width="2" />
+                        <path d="M100 20V180" stroke="currentColor" stroke-width="2" />
+                        <path d="M20 100H180" stroke="currentColor" stroke-width="2" />
+                        <path d="M29.2893 29.2893L170.711 170.711" stroke="currentColor" stroke-width="2" />
+                        <path d="M170.711 29.2893L29.2893 170.711" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                        <h1 class="text-3xl md:text-4xl font-bold text-primary-700 dark:text-primary-400">
+                            玉藻前阅读学习情况研讨会
+                        </h1>
+                        <div class="mt-2 sm:mt-0 px-3 py-1 bg-primary-100 dark:bg-primary-900/30 rounded-full text-sm font-medium text-primary-800 dark:text-primary-300">
+                            2025年5月14日
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h2 class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">会议信息</h2>
+                            <div class="space-y-2">
+                                <div class="flex">
+                                    <div class="w-24 flex-shrink-0 text-gray-500 dark:text-gray-400">日期时间:</div>
+                                    <div>2025年5月14日（周三）00:31 - 01:54（GMT+8）</div>
+                                </div>
+                                <div class="flex">
+                                    <div class="w-24 flex-shrink-0 text-gray-500 dark:text-gray-400">参与者:</div>
+                                    <div>玉藻前, 杜+1</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h2 class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">超简摘要</h2>
+                            <p class="text-base leading-relaxed">
+                                <span class="bionic-reading-text">
+                                    讨论了<span>如何</span>用<span>论文</span>的<span>思路</span>来<span>阅读</span>文章，<span>减少</span>阅读<span>焦虑</span>。强调<span>理解</span>文章<span>结构</span>和<span>核心</span>概念<span>比</span>逐字<span>阅读</span>更<span>重要</span>。
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Main Discussion Section -->
+        <section id="discussion" class="mb-12">
+            <div class="glassmorphism rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 text-primary-700 dark:text-primary-400 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    核心讨论内容
+                </h2>
+                
+                <!-- Tabs for Different Views -->
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px" id="viewTabs" role="tablist">
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-primary-500 rounded-t-lg active" id="structured-tab" data-tabs-target="#structured" type="button" role="tab" aria-controls="structured" aria-selected="true">
+                                结构化视图
+                            </button>
+                        </li>
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="original-tab" data-tabs-target="#original" type="button" role="tab" aria-controls="original" aria-selected="false">
+                                原始对话
+                            </button>
+                        </li>
+                        <li role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="visual-tab" data-tabs-target="#visual" type="button" role="tab" aria-controls="visual" aria-selected="false">
+                                视觉图谱
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Tab Content -->
+                <div id="tabContent">
+                    <!-- Structured View Tab -->
+                    <div class="block" id="structured" role="tabpanel" aria-labelledby="structured-tab">
+                        <div class="space-y-6">
+                            <!-- Key Insight 1 -->
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 transition-all duration-300 hover:shadow-md">
+                                <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                                    以论文思路阅读文章
+                                </h3>
+                                <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800">
+                                    <p class="mb-3 bionic-reading-text">
+                                        玉藻前<span>提到</span>需要<span>采用</span>论文的<span>思路</span>来<span>阅读</span>文章，这<span>暗示</span>了<span>结构化</span>阅读<span>方法</span>的<span>重要性</span>。
+                                    </p>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 italic">
+                                        "我觉得一个是让我明白一个事情，就是那个我可能需要用一些就是论文的这个思路，然后来看这些文章。"
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">结构化阅读</span>
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">论文思路</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Key Insight 2 -->
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 transition-all duration-300 hover:shadow-md">
+                                <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                                    减少阅读焦虑
+                                </h3>
+                                <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800">
+                                    <p class="mb-3 bionic-reading-text">
+                                        玉藻前<span>表达</span>了<span>对于</span>他人<span>能够</span>理解<span>而自己</span>理解<span>困难</span>的<span>焦虑</span>，<span>这是</span>许多<span>学习障碍</span>者<span>常见</span>的<span>心理</span>状态。
+                                    </p>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 italic">
+                                        "然后不需要焦虑，就是别人能看懂，我看不懂之类的..."
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">阅读焦虑</span>
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">自我比较</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Key Insight 3 -->
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 transition-all duration-300 hover:shadow-md">
+                                <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                                    复杂信息处理挑战
+                                </h3>
+                                <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800">
+                                    <p class="mb-3 bionic-reading-text">
+                                        对<span>冗长</span>详细<span>信息</span>的<span>处理</span>困难，<span>导致</span>信息<span>接收</span>效率<span>降低</span>。这<span>反映</span>了<span>对简明</span>结构化<span>信息</span>的<span>需求</span>。
+                                    </p>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 italic">
+                                        "然后就是您齐心地说了一大堆，你说的跟这种文章一样，我有点懒。"
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">信息过载</span>
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">注意力分散</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cognitive Load Break -->
+                        <div class="my-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-center breathe-animation">
+                            <p class="text-blue-700 dark:text-blue-300 font-medium">认知休息点 - 休息片刻，让信息沉淀</p>
+                            <div class="mt-2 text-sm text-blue-600 dark:text-blue-400">深呼吸，伸展一下，让大脑放松片刻</div>
+                        </div>
+                        
+                        <!-- Learning Strategies Section -->
+                        <div class="mt-8">
+                            <h3 class="text-xl font-semibold mb-4 text-primary-700 dark:text-primary-400">
+                                建议的学习策略
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Strategy 1 -->
+                                <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border-l-4 border-primary-500">
+                                    <h4 class="font-medium mb-2">结构化阅读法</h4>
+                                    <p class="text-sm bionic-reading-text">
+                                        <span>先浏览</span>全文<span>结构</span>和<span>标题</span>，<span>了解</span>整体<span>框架</span>，再<span>深入</span>各<span>章节</span>。这<span>类似</span>论文<span>阅读</span>方法，<span>从宏观</span>到<span>微观</span>。
+                                    </p>
+                                </div>
+                                
+                                <!-- Strategy 2 -->
+                                <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border-l-4 border-secondary-500">
+                                    <h4 class="font-medium mb-2">减少比较心理</h4>
+                                    <p class="text-sm bionic-reading-text">
+                                        <span>避免</span>与<span>他人</span>阅读<span>速度</span>和<span>理解</span>程度<span>比较</span>，<span>专注</span>于<span>自己</span>的<span>学习</span>进度<span>和理解</span>水平。
+                                    </p>
+                                </div>
+                                
+                                <!-- Strategy 3 -->
+                                <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border-l-4 border-green-500">
+                                    <h4 class="font-medium mb-2">分段处理信息</h4>
+                                    <p class="text-sm bionic-reading-text">
+                                        <span>将</span>长文本<span>分解</span>为<span>更小</span>的<span>段落</span>，<span>一次</span>处理<span>一个</span>部分，<span>减轻</span>认知<span>负担</span>。
+                                    </p>
+                                </div>
+                                
+                                <!-- Strategy 4 -->
+                                <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border-l-4 border-blue-500">
+                                    <h4 class="font-medium mb-2">多感官学习</h4>
+                                    <p class="text-sm bionic-reading-text">
+                                        <span>结合</span>视觉<span>和听觉</span>等<span>多种</span>感官<span>输入</span>，<span>增强</span>理解<span>和</span>记忆，<span>如</span>听有声<span>读物</span>或<span>讲解</span>。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Original View Tab (Hidden by default) -->
+                    <div class="hidden" id="original" role="tabpanel" aria-labelledby="original-tab">
+                        <div class="space-y-4">
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
+                                <div class="flex items-start space-x-3 mb-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                                        杜
+                                    </div>
+                                    <div>
+                                        <p class="text-sm">那像刚刚有个笔记，就是有两个部分，有一部分是属于总结结论那一部分的。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-3">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-100 dark:bg-secondary-900/50 flex items-center justify-center text-secondary-600 dark:text-secondary-400">
+                                        玉
+                                    </div>
+                                    <div>
+                                        <p class="text-sm">我觉得一个是让我明白一个事情，就是那个我可能需要用一些就是论文的这个思路，然后来看这些文章。然后不需要焦虑，就是别人能看懂，我看不懂之类的。然后就是您齐心地说了一大堆，你说的跟这种文章一样，我有点懒。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
+                                <div class="flex items-start space-x-3 mb-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                                        杜
+                                    </div>
+                                    <div>
+                                        <p class="text-sm">对对对，所以这个确实，我觉得是这样的，就是很多人都在推荐一种方法，然后说这种方法效率高。但其实，我觉得最好的方法就是适合你自己的那种方法才是最好的。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-3">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-100 dark:bg-secondary-900/50 flex items-center justify-center text-secondary-600 dark:text-secondary-400">
+                                        玉
+                                    </div>
+                                    <div>
+                                        <p class="text-sm">对，但是也不反对尝试各种不同的方法。我觉得隐性的积累还是很重要的，只是说成体系的能力差一点，我学那个就比较容易那个...浅尝辄止，就是很深入不下去，很快就放弃了。然后跳出舒适圈的能力比较差。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Visual View Tab (Hidden by default) -->
+                    <div class="hidden" id="visual" role="tabpanel" aria-labelledby="visual-tab">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-6">
+                            <div class="flex justify-center mb-6">
+                                <img src="/api/placeholder/600/300" alt="会议讨论可视化图" class="rounded-lg shadow-md" />
+                            </div>
+                            <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+                                此图表示会议中的主要讨论点及其关联性。可视化有助于理解讨论中的关键概念和主题。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Reading Preferences Section -->
+        <section id="reading-preferences" class="mb-12">
+            <div class="glassmorphism rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 text-primary-700 dark:text-primary-400 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    阅读偏好与困难
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Reading Preferences card -->
+                    <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-5">
+                        <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                            阅读偏好分析
+                        </h3>
+                        
+                        <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800 mb-4">
+                            <p class="italic text-gray-600 dark:text-gray-400 text-sm">
+                                "喜欢叙述类和议论类文章，偏好容易理解的内容..."
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-medium mb-2 text-primary-600 dark:text-primary-400">当前阅读偏好</h4>
+                                <ul class="space-y-2 pl-6 list-disc">
+                                    <li class="bionic-reading-text">
+                                        <span>叙述类</span>文章 — <span>故事</span>性强，<span>情节</span>清晰，<span>易于</span>理解
+                                    </li>
+                                    <li class="bionic-reading-text">
+                                        <span>议论类</span>文章 — <span>观点</span>明确，<span>论证</span>直接
+                                    </li>
+                                    <li class="bionic-reading-text">
+                                        <span>简明</span>结构 — <span>偏好</span>层次<span>分明</span>的<span>内容</span>组织
+                                    </li>
+                                    <li class="bionic-reading-text">
+                                        <span>视觉</span>辅助 — <span>借助</span>图表<span>增强</span>理解
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium mb-2 text-primary-600 dark:text-primary-400">需要尝试的阅读类型</h4>
+                                <ul class="space-y-2 pl-6 list-disc">
+                                    <li class="bionic-reading-text">
+                                        <span>推理类</span>文章 — <span>锻炼</span>逻辑<span>思考</span>能力
+                                    </li>
+                                    <li class="bionic-reading-text">
+                                        <span>逻辑类</span>文章 — <span>提升</span>分析<span>和</span>推导<span>能力</span>
+                                    </li>
+                                    <li class="bionic-reading-text">
+                                        <span>学术类</span>文章 — <span>适应</span>结构化<span>知识</span>表达
+                                    </li>
+                                    <li class="bionic-reading-text">
+                                        <span>图示类</span>文章 — <span>强化</span>视觉<span>转换</span>能力
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reading Difficulties card -->
+                    <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-5">
+                        <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                            阅读困难分析
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <div class="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg mb-4">
+                                    <h4 class="font-medium text-red-700 dark:text-red-400 mb-2">
+                                        主要阅读挑战
+                                    </h4>
+                                    <ul class="space-y-1 pl-6 list-disc text-sm">
+                                        <li>大量细节信息处理困难</li>
+                                        <li>持续专注阅读有挑战</li>
+                                        <li>复杂结构文章理解慢</li>
+                                        <li>与他人阅读速度比较产生焦虑</li>
+                                        <li>跳出舒适区阅读新类型文章有困难</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                    <h4 class="font-medium text-blue-700 dark:text-blue-400 mb-2">
+                                        已有的应对策略
+                                    </h4>
+                                    <ul class="space-y-1 pl-6 list-disc text-sm">
+                                        <li>使用小红书等平台获取简化解释</li>
+                                        <li>采用自己的标记方式提高理解</li>
+                                        <li>偏好视觉化内容辅助理解</li>
+                                        <li>选择感兴趣主题提高专注度</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col justify-center">
+                                <img src="/api/placeholder/400/240" alt="阅读障碍因素示意图" class="rounded-lg shadow-md mb-4" />
+                                
+                                <div class="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                                    <h4 class="font-medium text-yellow-700 dark:text-yellow-400 mb-1 text-center">
+                                        减少阅读焦虑的关键点
+                                    </h4>
+                                    <p class="text-sm text-center bionic-reading-text">
+                                        <span>理解</span>每个<span>人的</span>阅读<span>方式</span>和<span>速度</span>不同，<span>专注</span>于<span>自己</span>的<span>理解</span>深度<span>而非</span>比较。<span>采用</span>适合<span>自己</span>的<span>阅读</span>方法<span>更</span>重要。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reading Method Improvement card -->
+                    <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-5">
+                        <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                            论文思路阅读法
+                        </h3>
+                        
+                        <p class="bionic-reading-text mb-4">
+                            <span>采用</span>学术<span>论文</span>的<span>阅读</span>思路<span>可以</span>帮助<span>理解</span>复杂<span>文章</span>。<span>这种</span>方法<span>强调</span>先<span>理解</span>文章<span>框架</span>，再<span>深入</span>细节：
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-6">
+                            <div class="sm:col-span-5 p-3 bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/30 rounded-lg flex items-center justify-center text-center">
+                                <h4 class="font-medium">论文思路阅读法步骤</h4>
+                            </div>
+                            
+                            <div class="p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l6-6m-6 6l-6-6" />
+                                    </svg>
+                                </div>
+                                <h5 class="text-xs font-medium">分析结构</h5>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">识别主要部分和逻辑关系</p>
+                            </div>
+                            
+                            <div class="p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <h5 class="text-xs font-medium">理解核心</h5>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">抓住主要论点和观点</p>
+                            </div>
+                            
+                            <div class="p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                                    </svg>
+                                </div>
+                                <h5 class="text-xs font-medium">深入细节</h5>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">理解证据和支持论点</p>
+                            </div>
+                            
+                            <div class="p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                </div>
+                                <h5 class="text-xs font-medium">总结反思</h5>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">整合理解，形成自己的见解</p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                            <h4 class="font-medium text-green-700 dark:text-green-400 mb-2 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                论文思路阅读法的优势
+                            </h4>
+                            <ul class="space-y-1 pl-6 list-disc text-sm">
+                                <li>降低信息处理负担，避免迷失在细节中</li>
+                                <li>提高理解效率，把握文章的主要框架</li>
+                                <li>增强对复杂文章的理解能力</li>
+                                <li>形成系统化的知识结构</li>
+                                <li>减少阅读焦虑，增强阅读信心</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Reducing Reading Anxiety card -->
+                    <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-5">
+                        <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                            减少阅读焦虑
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-sm md:col-span-2">
+                                <h4 class="font-medium mb-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    阅读焦虑的来源
+                                </h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                    阅读焦虑常源于以下因素，理解这些因素有助于减轻焦虑感：
+                                </p>
+                                <ul class="space-y-1 pl-6 list-disc text-sm">
+                                    <li>与他人阅读速度和理解能力比较</li>
+                                    <li>担忧无法理解复杂或专业内容</li>
+                                    <li>对阅读量和完成时间的压力</li>
+                                    <li>过分关注细节导致失去整体理解</li>
+                                    <li>害怕错过重要信息或误解内容</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                                <h4 class="font-medium text-purple-700 dark:text-purple-400 mb-3 text-center">
+                                    减轻阅读焦虑的方法
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="p-2 bg-white dark:bg-gray-700 rounded-lg">
+                                        <p class="text-sm font-medium">关注理解而非速度</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">阅读不是竞赛，深度理解更重要</p>
+                                    </div>
+                                    
+                                    <div class="p-2 bg-white dark:bg-gray-700 rounded-lg">
+                                        <p class="text-sm font-medium">适应个人阅读风格</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">利用自己的优势和习惯</p>
+                                    </div>
+                                    
+                                    <div class="p-2 bg-white dark:bg-gray-700 rounded-lg">
+                                        <p class="text-sm font-medium">分解阅读任务</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">将长文本分成小块处理</p>
+                                    </div>
+                                    
+                                    <div class="p-2 bg-white dark:bg-gray-700 rounded-lg">
+                                        <p class="text-sm font-medium">循序渐进挑战自己</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">逐步尝试更复杂的内容</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                            <h4 class="font-medium text-indigo-700 dark:text-indigo-400 mb-2">
+                                实用减压技巧
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="flex space-x-3 items-start">
+                                    <div class="flex-shrink-0 w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-300">
+                                        1
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">预览全文再开始</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">先浏览标题、小标题和图表，构建心理框架</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex space-x-3 items-start">
+                                    <div class="flex-shrink-0 w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-300">
+                                        2
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">使用辅助工具</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">利用标记、笔记和阅读器等辅助理解</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex space-x-3 items-start">
+                                    <div class="flex-shrink-0 w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-300">
+                                        3
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">设置合理目标</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">根据内容复杂度调整期望，设定适当目标</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex space-x-3 items-start">
+                                    <div class="flex-shrink-0 w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-300">
+                                        4
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">定期休息与奖励</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300">采用番茄工作法，阅读一段时间后短暂休息</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Learning Methods Section -->
+        <section id="learning-methods" class="mb-12">
+            <div class="glassmorphism rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 text-primary-700 dark:text-primary-400 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                    </svg>
+                    学习方法改进
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Getting Out of Comfort Zone card -->
+                    <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-5">
+                        <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                            跳出舒适圈
+                        </h3>
+                        
+                        <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800 mb-4">
+                            <p class="italic text-gray-600 dark:text-gray-400 text-sm">
+                                "跳出舒适圈的能力比较差...很深入不下去，很快就放弃了。"
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p class="bionic-reading-text mb-4">
+                                    <span>舒适</span>圈<span>是</span>指<span>我们</span>已经<span>熟悉</span>和<span>擅长</span>的<span>学习</span>领域，<span>跳出</span>舒适<span>圈</span>意味着<span>挑战</span>自己<span>尝试</span>新的<span>阅读</span>类型<span>和</span>学习<span>方法</span>。<span>这种</span>挑战<span>虽然</span>困难，<span>但</span>对<span>全面</span>发展<span>至关</span>重要。
+                                </p>
+                                
+                                <div class="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg mb-4">
+                                    <h4 class="font-medium text-orange-700 dark:text-orange-400 mb-2">
+                                        面对不适感的策略
+                                    </h4>
+                                    <ul class="space-y-1 pl-6 list-disc text-sm">
+                                        <li>承认并接受学习新事物的不适是正常的</li>
+                                        <li>将挑战分解为更小的、可管理的步骤</li>
+                                        <li>设定明确的短期目标和奖励机制</li>
+                                        <li>记录和庆祝每一个小进步</li>
+                                        <li>寻找支持系统，与他人分享学习经历</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="p-4 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/30 dark:to-secondary-900/30 rounded-lg mb-4">
+                                    <h4 class="font-medium mb-3 text-center">舒适圈拓展阶段</h4>
+                                    <div class="space-y-3">
+                                        <div class="p-3 bg-white dark:bg-gray-700 rounded-lg flex items-center">
+                                            <div class="flex-shrink-0 w-10 h-10 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-primary-700 dark:text-primary-300 font-medium">1</span>
+                                            </div>
+                                            <div>
+                                                <h5 class="text-sm font-medium">舒适区</h5>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300">熟悉的领域，无压力</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="p-3 bg-white dark:bg-gray-700 rounded-lg flex items-center">
+                                            <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 dark:bg-yellow-900/50 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-yellow-700 dark:text-yellow-300 font-medium">2</span>
+                                            </div>
+                                            <div>
+                                                <h5 class="text-sm font-medium">学习区</h5>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300">轻度不适，有成长</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="p-3 bg-white dark:bg-gray-700 rounded-lg flex items-center">
+                                            <div class="flex-shrink-0 w-10 h-10 bg-orange-100 dark:bg-orange-900/50 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-orange-700 dark:text-orange-300 font-medium">3</span>
+                                            </div>
+                                            <div>
+                                                <h5 class="text-sm font-medium">恐慌区</h5>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300">过度压力，阻碍学习</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
+                                    <h4 class="font-medium text-teal-700 dark:text-teal-400 mb-2 text-center">
+                                        拓展舒适圈的好处
+                                    </h4>
+                                    <ul class="space-y-1 pl-6 list-disc text-sm">
+                                        <li>增强处理复杂信息的能力</li>
+                                        <li>提升认知灵活性和适应能力</li>
+                                        <li>发展更全面的学习技能</li>
+                                        <li>增强自信心和自我效能感</li>
+                                        <li>打破学习成长的瓶颈</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Personal Framework card -->
+                    <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-5">
+                        <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                            建立个人框架
+                        </h3>
+                        
+                        <p class="bionic-reading-text mb-4">
+                            <span>建立</span>个人<span>知识</span>框架<span>是</span>系统<span>整合</span>新旧<span>知识</span>的<span>关键</span>方法，<span>有助于</span>更好<span>地</span>理解<span>和</span>记忆<span>信息</span>：
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                            <div class="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-sm">
+                                <h4 class="font-medium mb-2 flex items-center">
+                                    <span class="bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 rounded-full w-6 h-6 flex items-center justify-center mr-2">1</span>
+                                    认识框架价值
+                                </h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    理解知识框架如何帮助组织和理解信息
+                                </p>
+                            </div>
+                            
+                            <div class="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-sm">
+                                <h4 class="font-medium mb-2 flex items-center">
+                                    <span class="bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 rounded-full w-6 h-6 flex items-center justify-center mr-2">2</span>
+                                    识别核心概念
+                                </h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    找出领域中的基础概念和关键原理
+                                </p>
+                            </div>org/2000/svg" class="h-6 w-6 mx-auto text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
+                                </div>
+                                <h5 class="text-xs font-medium">浏览全文</h5>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">快速通读，获取整体印象</p>
+                            </div>
+                            
+                            <div class="p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.

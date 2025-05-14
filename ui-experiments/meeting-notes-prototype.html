@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玉藻前阅读学习情况研讨会 - 学习障碍友好型会议纪要</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline/dist/preline.min.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#fdf4ff',
+                            100: '#fae8ff',
+                            200: '#f5d0fe',
+                            300: '#f0abfc',
+                            400: '#e879f9',
+                            500: '#d946ef',
+                            600: '#c026d3',
+                            700: '#a21caf',
+                            800: '#86198f',
+                            900: '#701a75',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                    },
+                    animation: {
+                        'floating': 'floating 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        floating: {
+                          '0%, 100%': { transform: 'translateY(0)' },
+                          '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Glassmorphism variables */
+        :root {
+            --glass-lightness: 100%;
+            --glass-opacity: 0.7;
+            --glass-blur: 12px;
+            --glass-border: 1px;
+        }
+        
+        .dark {
+            --glass-lightness: 10%;
+            --glass-opacity: 0.7;
+        }
+        
+        /* Glassmorphism style */
+        .glassmorphism {
+            background: hsla(0, 0%, var(--glass-lightness), var(--glass-opacity));
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: var(--glass-border) solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        
+        /* Bionic Reading Style - First few letters of each word are bold */
+        .bionic-text span {
+            font-weight: 700;
+        }
+        
+        /* Progress bar */
+        .reading-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0ea5e9, #d946ef);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+        
+        /* SVG Animation Styles */
+        .draw-svg path,
+        .draw-svg circle,
+        .draw-svg rect,
+        .draw-svg line,
+        .draw-svg polyline,
+        .draw-svg polygon {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+        
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted #0ea5e9;
+            cursor: help;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -120px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Smooth scrolling for the page */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Animation for cognitive load breaks */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .breathe-animation {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        /* Paper texture background */
+        .paper-texture {
+            background-color: #f8f9fa;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.03' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        .dark .paper-texture {
+            background-color: #1e1e2e;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ffffff' fill-opacity='0.03' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        /* Custom scrollbar for better user experience */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(14, 165, 233, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(14, 165, 233, 0.8);
+        }
+        
+        /* Custom highlight color */
+        ::selection {
+            background: rgba(14, 165, 233, 0.3);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased paper-texture text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Progress Bar -->
+    <div class="reading-progress-bar" id="progressBar"></div>
+    
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 glassmorphism">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span class="text-lg font-semibold hidden sm:inline">学习障碍友好型会议纪要</span>
+                <span class="text-lg font-semibold sm:hidden">友好型纪要</span>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center">
+                    <button id="text-size-decrease" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-l-lg" title="减小字体">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                        </svg>
+                    </button>
+                    <button id="text-size-increase" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-r-lg" title="增大字体">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+                </div>
+                <button id="bionic-reading-toggle" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg" title="Bionic Reading 模式">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </button>
+                <button id="theme-toggle" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg" title="切换主题">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Hero Section with SVG Animation -->
+        <section id="hero" class="mb-12">
+            <div class="glassmorphism rounded-2xl p-8 relative overflow-hidden">
+                <div class="absolute -top-16 -right-16 opacity-10">
+                    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="draw-svg">
+                        <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="2" />
+                        <circle cx="100" cy="100" r="60" stroke="currentColor" stroke-width="2" />
+                        <circle cx="100" cy="100" r="40" stroke="currentColor" stroke-width="2" />
+                        <path d="M100 20V180" stroke="currentColor" stroke-width="2" />
+                        <path d="M20 100H180" stroke="currentColor" stroke-width="2" />
+                        <path d="M29.2893 29.2893L170.711 170.711" stroke="currentColor" stroke-width="2" />
+                        <path d="M170.711 29.2893L29.2893 170.711" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                        <h1 class="text-3xl md:text-4xl font-bold text-primary-700 dark:text-primary-400">
+                            玉藻前阅读学习情况研讨会
+                        </h1>
+                        <div class="mt-2 sm:mt-0 px-3 py-1 bg-primary-100 dark:bg-primary-900/30 rounded-full text-sm font-medium text-primary-800 dark:text-primary-300">
+                            2025年5月14日
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h2 class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">会议信息</h2>
+                            <div class="space-y-2">
+                                <div class="flex">
+                                    <div class="w-24 flex-shrink-0 text-gray-500 dark:text-gray-400">日期时间:</div>
+                                    <div>2025年5月14日（周三）00:31 - 01:54（GMT+8）</div>
+                                </div>
+                                <div class="flex">
+                                    <div class="w-24 flex-shrink-0 text-gray-500 dark:text-gray-400">参与者:</div>
+                                    <div>玉藻前, 杜+1</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h2 class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">超简摘要</h2>
+                            <p class="text-base leading-relaxed">
+                                <span class="bionic-reading-text">
+                                    讨论了<span>如何</span>用<span>论文</span>的<span>思路</span>来<span>阅读</span>文章，<span>减少</span>阅读<span>焦虑</span>。强调<span>理解</span>文章<span>结构</span>和<span>核心</span>概念<span>比</span>逐字<span>阅读</span>更<span>重要</span>。
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Main Discussion Section -->
+        <section id="discussion" class="mb-12">
+            <div class="glassmorphism rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 text-primary-700 dark:text-primary-400 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    核心讨论内容
+                </h2>
+                
+                <!-- Tabs for Different Views -->
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px" id="viewTabs" role="tablist">
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-primary-500 rounded-t-lg active" id="structured-tab" data-tabs-target="#structured" type="button" role="tab" aria-controls="structured" aria-selected="true">
+                                结构化视图
+                            </button>
+                        </li>
+                        <li class="mr-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="original-tab" data-tabs-target="#original" type="button" role="tab" aria-controls="original" aria-selected="false">
+                                原始对话
+                            </button>
+                        </li>
+                        <li role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="visual-tab" data-tabs-target="#visual" type="button" role="tab" aria-controls="visual" aria-selected="false">
+                                视觉图谱
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Tab Content -->
+                <div id="tabContent">
+                    <!-- Structured View Tab -->
+                    <div class="block" id="structured" role="tabpanel" aria-labelledby="structured-tab">
+                        <div class="space-y-6">
+                            <!-- Key Insight 1 -->
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 transition-all duration-300 hover:shadow-md">
+                                <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                                    以论文思路阅读文章
+                                </h3>
+                                <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800">
+                                    <p class="mb-3 bionic-reading-text">
+                                        玉藻前<span>提到</span>需要<span>采用</span>论文的<span>思路</span>来<span>阅读</span>文章，这<span>暗示</span>了<span>结构化</span>阅读<span>方法</span>的<span>重要性</span>。
+                                    </p>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 italic">
+                                        "我觉得一个是让我明白一个事情，就是那个我可能需要用一些就是论文的这个思路，然后来看这些文章。"
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">结构化阅读</span>
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">论文思路</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Key Insight 2 -->
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 transition-all duration-300 hover:shadow-md">
+                                <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                                    减少阅读焦虑
+                                </h3>
+                                <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800">
+                                    <p class="mb-3 bionic-reading-text">
+                                        玉藻前<span>表达</span>了<span>对于</span>他人<span>能够</span>理解<span>而自己</span>理解<span>困难</span>的<span>焦虑</span>，<span>这是</span>许多<span>学习障碍</span>者<span>常见</span>的<span>心理</span>状态。
+                                    </p>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 italic">
+                                        "然后不需要焦虑，就是别人能看懂，我看不懂之类的..."
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">阅读焦虑</span>
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">自我比较</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Key Insight 3 -->
+                            <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 transition-all duration-300 hover:shadow-md">
+                                <h3 class="text-lg font-semibold mb-3 text-primary-600 dark:text-primary-400">
+                                    复杂信息处理挑战
+                                </h3>
+                                <div class="pl-4 border-l-2 border-primary-200 dark:border-primary-800">
+                                    <p class="mb-3 bionic-reading-text">
+                                        对<span>冗长</span>详细<span>信息</span>的<span>处理</span>困难，<span>导致</span>信息<span>接收</span>效率<span>降低</span>。这<span>反映</span>了<span>对简明</span>结构化<span>信息</span>的<span>需求</span>。
+                                    </p>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 italic">
+                                        "然后就是您齐心地说了一大堆，你说的跟这种文章一样，我有点懒。"
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">信息过载</span>
+                                    <span class="px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 text-xs rounded-full">注意力分散</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cognitive Load Break -->
+                        <div class="my-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-center breathe-animation">
+                            <p class="text-blue-700 dark:text-blue-300 font-medium">认知休息点 - 休息片刻，让信息沉淀</p>
+                            <div class="mt-2 text-sm text-blue-600 dark:text-blue-400">深呼吸，伸展一下，让大脑放松片刻</div>
+                        </div>
+                        
+                        <!-- Learning Strategies Section -->
+                        <div class="mt-8">
+                            <h3 class="text-xl font-semibold mb-4 text-primary-700 dark:text-primary-400">
+                                建议的学习策略
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Strategy 1 -->
+                                <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border-l-4 border-primary-500">
+                                    <h4 class="font-medium mb-2">结构化阅读法</h4>
+                                    <p class="text-sm bionic-reading-text">
+                                        <span>先浏览</span>全文<span>结构</span>和<span>标题</span>，<span>了解</span>整体<span>框架</span>，再<span>深入</span>各<span>章节</span>。这<span>类似</span>论文<span>阅读</span>方法，<span>从宏观</span>到<span>微观</span>。
+                                    </p>
+                                </div>
+                                
+                                <!-- Strategy 2 -->
+                                <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border-l-4 border-secondary-500">
+                                    <h4 class="font-medium mb-2">减少比较心理</h4>
+                                    <p class="text-sm bionic-reading-text">
+                                        <span>避免</span>与<span>他人</span>阅读<span>速度</span>和<span>理解</span>程度<span>比较</span>，<span>专注</span>于<span>自己</span>的<span>学习</span>进度<span>和理解</span>水平。
+                                    </p>
+                                </div>
+                                
+                                <!-- Strategy 3 -->
+                                <div class="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border-l-4 border-green-500">
+                                    <h4 class="
