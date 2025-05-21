@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考就完了 - 启发知识的内在连接</title>
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-md z-40 border-b border-border-light">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="navbar-brand flex items-center gap-2">
+                    <img src="logo.svg" alt="考就完了" class="h-8">
+                    <span class="font-semibold">考就完了</span>
+                </a>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <div class="navbar-nav">
+                        <a href="#features" class="nav-link">功能</a>
+                        <a href="#visualization" class="nav-link">可视化</a>
+                        <a href="#pricing" class="nav-link">价格</a>
+                        <a href="#faq" class="nav-link">常见问题</a>
+                        <a href="#" class="nav-link">AI对话</a>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <button class="invite-btn btn btn-primary">申请试用</button>
+                    </div>
+                </div>
+                
+                <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-md hover:bg-background-alt transition-colors">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="fixed inset-0 bg-background/80 backdrop-blur-md z-50 hidden flex flex-col">
+        <div class="container py-4 border-b border-border-light">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="navbar-brand flex items-center gap-2">
+                    <img src="logo.svg" alt="考就完了" class="h-8">
+                    <span class="font-semibold">考就完了</span>
+                </a>
+                
+                <button id="mobile-menu-close" class="p-2 rounded-md hover:bg-background-alt transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="container py-8 flex-1 overflow-y-auto">
+            <div class="flex flex-col gap-4">
+                <a href="#features" class="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">功能</a>
+                <a href="#visualization" class="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">可视化</a>
+                <a href="#pricing" class="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">价格</a>
+                <a href="#faq" class="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">常见问题</a>
+                <a href="#" class="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">AI对话</a>
+            </div>
+        </div>
+        
+        <div class="container py-4 border-t border-border-light">
+            <button class="invite-btn-mobile btn btn-primary btn-block">申请试用</button>
+        </div>
+    </div>
+
+    <!-- 邀请码申请模态框 -->
+    <div id="invite-modal" class="fixed inset-0 bg-background/80 backdrop-blur-md z-50 hidden flex items-center justify-center">
+        <div class="bg-background rounded-xl shadow-xl max-w-md w-full p-6 m-4 relative">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">申请试用资格</h3>
+                <button id="invite-modal-close" class="p-2 rounded-md hover:bg-background-alt transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+            
+            <p class="text-secondary mb-6">
+                「考就完了」目前处于邀请制试用阶段。请填写以下信息申请试用资格，我们会在审核后发送邀请码到您的邮箱。
+            </p>
+            
+            <form id="invite-form" class="space-y-4">
+                <div>
+                    <label for="invite-name" class="block text-sm font-medium mb-1">姓名</label>
+                    <input type="text" id="invite-name" class="input" placeholder="您的姓名" required>
+                </div>
+                
+                <div>
+                    <label for="invite-email" class="block text-sm font-medium mb-1">邮箱</label>
+                    <input type="email" id="invite-email" class="input" placeholder="您的邮箱地址" required>
+                </div>
+                
+                <div>
+                    <label for="invite-reason" class="block text-sm font-medium mb-1">申请理由</label>
+                    <textarea id="invite-reason" class="input min-h-[100px]" placeholder="请简要描述您想使用「考就完了」的原因..." required></textarea>
+                </div>
+                
+                <div>
+                    <label for="invite-code" class="block text-sm font-medium mb-1">邀请码（如有）</label>
+                    <input type="text" id="invite-code" class="input" placeholder="已有邀请码可直接填写">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">提交申请</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 申请成功模态框 -->
+    <div id="success-modal" class="fixed inset-0 bg-background/80 backdrop-blur-md z-50 hidden flex items-center justify-center">
+        <div class="bg-background rounded-xl shadow-xl max-w-md w-full p-6 m-4 text-center">
+            <div class="flex justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-success" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">申请已提交</h3>
+            
+            <p class="text-secondary mb-6">
+                感谢您的申请！我们会在审核后尽快通过邮件通知您。请留意您的邮箱。
+            </p>
+            
+            <button id="success-modal-close" class="btn btn-primary">关闭</button>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section class="pt-32 pb-20 relative overflow-hidden">
+            <div class="container">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h1 class="heading-1 mb-6">启发知识的内在连接<br><span class="text-primary">点亮与世界对话的能力</span></h1>
+                    
+                    <p class="text-lg text-secondary mb-8 max-w-2xl mx-auto">
+                        「考就完了」不是逃避学习的捷径，而是重新定义学习的方式。我们帮助你发现知识间的联系，培养独立思考的能力，让学习成为一段探索与成长的旅程。
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <button class="invite-btn btn btn-primary btn-lg">
+                            申请试用
+                        </button>
+                        <a href="#features" class="btn btn-secondary btn-lg">
+                            探索功能
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- AI对话演示 -->
+                <div class="max-w-3xl mx-auto bg-background rounded-xl shadow-lg overflow-hidden border border-border-light">
+                    <div class="p-4 border-b border-border-light flex items-center justify-between">
+                        <div class="font-medium">考就完了 AI 助手</div>
+                    </div>
+                    
+                    <div class="p-6 space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 rounded-full bg-primary-light text-primary flex-shrink-0 flex items-center justify-center font-semibold">
+                                U
+                            </div>
+                            <div>
+                                <p>我想理解量子力学和相对论之间的关系，它们如何共同塑造了我们对宇宙的理解？</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 rounded-full bg-primary flex-shrink-0 flex items-center justify-center text-white font-semibold">
+                                AI
+                            </div>
+                            <div>
+                                <p class="mb-3">量子力学和相对论是20世纪物理学的两大支柱，它们从不同角度揭示了宇宙的本质：</p>
+                                
+                                <p class="mb-3"><strong>相对论</strong>主要描述宏观宇宙，解释了时空、引力与能量的关系，改变了我们对空间和时间的理解。</p>
+                                
+                                <p class="mb-3"><strong>量子力学</strong>则探索微观世界，揭示了粒子的波粒二象性、测量的概率性和量子纠缠等现象。</p>
+                                
+                                <p>这两个理论在各自领域都取得了巨大成功，但它们的基本原理存在冲突。寻找统一这两个理论的方法，即所谓的"量子引力理论"，是当代理论物理学的最大挑战之一。这种探索不仅关乎物理学本身，也触及我们对实在性、确定性和宇宙本质的哲学思考。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 信任标志 -->
+                <div class="mt-16 text-center">
+                    <p class="text-sm text-tertiary mb-6">受到教育创新者和思想领袖的信任</p>
+                    
+                    <div class="flex flex-wrap justify-center gap-8 opacity-60">
+                        <img src="https://placehold.co/120x40/e2e8f0/64748b?text=LOGO+1" alt="合作伙伴" class="h-8">
+                        <img src="https://placehold.co/120x40/e2e8f0/64748b?text=LOGO+2" alt="合作伙伴" class="h-8">
+                        <img src="https://placehold.co/120x40/e2e8f0/64748b?text=LOGO+3" alt="合作伙伴" class="h-8">
+                        <img src="https://placehold.co/120x40/e2e8f0/64748b?text=LOGO+4" alt="合作伙伴" class="h-8">
+                        <img src="https://placehold.co/120x40/e2e8f0/64748b?text=LOGO+5" alt="合作伙伴" class="h-8">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 背景装饰 -->
+            <div class="absolute -z-10 top-0 left-0 right-0 h-1/2 bg-primary-light/30 dark:bg-primary-light/10"></div>
+            <div class="absolute -z-10 top-1/4 left-1/4 w-1/2 h-1/2 bg-primary/20 rounded-full blur-3xl"></div>
+        </section>
+        
+        <!-- 特性区域 -->
+        <section id="features" class="py-20 bg-background-alt">
+            <div class="container">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="heading-2">重新定义知识探索</h2>
+                    <p class="text-lg text-secondary">
+                        我们不只是提供答案，更致力于启发思考，连接知识，培养终身学习的能力
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 特性卡片 1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="feature-title">思维对话</h3>
+                        <p class="feature-description">
+                            不只是回答问题，而是引导你思考问题背后的原理，培养批判性思维和探索精神
+                        </p>
+                    </div>
+                    
+                    <!-- 特性卡片 2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h3 class="feature-title">知识连接</h3>
+                        <p class="feature-description">
+                            揭示知识间的内在联系，帮助你构建完整的认知体系，理解而非记忆
+                        </p>
+                    </div>
+                    
+                    <!-- 特性卡片 3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="feature-title">思维启发</h3>
+                        <p class="feature-description">
+                            提供多角度的思考视角，激发创造性思维，培养解决复杂问题的能力
+                        </p>
+                    </div>
+                    
+                    <!-- 特性卡片 4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <h3 class="feature-title">深度阅读</h3>
+                        <p class="feature-description">
+                            提供专注、沉浸的阅读体验，帮助你深入理解文本，培养专注力和理解力
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 可视化区域 -->
+        <section id="visualization" class="py-20">
+            <div class="container">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="heading-2">知识可视化</h2>
+                    <p class="text-lg text-secondary">
+                        将抽象概念转化为直观图像，帮助你理解复杂知识，发现知识间的联系
+                    </p>
+                </div>
+                
+                <div class="bg-background rounded-xl shadow-lg overflow-hidden border border-border-light">
+                    <img src="https://placehold.co/1200x600/e2e8f0/64748b?text=知识图谱示例" alt="知识图谱示例" class="w-full">
+                </div>
+            </div>
+        </section>
+        
+        <!-- 价格区域 -->
+        <section id="pricing" class="py-20 bg-background-alt">
+            <div class="container">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="heading-2">邀请制试用计划</h2>
+                    <p class="text-lg text-secondary">
+                        「考就完了」目前处于邀请制试用阶段，我们正在寻找志同道合的探索者
+                    </p>
+                </div>
+                
+                <div class="max-w-md mx-auto">
+                    <div class="pricing-card pricing-card-featured">
+                        <div class="pricing-badge">限量</div>
+                        
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">先行者计划</h3>
+                            <div class="pricing-price">
+                                <span class="price">免费</span>
+                                <span class="period">/试用期</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="pricing-features">
+                            <li>完整的AI思维对话功能</li>
+                            <li>知识图谱可视化</li>
+                            <li>深度阅读与理解工具</li>
+                            <li>思维导图与笔记功能</li>
+                            <li>优先获取新功能</li>
+                            <li>参与产品设计与反馈</li>
+                        </ul>
+                        
+                        <button class="invite-btn btn btn-primary btn-block">申请试用资格</button>
+                        
+                        <div class="text-center mt-4 text-sm text-tertiary">
+                            已有邀请码？<a href="#" class="text-primary hover:underline">直接登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 评价区域 -->
+        <section class="py-20">
+            <div class="container">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="heading-2">先行者的声音</h2>
+                    <p class="text-lg text-secondary">
+                        听听已经加入我们的探索者们怎么说
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 评价卡片 1 -->
+                    <div class="testimonial-card">
+                        <p class="testimonial-content">
+                            "「考就完了」改变了我对学习的理解。它不只是帮我解答问题，更引导我思考问题背后的原理，让我真正理解而非简单记忆。"
+                        </p>
+                        
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">L</div>
+                            <div>
+                                <div class="testimonial-name">李明</div>
+                                <div class="testimonial-title">清华大学 计算机系</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 评价卡片 2 -->
+                    <div class="testimonial-card">
+                        <p class="testimonial-content">
+                            "知识图谱功能太棒了！它帮我看到了不同知识点之间的联系，让我对整个学科有了更全面的理解，不再是孤立地记忆每个知识点。"
+                        </p>
+                        
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">Z</div>
+                            <div>
+                                <div class="testimonial-name">张华</div>
+                                <div class="testimonial-title">北京大学 物理系</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 评价卡片 3 -->
+                    <div class="testimonial-card">
+                        <p class="testimonial-content">
+                            "深度阅读功能帮我克服了阅读障碍，让我能够更专注、更深入地理解复杂文本。这不仅提高了我的学习效率，也增强了我的理解力。"
+                        </p>
+                        
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">W</div>
+                            <div>
+                                <div class="testimonial-name">王芳</div>
+                                <div class="testimonial-title">复旦大学 文学院</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 行动召唤区域 -->
+        <section class="py-20 bg-primary-light">
+            <div class="container">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="heading-2">加入知识探索的旅程</h2>
+                    <p class="text-lg text-secondary mb-8">
+                        成为「考就完了」的先行者，与我们一起重新定义学习的方式
+                    </p>
+                    
+                    <button class="invite-btn btn btn-primary btn-lg">申请试用资格</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="py-12 bg-background-alt">
+        <div class="container">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">关于「考就完了」</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-secondary hover:text-primary">我们的故事</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">团队介绍</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">技术博客</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">加入我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">产品</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-secondary hover:text-primary">功能介绍</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">价格方案</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">更新日志</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">路线图</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">支持</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-secondary hover:text-primary">帮助中心</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">使用指南</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">常见问题</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">法律</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-secondary hover:text-primary">服务条款</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">隐私政策</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">安全说明</a></li>
+                        <li><a href="#" class="text-secondary hover:text-primary">知识产权</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-border-light pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm text-tertiary">© 2025 考就完了. 保留所有权利.</p>
+                </div>
+                
+                <div class="flex gap-4">
+                    <a href="#" class="text-tertiary hover:text-primary"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-tertiary hover:text-primary"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-tertiary hover:text-primary"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-tertiary hover:text-primary"><i class="fab fa-weixin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript代码 -->
+    <script>
+        // 移动端菜单
+        document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+        
+        document.getElementById('mobile-menu-close').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+        
+        // 邀请模态框
+        const inviteModal = document.getElementById('invite-modal');
+        const successModal = document.getElementById('success-modal');
+        const inviteButtons = document.querySelectorAll('.invite-btn, .invite-btn-mobile');
+        const inviteModalClose = document.getElementById('invite-modal-close');
+        const successModalClose = document.getElementById('success-modal-close');
+        
+        // 确保模态框初始状态为隐藏
+        inviteModal.classList.add('hidden');
+        successModal.classList.add('hidden');
+        
+        // 点击申请按钮打开模态框
+        inviteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                inviteModal.classList.remove('hidden');
+            });
+        });
+        
+        // 点击关闭按钮关闭模态框
+        inviteModalClose.addEventListener('click', () => {
+            inviteModal.classList.add('hidden');
+        });
+        
+        successModalClose.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+        
+        // 点击模态框外部关闭
+        window.addEventListener('click', (e) => {
+            if (e.target === inviteModal) {
+                inviteModal.classList.add('hidden');
+            }
+            if (e.target === successModal) {
+                successModal.classList.add('hidden');
+            }
+        });
+        
+        // 邀请表单提交
+        document.getElementById('invite-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // 隐藏申请表单
+            inviteModal.classList.add('hidden');
+            
+            // 显示成功提示
+            successModal.classList.remove('hidden');
+            
+            // 清空表单
+            document.getElementById('invite-form').reset();
+        });
+    </script>
+</body>
+</html>
