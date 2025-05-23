@@ -1,0 +1,99 @@
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考就完了 - 启发知识的内在连接</title>
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
+    <!-- 引入字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <!-- 引入图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // 检测暗色模式
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches && 
+             localStorage.getItem('darkMode') !== 'false')) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</head>
+<body class="bg-background text-text-primary">
+    <!-- 页面加载动画 -->
+    <div id="page-loader" class="fixed inset-0 bg-background flex items-center justify-center z-50">
+        <div class="animate-pulse">
+            <svg width="64" height="64" viewBox="0 0 229 229" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-16 h-16">
+                <rect width="229" height="229" rx="39.7031" fill="var(--color-primary)"/>
+                <path d="M105.271 37.296C98.6953 38.0404 89.688 40.1496 84.6757 42.1347C71.9713 47.147 63.1873 52.7796 54.6515 61.365C44.2051 71.8611 36.9596 84.2926 33.4609 97.7662C31.451 105.508 30.7314 111.215 30.5577 120.967L30.4337 127.989L29.4659 130.024C27.1087 135.16 24.3048 144.539 23.1634 151.264C22.6671 154.068 22.6671 154.514 23.1137 155.011C23.4363 155.358 23.3867 155.681 22.8408 157.517C22.3941 159.03 22.1708 160.47 22.0964 162.529C21.8731 167.12 22.6175 169.75 24.801 172.107C25.3469 172.703 25.7439 173.224 25.6943 173.298C25.6199 173.348 24.9251 173.273 24.1063 173.124C22.3445 172.802 20.9053 172.951 20.2602 173.546C20.0121 173.77 19.1684 175.134 18.3992 176.549C17.6548 177.988 16.5382 179.824 15.9178 180.643C12.2703 185.606 12.047 189.179 15.2231 191.983L16.3893 193H114.799C207.13 192.975 213.259 192.95 213.978 192.553C214.871 192.082 215.765 191.065 216.46 189.774C216.807 189.129 216.931 188.385 216.931 186.921C216.931 184.787 216.608 183.918 214.698 180.941C214.251 180.246 213.358 178.459 212.738 176.946C212.092 175.432 211.373 174.018 211.1 173.77C210.852 173.546 210.182 173.298 209.636 173.224C208.693 173.1 205.07 173.497 204.202 173.844C203.954 173.918 204.301 173.373 204.971 172.653C206.683 170.693 207.155 169.204 207.328 165.532C207.427 162.976 207.353 162.132 206.882 160.073C206.584 158.733 206.137 157.244 205.889 156.772C205.517 156.053 205.467 155.507 205.566 153.795C205.839 149.254 203.581 136.45 201.323 129.8C200.777 128.187 200.753 127.865 200.877 122.952C201.249 107.245 197.974 93.151 191.051 80.4713C184.55 68.5609 176.014 59.2311 164.823 51.7622C153.161 43.9957 141.424 39.5789 127.355 37.6434C122.516 36.9735 109.836 36.775 105.271 37.296Z" fill="white"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-md border-b border-border-light z-40">
+        <div class="container mx-auto">
+            <nav class="navbar">
+                <a href="index.html" class="navbar-brand flex items-center gap-2">
+                    <svg width="32" height="32" viewBox="0 0 229 229" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="229" height="229" rx="39.7031" fill="var(--color-primary)"/>
+                        <path d="M105.271 37.296C98.6953 38.0404 89.688 40.1496 84.6757 42.1347C71.9713 47.147 63.1873 52.7796 54.6515 61.365C44.2051 71.8611 36.9596 84.2926 33.4609 97.7662C31.451 105.508 30.7314 111.215 30.5577 120.967L30.4337 127.989L29.4659 130.024C27.1087 135.16 24.3048 144.539 23.1634 151.264C22.6671 154.068 22.6671 154.514 23.1137 155.011C23.4363 155.358 23.3867 155.681 22.8408 157.517C22.3941 159.03 22.1708 160.47 22.0964 162.529C21.8731 167.12 22.6175 169.75 24.801 172.107C25.3469 172.703 25.7439 173.224 25.6943 173.298C25.6199 173.348 24.9251 173.273 24.1063 173.124C22.3445 172.802 20.9053 172.951 20.2602 173.546C20.0121 173.77 19.1684 175.134 18.3992 176.549C17.6548 177.988 16.5382 179.824 15.9178 180.643C12.2703 185.606 12.047 189.179 15.2231 191.983L16.3893 193H114.799C207.13 192.975 213.259 192.95 213.978 192.553C214.871 192.082 215.765 191.065 216.46 189.774C216.807 189.129 216.931 188.385 216.931 186.921C216.931 184.787 216.608 183.918 214.698 180.941C214.251 180.246 213.358 178.459 212.738 176.946C212.092 175.432 211.373 174.018 211.1 173.77C210.852 173.546 210.182 173.298 209.636 173.224C208.693 173.1 205.07 173.497 204.202 173.844C203.954 173.918 204.301 173.373 204.971 172.653C206.683 170.693 207.155 169.204 207.328 165.532C207.427 162.976 207.353 162.132 206.882 160.073C206.584 158.733 206.137 157.244 205.889 156.772C205.517 156.053 205.467 155.507 205.566 153.795C205.839 149.254 203.581 136.45 201.323 129.8C200.777 128.187 200.753 127.865 200.877 122.952C201.249 107.245 197.974 93.151 191.051 80.4713C184.55 68.5609 176.014 59.2311 164.823 51.7622C153.161 43.9957 141.424 39.5789 127.355 37.6434C122.516 36.9735 109.836 36.775 105.271 37.296Z" fill="white"/>
+                    </svg>
+                    <span class="text-lg font-semibold">考就完了</span>
+                </a>
+                
+                <div class="hidden md:flex items-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="#features" class="nav-link">功能</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="visualization.html" class="nav-link">可视化</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#pricing" class="nav-link">价格</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="faq.html" class="nav-link">常见问题</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="ai-chat.html" class="nav-link">AI对话</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-background-alt transition-colors" aria-label="切换主题">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                    
+                    <div class="hidden md:flex items-center gap-3">
+                        <a href="login.html" class="btn btn-secondary">登录</a>
+                        <a href="#invite-modal" id="invite-btn" class="btn btn-primary">申请试用</a>
+                    </div>
+                    
+                    <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-md hover:bg-background-alt transition-colors">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="fixed inset-0 bg-background/80 backdrop-blur-md z-50 hidden">
+        <div class="container mx-auto h-full flex flex-col">
+            <div class="flex justify-end p-4">
+                <button id="mobile-menu-close" class="p-2 rounded-md hover:bg-background-alt transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center gap-8 text-center">
+                <a href="#features" class="text-xl font-medium hover:text-primary transition-colors">功能</a>
+                <a href="visualization.html" class="text-xl font-medium hover:text-primary transition-colors">可视化</a>
+                <a href="#pricing" class="text-xl font-medium hover:text-primary transition-colors">价格</a>
+                <a href="faq.html" class="text-xl font-medium hover:text-primary transition-colors">常见问题</a>
+                <a href="ai-chat.html" class="text-xl font-medium hover:text-primary transition-colors">AI对话</a>
+                <div class="flex flex-col gap-4 mt-8">
+                    <a href="login.html" class="btn btn-secondary">登录</a>
