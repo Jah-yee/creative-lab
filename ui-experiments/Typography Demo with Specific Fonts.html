@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typography Demo</title>
+  <style>
+    /* 方案1: 使用Adobe Fonts (Typekit) 托管的Saol Display - 需要Adobe Fonts订阅 */
+    @import url("https://use.typekit.net/abc123.css"); /* 这里的abc123需替换为您的实际kit ID */
+    
+    /* 方案2: 使用自托管字体文件 - 假设您已购买并上传到服务器 */
+    @font-face {
+      font-family: 'Saol Display';
+      src: url('fonts/SaolDisplay-Regular.woff2') format('woff2'),
+           url('fonts/SaolDisplay-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('fonts/NeueMontreal-Regular.woff2') format('woff2'),
+           url('fonts/NeueMontreal-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    /* 方案3: 使用相似的开源替代字体 */
+    /* Saol Display替代: Cormorant Garamond (优雅的衬线字体) */
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&display=swap');
+    
+    /* Neue Montreal替代: Inter (现代无衬线字体) */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+    
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f2f0;
+      color: #1a1a1a;
+    }
+    
+    .container {
+      text-align: center;
+      max-width: 900px;
+      padding: 40px 20px;
+    }
+    
+    .subtitle {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    
+    .title-top {
+      /* 首选Saol Display，备选Cormorant Garamond */
+      font-family: "Saol Display", "Cormorant Garamond", Georgia, Cambria, "Times New Roman", Times, serif;
+      font-size: 88px;
+      line-height: 88px;
+      font-weight: 400;
+      font-style: normal;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .title-bottom {
+      /* 首选Neue Montreal，备选Inter */
+      font-family: "Neue Montreal", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      font-size: 88px;
+      line-height: 88px;
+      font-weight: 400;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* 添加媒体查询以确保在小屏幕上的可读性 */
+    @media (max-width: 768px) {
+      .title-top, .title-bottom {
+        font-size: 60px;
+        line-height: 60px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .title-top, .title-bottom {
+        font-size: 40px;
+        line-height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="subtitle">A movement-based experimental installation</div>
+    <div class="title-top">At the limits of the</div>
+    <div class="title-bottom">intelligent's frontier burns the divine flame.</div>
+  </div>
+  
+  <!-- 添加字体加载检测 -->
+  <script>
+    // 检测主要字体是否加载成功
+    document.fonts.ready.then(function() {
+      console.log("Saol Display loaded: " + document.fonts.check('1em "Saol Display"'));
+      console.log("Neue Montreal loaded: " + document.fonts.check('1em "Neue Montreal"'));
+      console.log("Cormorant Garamond loaded: " + document.fonts.check('1em "Cormorant Garamond"'));
+      console.log("Inter loaded: " + document.fonts.check('1em "Inter"'));
+    });
+  </script>
+</body>
+</html>

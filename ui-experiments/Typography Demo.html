@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typography Demo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+    
+    /* 由于Saol Display和Neue Montreal可能不是免费网络字体，这里使用备用字体 */
+    @font-face {
+      font-family: 'Saol Display';
+      src: url('https://cdn.jsdelivr.net/npm/@fontsource/saol-display@4.5.0/files/saol-display-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('https://cdn.jsdelivr.net/npm/@fontsource/neue-montreal@4.5.0/files/neue-montreal-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f2f0;
+      color: #1a1a1a;
+    }
+    
+    .container {
+      text-align: center;
+      max-width: 900px;
+      padding: 40px 20px;
+    }
+    
+    .subtitle {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    
+    .title-top {
+      font-family: "Saol Display", Georgia, Cambria, "Times New Roman", Times, serif;
+      font-size: 88px;
+      line-height: 88px;
+      font-weight: 400;
+      font-style: normal;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .title-bottom {
+      font-family: "Neue Montreal", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      font-size: 88px;
+      line-height: 88px;
+      font-weight: 400;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* 确保字体加载失败时有备用方案 */
+    .fallback-saol {
+      font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      font-style: italic;
+    }
+    
+    .fallback-neue {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="subtitle">A movement-based experimental installation</div>
+    <div class="title-top">At the limits of the</div>
+    <div class="title-bottom">intelligent's frontier burns the divine flame.</div>
+  </div>
+  
+  <!-- 字体加载失败的备用方案 -->
+  <script>
+    document.fonts.ready.then(function() {
+      if (!document.fonts.check('1em "Saol Display"')) {
+        document.querySelector('.title-top').classList.add('fallback-saol');
+      }
+      if (!document.fonts.check('1em "Neue Montreal"')) {
+        document.querySelector('.title-bottom').classList.add('fallback-neue');
+      }
+    });
+  </script>
+</body>
+</html>
