@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark Lab Residency Beta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #e8e4e1;
+            background-image: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255,255,255,.03) 2px,
+                    rgba(255,255,255,.03) 4px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255,255,255,.03) 2px,
+                    rgba(255,255,255,.03) 4px
+                );
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        
+        .poster {
+            width: 600px;
+            max-width: 90vw;
+            text-align: center;
+            color: #1a1a1a;
+        }
+        
+        .title-section {
+            margin-bottom: 40px;
+        }
+        
+        .spark-lab {
+            font-size: 48px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: -5px;
+            text-transform: uppercase;
+        }
+        
+        .residency {
+            font-size: 84px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        
+        .beta {
+            font-size: 72px;
+            margin-top: -10px;
+        }
+        
+        .beta .in {
+            font-style: italic;
+            color: #4A90E2;
+            margin-right: 8px;
+        }
+        
+        .beta-text {
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #1a1a1a;
+            margin: 45px 0;
+        }
+        
+        .schedule {
+            margin-bottom: 50px;
+        }
+        
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 25px;
+            font-size: 22px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .schedule-label {
+            font-style: italic;
+            font-weight: 400;
+        }
+        
+        .schedule-date {
+            font-style: normal;
+            font-weight: 400;
+        }
+        
+        .building-container {
+            margin: 60px auto;
+            width: 400px;
+            max-width: 80%;
+            height: 250px;
+            background-color: #1a1a1a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .building-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .footer-text {
+            font-style: italic;
+            font-size: 20px;
+            letter-spacing: 1px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="title-section">
+            <div class="spark-lab">Spark Lab</div>
+            <div class="residency">Residency</div>
+            <div class="beta">
+                <span class="in">in</span><span class="beta-text">BETA</span>
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="schedule">
+            <div class="schedule-item">
+                <span class="schedule-label">Pre-hack</span>
+                <span class="schedule-date">8.11 - 8.12</span>
+            </div>
+            <div class="schedule-item">
+                <span class="schedule-label">6 weeks</span>
+                <span class="schedule-date">从十月份</span>
+            </div>
+        </div>
+        
+        <div class="building-container">
+            <svg class="building-svg" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background -->
+                <rect width="400" height="250" fill="#222"/>
+                
+                <!-- Grid pattern -->
+                <defs>
+                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#333" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                
+                <!-- Main structure -->
+                <rect x="50" y="30" width="300" height="190" fill="none" stroke="#ddd" stroke-width="3"/>
+                
+                <!-- Inner courtyards -->
+                <rect x="80" y="60" width="80" height="60" fill="#333"/>
+                <rect x="170" y="60" width="60" height="60" fill="#333"/>
+                <rect x="240" y="60" width="80" height="60" fill="#333"/>
+                <rect x="80" y="130" width="80" height="60" fill="#333"/>
+                <rect x="240" y="130" width="80" height="60" fill="#333"/>
+                
+                <!-- Central building -->
+                <rect x="170" y="130" width="60" height="60" fill="#555"/>
+                <rect x="185" y="145" width="30" height="30" fill="#333"/>
+                
+                <!-- Paths -->
+                <line x1="200" y1="30" x2="200" y2="60" stroke="#bbb" stroke-width="2"/>
+                <line x1="200" y1="190" x2="200" y2="220" stroke="#bbb" stroke-width="2"/>
+                <line x1="50" y1="125" x2="80" y2="125" stroke="#bbb" stroke-width="2"/>
+                <line x1="320" y1="125" x2="350" y2="125" stroke="#bbb" stroke-width="2"/>
+                
+                <!-- Additional details -->
+                <rect x="0" y="220" width="60" height="20" fill="#444"/>
+                <text x="5" y="235" fill="#ddd" font-size="10">SPARK LAB</text>
+            </svg>
+        </div>
+        
+        <div class="footer-text">TELL YOU MORE NEXT WEEK</div>
+    </div>
+</body>
+</html>
