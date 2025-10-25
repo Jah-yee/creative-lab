@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>楼层导视 Floor Directory</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        .directory-container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .floor-section {
+            margin-bottom: 45px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 40px;
+            align-items: start;
+            transition: all 0.3s ease;
+        }
+        
+        .floor-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .floor-section:hover {
+            transform: translateX(5px);
+        }
+        
+        .floor-number {
+            font-size: 56px;
+            font-weight: 700;
+            color: #FFB800;
+            text-shadow: 0 0 20px rgba(255, 184, 0, 0.3);
+            letter-spacing: -1px;
+            line-height: 1;
+            position: relative;
+        }
+        
+        .floor-number::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(180deg, 
+                rgba(255, 184, 0, 0) 0%, 
+                rgba(255, 184, 0, 0.5) 50%, 
+                rgba(255, 184, 0, 0) 100%);
+        }
+        
+        .floor-content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding-top: 8px;
+        }
+        
+        .space-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .space-en {
+            font-size: 20px;
+            font-weight: 500;
+            color: #E8E8E8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .space-cn {
+            font-size: 18px;
+            font-weight: 400;
+            color: #B8B8B8;
+            text-align: right;
+            letter-spacing: 1px;
+        }
+        
+        .separator {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                rgba(255, 184, 0, 0) 0%, 
+                rgba(255, 184, 0, 0.3) 50%, 
+                rgba(255, 184, 0, 0) 100%);
+            margin: 8px 0;
+        }
+        
+        /* 特殊标注样式 */
+        .note {
+            font-size: 14px;
+            color: #888;
+            margin-left: 8px;
+            font-weight: 400;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .directory-container {
+                padding: 40px 30px;
+            }
+            
+            .floor-section {
+                grid-template-columns: 100px 1fr;
+                gap: 25px;
+                margin-bottom: 35px;
+                padding-bottom: 25px;
+            }
+            
+            .floor-number {
+                font-size: 42px;
+            }
+            
+            .space-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .space-cn {
+                text-align: left;
+            }
+            
+            .space-en {
+                font-size: 18px;
+            }
+            
+            .space-cn {
+                font-size: 16px;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .floor-section {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .floor-section:nth-child(1) { animation-delay: 0.1s; }
+        .floor-section:nth-child(2) { animation-delay: 0.2s; }
+        .floor-section:nth-child(3) { animation-delay: 0.3s; }
+        .floor-section:nth-child(4) { animation-delay: 0.4s; }
+        .floor-section:nth-child(5) { animation-delay: 0.5s; }
+        .floor-section:nth-child(6) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <div class="directory-container">
+        
+        <!-- 5F -->
+        <div class="floor-section">
+            <div class="floor-number">5F</div>
+            <div class="floor-content">
+                <div class="space-item">
+                    <div class="space-en">HUB</div>
+                    <div class="space-cn">工作区</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">POD</div>
+                    <div class="space-cn">静音舱</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">MEET</div>
+                    <div class="space-cn">会议室</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 4.5F -->
+        <div class="floor-section">
+            <div class="floor-number">4.5F</div>
+            <div class="floor-content">
+                <div class="space-item">
+                    <div class="space-en">HARDWARE STUDIO</div>
+                    <div class="space-cn">硬件工作室</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 3F -->
+        <div class="floor-section">
+            <div class="floor-number">3F</div>
+            <div class="floor-content">
+                <div class="space-item">
+                    <div class="space-en">GYM</div>
+                    <div class="space-cn">健身房</div>
+                </div>
+                <div class="separator"></div>
+                <div class="space-item">
+                    <div class="space-en">ROOM A <span class="note">(Male)</span></div>
+                    <div class="space-cn">男生房间</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">ROOM B <span class="note">(Female)</span></div>
+                    <div class="space-cn">女生房间</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2.5F -->
+        <div class="floor-section">
+            <div class="floor-number">2.5F</div>
+            <div class="floor-content">
+                <div class="space-item">
+                    <div class="space-en">BUFFER</div>
+                    <div class="space-cn">休息室</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2F -->
+        <div class="floor-section">
+            <div class="floor-number">2F</div>
+            <div class="floor-content">
+                <div class="space-item">
+                    <div class="space-en">STUDY</div>
+                    <div class="space-cn">书房</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">DINING</div>
+                    <div class="space-cn">餐厅</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">KITCHEN</div>
+                    <div class="space-cn">厨房</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">LAUNDRY</div>
+                    <div class="space-cn">洗衣房</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 1F -->
+        <div class="floor-section">
+            <div class="floor-number">1F</div>
+            <div class="floor-content">
+                <div class="space-item">
+                    <div class="space-en">YARD</div>
+                    <div class="space-cn">外庭</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">BAR</div>
+                    <div class="space-cn">水吧</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">COMMONS</div>
+                    <div class="space-cn">大厅</div>
+                </div>
+                <div class="space-item">
+                    <div class="space-en">GARAGE</div>
+                    <div class="space-cn">车库</div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
