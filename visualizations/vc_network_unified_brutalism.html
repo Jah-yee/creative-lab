@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VC Network Effect Business</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 30px;
+            border-bottom: 4px solid #010101;
+        }
+        
+        .main-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: #010101;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+        
+        .subtitle {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* MAIN DIAGRAM */
+        .diagram-wrapper {
+            position: relative;
+            width: 100%;
+            margin: 80px auto;
+        }
+        
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 1000px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* CENTER CIRCLES */
+        .circles-core {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 550px;
+        }
+        
+        /* Marketing Circle - Left overlapping */
+        .circle-marketing {
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 4px solid #d32f2f;
+            border-radius: 50%;
+            left: 60px;
+            top: 65px;
+            background: rgba(211, 47, 47, 0.03);
+        }
+        
+        /* Platform Circle - Right overlapping */
+        .circle-platform {
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 4px dashed #1976d2;
+            border-radius: 50%;
+            right: 60px;
+            top: 65px;
+            background: rgba(25, 118, 210, 0.03);
+        }
+        
+        /* CIRCLE LABELS - Brutalism boxes */
+        .circle-label {
+            position: absolute;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            padding: 8px 20px;
+            background: white;
+            border: 3px solid #010101;
+            box-shadow: 5px 5px 0px #010101;
+            z-index: 25;
+        }
+        
+        .label-marketing {
+            color: #d32f2f;
+            top: 30px;
+            left: 150px;
+        }
+        
+        .label-platform {
+            color: #1976d2;
+            top: 30px;
+            right: 150px;
+        }
+        
+        .label-ecosystem {
+            color: #2e7d32;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 26px;
+        }
+        
+        /* SMALL CIRCLES inside Platform (6 circles) */
+        .small-circle {
+            position: absolute;
+            background: white;
+            border: 2px solid #010101;
+            border-radius: 50%;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.2;
+            box-shadow: 3px 3px 0px #010101;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sc-skills {
+            width: 85px;
+            height: 85px;
+            top: 90px;
+            right: 150px;
+        }
+        
+        .sc-raising {
+            width: 80px;
+            height: 80px;
+            top: 190px;
+            right: 75px;
+        }
+        
+        .sc-connect {
+            width: 90px;
+            height: 90px;
+            bottom: 135px;
+            right: 80px;
+        }
+        
+        .sc-brand {
+            width: 75px;
+            height: 75px;
+            top: 140px;
+            right: 270px;
+        }
+        
+        .sc-hiring {
+            width: 75px;
+            height: 75px;
+            top: 240px;
+            right: 230px;
+        }
+        
+        .sc-founder {
+            width: 90px;
+            height: 90px;
+            bottom: 165px;
+            right: 210px;
+        }
+        
+        /* MARKETING COMPONENTS (text only, no boxes) */
+        .marketing-text {
+            position: absolute;
+            z-index: 20;
+            max-width: 140px;
+        }
+        
+        .mc-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #010101;
+            text-decoration: underline;
+            margin-bottom: 4px;
+        }
+        
+        .mc-desc {
+            font-size: 9px;
+            font-weight: 400;
+            line-height: 1.3;
+            color: #333;
+        }
+        
+        .mt-distribution {
+            top: 150px;
+            left: 150px;
+        }
+        
+        .mt-talent {
+            bottom: 180px;
+            left: 140px;
+        }
+        
+        /* ECOSYSTEM COMPONENTS (oval shapes) */
+        .eco-oval {
+            position: absolute;
+            background: white;
+            border: 2px solid #010101;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 3px 3px 0px #010101;
+            z-index: 20;
+        }
+        
+        .eco-product {
+            bottom: 110px;
+            left: 260px;
+        }
+        
+        .eco-onboarding {
+            bottom: 110px;
+            right: 280px;
+        }
+        
+        /* SMALL ANNOTATIONS (no boxes, pure text) */
+        .anno {
+            position: absolute;
+            font-size: 9px;
+            font-weight: 500;
+            color: #666;
+            font-style: italic;
+            z-index: 21;
+        }
+        
+        /* TIMELINE BOXES - Unified white boxes */
+        .timeline-box {
+            position: absolute;
+            background: white;
+            border: 3px solid #010101;
+            padding: 16px;
+            max-width: 220px;
+            box-shadow: 6px 6px 0px #010101;
+            z-index: 15;
+        }
+        
+        .timeline-box:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px #010101;
+            transition: all 0.15s ease;
+        }
+        
+        .tb-period {
+            font-size: 12px;
+            font-weight: 700;
+            color: #010101;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tb-period::before {
+            content: "✻";
+            margin-right: 6px;
+            font-size: 10px;
+        }
+        
+        .tb-title {
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .tb-content {
+            font-size: 10px;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        .tb-tag {
+            display: inline-block;
+            font-size: 8px;
+            font-weight: 600;
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+            margin-right: 6px;
+        }
+        
+        /* LEFT SIDE BOXES (7 boxes) */
+        .box-1 { top: 20px; left: 0; }
+        .box-2 { top: 120px; left: 100px; }
+        .box-3 { top: 250px; left: 60px; }
+        .box-4 { top: 380px; left: 110px; }
+        .box-5 { top: 510px; left: 70px; }
+        .box-6 { bottom: 180px; left: 20px; }
+        .box-7 { bottom: 20px; left: 80px; }
+        
+        /* RIGHT SIDE BOXES (4 boxes) */
+        .box-8 { top: 20px; right: 0; }
+        .box-9 { top: 180px; right: 70px; max-width: 200px; }
+        .box-10 { top: 340px; right: 50px; max-width: 200px; }
+        .box-11 { bottom: 180px; right: 20px; }
+        .box-12 { bottom: 20px; right: 80px; }
+        
+        /* TOP BOX - Alumni (dashed border) */
+        .box-alumni {
+            position: absolute;
+            top: -110px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 3px dashed #010101;
+            padding: 16px 24px;
+            max-width: 340px;
+            box-shadow: 6px 6px 0px rgba(1, 1, 1, 0.15);
+            text-align: center;
+            z-index: 15;
+        }
+        
+        /* BOTTOM BOX - Invests (black background) */
+        .box-invests {
+            position: absolute;
+            bottom: -130px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #010101;
+            color: white;
+            border: 4px solid #010101;
+            padding: 24px 40px;
+            box-shadow: 8px 8px 0px rgba(1, 1, 1, 0.35);
+            text-align: center;
+            z-index: 15;
+        }
+        
+        .invests-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -1px;
+        }
+        
+        .invests-subtitle {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.95;
+            margin-bottom: 14px;
+        }
+        
+        .day-zero-box {
+            background: white;
+            color: #010101;
+            border: 2px solid #010101;
+            padding: 12px 16px;
+            margin-top: 12px;
+            font-size: 9px;
+            line-height: 1.5;
+            text-align: left;
+        }
+        
+        .dz-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        /* Early stage small box */
+        .box-early {
+            position: absolute;
+            bottom: -85px;
+            left: 30%;
+            background: white;
+            border: 2px solid #010101;
+            padding: 10px 14px;
+            max-width: 180px;
+            font-size: 9px;
+            box-shadow: 3px 3px 0px #010101;
+            z-index: 14;
+        }
+        
+        /* SVG CONNECTING LINES */
+        .connect-line {
+            stroke: #010101;
+            stroke-width: 2;
+            stroke-dasharray: 5, 4;
+            fill: none;
+            opacity: 0.6;
+        }
+        
+        /* ARROWS */
+        .arrow {
+            position: absolute;
+            font-size: 22px;
+            color: #010101;
+            z-index: 5;
+            font-weight: 300;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 1400px) {
+            .diagram-container {
+                transform: scale(0.9);
+                transform-origin: center;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .diagram-container {
+                transform: scale(0.75);
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .diagram-container {
+                transform: scale(0.6);
+                height: 850px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 36px;
+            }
+            .diagram-container {
+                transform: scale(0.45);
+                height: 700px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1 class="main-title">Turning VC into a Network Effect Business*</h1>
+            <p class="subtitle">Strategic Framework & Architecture</p>
+        </header>
+        
+        <!-- MAIN DIAGRAM -->
+        <div class="diagram-wrapper">
+            <div class="diagram-container">
+                
+                <!-- CENTER CIRCLES STRUCTURE -->
+                <div class="circles-core">
+                    <!-- Marketing Circle (Left) -->
+                    <div class="circle-marketing"></div>
+                    
+                    <!-- Platform Circle (Right) with 6 small circles inside -->
+                    <div class="circle-platform">
+                        <div class="small-circle sc-skills">Skills/<br>Knowledge</div>
+                        <div class="small-circle sc-raising">Raising<br>next<br>round</div>
+                        <div class="small-circle sc-connect">Connect<br>with<br>customers</div>
+                        <div class="small-circle sc-brand">Brand<br>&<br>Comms</div>
+                        <div class="small-circle sc-hiring">Hiring<br>&<br>talent</div>
+                        <div class="small-circle sc-founder">Founder<br>p2p<br>relationships</div>
+                    </div>
+                    
+                    <!-- Circle Labels -->
+                    <div class="circle-label label-marketing">"Marketing"</div>
+                    <div class="circle-label label-platform">"Platform"</div>
+                    <div class="circle-label label-ecosystem">"Ecosystem"</div>
+                    
+                    <!-- Marketing Components (text only) -->
+                    <div class="marketing-text mt-distribution">
+                        <div class="mc-title">Distribution Channels</div>
+                        <div class="mc-desc">Owned & earned media. Podcasters, substackers, niche publications.</div>
+                    </div>
+                    
+                    <div class="marketing-text mt-talent">
+                        <div class="mc-title">Talent network</div>
+                        <div class="mc-desc">Under the radar operator, exec, technical talent.</div>
+                    </div>
+                    
+                    <!-- Ecosystem Components (ovals) -->
+                    <div class="eco-oval eco-product">Product + data<br>engine</div>
+                    <div class="eco-oval eco-onboarding">Onboarding</div>
+                    
+                    <!-- Small Annotations -->
+                    <div class="anno" style="top: 85px; left: 250px;">subscriptions</div>
+                    <div class="anno" style="top: 5px; left: 120px;">content</div>
+                    <div class="anno" style="top: 280px; left: 50px;">engagement</div>
+                    <div class="anno" style="top: 410px; left: 110px;">invitations</div>
+                    <div class="anno" style="bottom: 490px; left: 80px;">connections</div>
+                    <div class="anno" style="top: 210px; right: 85px;">guests</div>
+                    <div class="anno" style="bottom: 490px; left: 105px; font-weight: 400;">*1:1s*</div>
+                    <div class="anno" style="bottom: 105px; left: 305px;">investments</div>
+                    <div class="anno" style="bottom: 155px; right: 250px; font-size: 10px; color: #1976d2;">("Forward Deployed<br>Networks")</div>
+                </div>
+                
+                <!-- SVG CONNECTION LINES -->
+                <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0; pointer-events: none; z-index: 2;">
+                    <!-- Left side connections -->
+                    <path class="connect-line" d="M 220 70 L 350 140 L 450 220" />
+                    <path class="connect-line" d="M 320 170 L 400 230 L 470 300" />
+                    <path class="connect-line" d="M 280 300 L 370 340 L 460 390" />
+                    <path class="connect-line" d="M 330 430 L 420 470 L 500 510" />
+                    <path class="connect-line" d="M 290 560 L 390 550 L 490 530" />
+                    <path class="connect-line" d="M 240 770 L 370 710 L 510 640" />
+                    <path class="connect-line" d="M 300 930 L 450 860 L 580 780" />
+                    
+                    <!-- Right side connections -->
+                    <path class="connect-line" d="M 1180 70 L 1050 140 L 950 220" />
+                    <path class="connect-line" d="M 1110 230 L 1000 290 L 920 360" />
+                    <path class="connect-line" d="M 1130 390 L 1020 430 L 940 480" />
+                    <path class="connect-line" d="M 1160 770 L 1030 710 L 890 640" />
+                    <path class="connect-line" d="M 1120 930 L 970 860 L 820 780" />
+                    
+                    <!-- Top connection -->
+                    <path class="connect-line" d="M 700 -60 L 700 60 L 700 180" />
+                    
+                    <!-- Bottom connections -->
+                    <path class="connect-line" d="M 700 1130 L 700 1020 L 700 880" />
+                    <path class="connect-line" d="M 540 1090 L 620 990 L 680 880" />
+                </svg>
+                
+                <!-- ARROWS -->
+                <div class="arrow" style="top: 190px; left: 420px; transform: rotate(-35deg);">→</div>
+                <div class="arrow" style="top: 270px; left: 440px; transform: rotate(-40deg);">→</div>
+                <div class="arrow" style="top: 460px; left: 470px; transform: rotate(-25deg);">→</div>
+                <div class="arrow" style="bottom: 390px; left: 470px; transform: rotate(-50deg);">→</div>
+                <div class="arrow" style="bottom: 200px; left: 490px; transform: rotate(-120deg);">→</div>
+                
+                <div class="arrow" style="top: 190px; right: 420px; transform: rotate(35deg);">→</div>
+                <div class="arrow" style="top: 330px; right: 430px; transform: rotate(45deg);">→</div>
+                <div class="arrow" style="bottom: 200px; right: 490px; transform: rotate(120deg);">→</div>
+                
+                <div class="arrow" style="top: 150px; left: 50%; transform: translateX(-50%) rotate(-90deg);">→</div>
+                <div class="arrow" style="bottom: 150px; left: 50%; transform: translateX(-50%) rotate(90deg);">→</div>
+                
+                <!-- LEFT TIMELINE BOXES -->
+                <div class="timeline-box box-1">
+                    <div class="tb-title">Founder Journey / Talent Cycle:</div>
+                    <div class="tb-period">~5 years+</div>
+                    <div class="tb-content">Inspire potential paths. Expose to opportunities. Drive overall engagement and firm reputation.</div>
+                </div>
+                
+                <div class="timeline-box box-2">
+                    <div class="tb-title">Owned Media</div>
+                    <div class="tb-content">Ben & Marc Show; Turpentine Network; a16z podcasts & newsletters.</div>
+                    <span class="tb-tag">content</span>
+                </div>
+                
+                <div class="timeline-box box-3">
+                    <div class="tb-title">Earned Media</div>
+                    <div class="tb-content">Be everywhere. Help our founders & GPs get visibility, earn credibility, go viral.</div>
+                    <span class="tb-tag">engagement</span>
+                </div>
+                
+                <div class="timeline-box box-4">
+                    <div class="tb-title">Outbound</div>
+                    <div class="tb-content">Identify, pull interesting people into our orbit.</div>
+                    <span class="tb-tag">invitations</span>
+                </div>
+                
+                <div class="timeline-box box-5">
+                    <div class="tb-title">Events & group chats</div>
+                    <div class="tb-content">tightly curated chats, dinners around specific stages, themes. Founder retreats & gatherings.</div>
+                    <span class="tb-tag">connections</span>
+                    <span class="tb-tag">*1:1s*</span>
+                    <span class="tb-tag">applications</span>
+                </div>
+                
+                <div class="timeline-box box-6">
+                    <div class="tb-period">~1 to 3 years</div>
+                    <div class="tb-title">Build relationships</div>
+                    <div class="tb-content">Earn trust and create value. Pay it forward. Build talent pipeline.</div>
+                </div>
+                
+                <div class="timeline-box box-7">
+                    <div class="tb-period">~0 to 6 months</div>
+                    <div class="tb-content">Add specific value, deepen trust. Learn from early Founder traction to provide better support.</div>
+                </div>
+                
+                <!-- RIGHT TIMELINE BOXES -->
+                <div class="timeline-box box-8">
+                    <div class="tb-period">+2-5 years+</div>
+                    <div class="tb-title">Compound winners</div>
+                    <div class="tb-content">HIGH signal. Earn the right to lead next round, keep investing over time. Targeted Support.</div>
+                </div>
+                
+                <div class="timeline-box box-9">
+                    <div class="tb-title">Expert Networks</div>
+                    <div class="tb-content">Who is at the "frontier" of this field/subject? get together, compare notes.</div>
+                </div>
+                
+                <div class="timeline-box box-10">
+                    <div class="tb-title">Co-investor Community</div>
+                    <div class="tb-content">who else would add value on the cap table, next round!</div>
+                </div>
+                
+                <div class="timeline-box box-11">
+                    <div class="tb-period">+0 to 3 years</div>
+                    <div class="tb-title">Customer Network</div>
+                    <div class="tb-content">Catalyze "Preferential Attachment" for co's we back; Open doors and compound growth; unfair advantage. Relationships with executives at Fortune 1000+ companies.</div>
+                </div>
+                
+                <div class="timeline-box box-12">
+                    <div class="tb-period">+0 to 6 months</div>
+                    <div class="tb-title">Hospitality mindset</div>
+                    <div class="tb-content">Deeply understand company/Founder needs, immediate + future. Look for quick wins.</div>
+                </div>
+                
+                <!-- TOP BOX - Alumni -->
+                <div class="box-alumni">
+                    <div class="tb-period">5-10+ years</div>
+                    <div class="tb-content" style="font-size: 10px; text-align: center; line-height: 1.6; margin-top: 8px;">
+                        post-exit/wind-down, happy leavers join company alumni, go on to start new startups. Stay connected to the ecosystem.
+                    </div>
+                    <span class="tb-tag">content</span>
+                </div>
+                
+                <!-- BOTTOM BOX - Invests -->
+                <div class="box-invests">
+                    <div class="invests-title">$$!</div>
+                    <div class="invests-subtitle">an a16z fund</div>
+                    <div style="font-size: 26px; font-weight: 800; margin: 6px 0;">Invests!</div>
+                    
+                    <div class="day-zero-box">
+                        <div class="dz-title">'Day 0'</div>
+                        Activate networks to help us win competitive allocations. Make the choice feel "obvious" for Founders.
+                    </div>
+                </div>
+                
+                <!-- Early stage box -->
+                <div class="box-early">
+                    <div class="tb-title" style="font-size: 10px;">Early stage communities & accelerators</div>
+                    <div class="tb-content">Scouts, Emerging Managers</div>
+                    <span class="tb-tag">investments</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <footer style="margin-top: 80px; padding-top: 30px; border-top: 3px solid #010101; text-align: center;">
+            <div style="font-size: 11px; color: #666; line-height: 1.8;">
+                <strong>Design System:</strong> Digital Brutalism · Unified White Boxes · Inter Typography<br>
+                <strong>Structure:</strong> Two Overlapping Circles + Platform Internal Network<br>
+                <strong>Source:</strong> a16z network effect business model
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
