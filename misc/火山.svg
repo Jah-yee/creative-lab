@@ -1,0 +1,95 @@
+<svg width="512" height="512" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 背景渐变圆 -->
+    <radialGradient id="bgGrad" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FFE28A"/>
+      <stop offset="40%" stop-color="#FFC54E"/>
+      <stop offset="100%" stop-color="#FF9C3A"/>
+    </radialGradient>
+
+    <!-- 火山山体渐变 -->
+    <linearGradient id="mountainGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6B4A3A"/>
+      <stop offset="45%" stop-color="#4F382C"/>
+      <stop offset="100%" stop-color="#3A2921"/>
+    </linearGradient>
+
+    <!-- 岩浆渐变 -->
+    <linearGradient id="lavaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFD7A"/>
+      <stop offset="35%" stop-color="#FFDD4A"/>
+      <stop offset="70%" stop-color="#FF6A2A"/>
+      <stop offset="100%" stop-color="#D8291A"/>
+    </linearGradient>
+
+    <!-- 烟雾渐变 -->
+    <radialGradient id="smokeGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="40%" stop-color="#D9DDE5" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#9FA7B6" stop-opacity="0.9"/>
+    </radialGradient>
+
+    <!-- 地面 -->
+    <linearGradient id="groundGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3C7C3A"/>
+      <stop offset="50%" stop-color="#2F6A31"/>
+      <stop offset="100%" stop-color="#28552A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 背景圆 -->
+  <circle cx="64" cy="64" r="60" fill="url(#bgGrad)"/>
+
+  <!-- 烟雾 -->
+  <g transform="translate(0,-6)">
+    <ellipse cx="64" cy="26" rx="20" ry="10" fill="url(#smokeGrad)"/>
+    <ellipse cx="52" cy="30" rx="12" ry="8" fill="url(#smokeGrad)" opacity="0.85"/>
+    <ellipse cx="76" cy="30" rx="13" ry="8" fill="url(#smokeGrad)" opacity="0.85"/>
+    <ellipse cx="64" cy="36" rx="18" ry="9" fill="url(#smokeGrad)" opacity="0.9"/>
+  </g>
+
+  <!-- 地面 -->
+  <path d="M12 90 Q64 82 116 90 L116 104 Q64 112 12 104 Z" fill="url(#groundGrad)"/>
+
+  <!-- 山体 -->
+  <path d="M34 90 
+           L56 40 
+           Q64 34 72 40 
+           L94 90 
+           Q64 84 34 90 Z"
+        fill="url(#mountainGrad)"/>
+
+  <!-- 山体高光 -->
+  <path d="M56 40 
+           Q64 36 72 40 
+           L82 78 
+           Q70 74 60 76 
+           L50 78 Z"
+        fill="#5A4033" opacity="0.85"/>
+
+  <!-- 岩浆从山顶流出 -->
+  <path d="M58 42 
+           Q64 38 70 42 
+           Q68 48 70 56 
+           Q66 60 63 58 
+           Q60 62 57 60 
+           Q58 52 58 42 Z"
+        fill="url(#lavaGrad)"/>
+
+  <!-- 山顶缺口（火山口） -->
+  <path d="M54 42 
+           Q64 36 74 42 
+           Q72 44 64 46 
+           Q56 44 54 42 Z"
+        fill="#2B201B" opacity="0.9"/>
+
+  <!-- 喷出的岩浆块 -->
+  <circle cx="54" cy="30" r="3" fill="#FF7A2A"/>
+  <circle cx="73" cy="26" r="3.2" fill="#FF9C2A"/>
+  <circle cx="64" cy="22" r="2.6" fill="#FFD24A"/>
+
+  <!-- 小岩浆碎屑 -->
+  <circle cx="47" cy="34" r="1.6" fill="#FF7A2A"/>
+  <circle cx="80" cy="32" r="1.8" fill="#FF7A2A"/>
+  <circle cx="68" cy="18" r="1.4" fill="#FF7A2A"/>
+</svg>
