@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CES 2026: Letter of Invitation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f6f8fc;
+      color: #202124;
+      line-height: 1.6;
+      padding: 24px;
+    }
+
+    .email-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+    }
+
+    .email-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .email-subject {
+      font-size: 20px;
+      font-weight: 400;
+      color: #202124;
+      margin-bottom: 16px;
+    }
+
+    .sender-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .sender-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00bcd4 0%, #1565c0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    
+    .sender-details { flex: 1; }
+    .sender-name { font-weight: 600; color: #202124; }
+    .sender-email { font-size: 13px; color: #5f6368; }
+    .email-meta { font-size: 12px; color: #5f6368; text-align: right; white-space: nowrap; }
+
+    .attachment-section {
+      padding: 12px 24px;
+      border-bottom: 1px solid #e0e0e0;
+      background: #f8f9fa;
+    }
+    
+    .attachment-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid #dadce0;
+      border-radius: 16px;
+      font-size: 13px;
+      color: #202124;
+      text-decoration: none;
+    }
+    
+    .attachment-icon { width: 18px; height: 18px; fill: #4285f4; }
+    .attachment-size { color: #5f6368; font-size: 12px; }
+
+    .letter-wrapper { padding: 24px; }
+
+    .letter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .letter-logo { max-width: 200px; height: auto; }
+    .letter-contact { text-align: right; font-size: 13px; color: #444; line-height: 1.7; }
+    .letter-date { color: #333; margin-bottom: 24px; }
+
+    .recipient-block { margin-bottom: 24px; }
+    .recipient-block p { margin: 2px 0; color: #333; }
+    .recipient-block .company { font-weight: 600; }
+
+    .salutation { margin-bottom: 20px; color: #333; }
+
+    .letter-paragraph { margin-bottom: 16px; color: #333; text-align: justify; }
+    .letter-paragraph a { color: #1a0dab; text-decoration: underline; }
+
+    .registrant-info { margin: 24px 0; }
+    .registrant-info p { margin: 4px 0; color: #333; }
+    .registrant-info .label { font-weight: 600; }
+
+    .closing { margin-top: 24px; color: #333; }
+    .signature-block { margin-top: 24px; }
+    .signature-name { font-weight: 600; color: #333; }
+    .signature-title { color: #333; }
+
+    .disclaimer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 12px;
+      color: #666;
+    }
+    .disclaimer strong { font-weight: 600; }
+
+    .email-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 13px;
+      color: #5f6368;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .email-container { border: none; border-radius: 0; max-width: none; }
+      .letter-wrapper { padding: 0; }
+      @page { margin: 2cm; size: A4; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="email-container">
+  
+  <div class="email-header">
+    <h1 class="email-subject">CES 2026: Letter of Invitation</h1>
+    <div class="sender-info">
+      <div class="sender-avatar">C</div>
+      <div class="sender-details">
+        <div class="sender-name">CES Registration</div>
+        <div class="sender-email">&lt;noreply@ces.tech&gt;</div>
+        <div class="sender-email" style="margin-top: 4px;">to me</div>
+      </div>
+      <div class="email-meta">Dec 4, 2025, 9:11 AM</div>
+    </div>
+  </div>
+
+  <div class="attachment-section">
+    <a href="#" class="attachment-item">
+      <svg class="attachment-icon" viewBox="0 0 24 24">
+        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+      </svg>
+      CES_Invitation_Letter.pdf
+      <span class="attachment-size">45 KB</span>
+    </a>
+  </div>
+
+  <div class="letter-wrapper">
+    
+    <div class="letter-header">
+      <img src="ceslogo_clr_rgb.png" alt="CES - Powered by The Consumer Technology Association" class="letter-logo">
+      <div class="letter-contact">
+        1919 S. Eads St.<br>
+        Arlington, VA 22202<br>
+        703-907-7600<br>
+        <strong>CES.tech</strong>
+      </div>
+    </div>
+
+    <p class="letter-date">04/12/2025</p>
+
+    <div class="recipient-block">
+      <p class="company">Spark Lab</p>
+      <p>LIN ZINAN</p>
+      <p>2nd Floor, No. 25-1 Hongcao Road</p>
+      <p>Xuhui District</p>
+      <p>Shanghai, 200233 China</p>
+    </div>
+
+    <p class="salutation">Dear LIN ZINAN,</p>
+
+    <p class="letter-paragraph">
+      Thank you for registering to attend CES® 2026. Your confirmation number is CES26-263849. Please make note of this number if you need to contact CES Customer Service at 703-907-7605.
+    </p>
+
+    <p class="letter-paragraph">
+      The Consumer Technology Association® ("CTA") is pleased to welcome LIN ZINAN from Spark Lab to CES 2026, January 6-9, 2026 in Las Vegas, Nevada, USA. CES is the world's gathering place for all who thrive on the business of consumer technologies. This premier annual tradeshow brings together consumer technology product manufacturers and service suppliers with the highest concentration of buyers, media, and decision-makers in the retail distribution channel. The purpose of CES is for industry affiliates to meet with manufacturers of consumer technology products for potential business opportunities. For additional information about CES, please visit <a href="https://www.ces.tech" target="_blank">www.ces.tech</a>.
+    </p>
+
+    <p class="letter-paragraph">
+      While CTA has no influence or role in the visa process, we do want you to be aware of potential delays in the process. If you have not already done so, please apply for your visa early as it is our hope that you will be granted temporary admittance into the United States to attend CES 2026.
+    </p>
+
+    <div class="registrant-info">
+      <p><span class="label">Registrant Information:</span></p>
+      <p><span class="label">Legal Name:</span> LIN ZINAN</p>
+      <p><span class="label">Title:</span> CTO</p>
+      <p><span class="label">Company:</span> Spark Lab</p>
+      <p><span class="label">Gender:</span> Male</p>
+      <p><span class="label">Mobile Phone:</span> +86 199-2144-7384</p>
+      <p><span class="label">Email:</span> zeeland@sparklab.city</p>
+    </div>
+
+    <p class="closing">Sincerely,</p>
+
+    <div class="signature-block">
+      <p class="signature-name">Karen Chupka</p>
+      <p class="signature-title">Executive Vice President, CES<br>Consumer Technology Association</p>
+    </div>
+
+    <p class="disclaimer">
+      <strong>DISCLAIMER:</strong> <em>This letter is provided solely for the purpose of facilitating visa applications. CTA assumes no responsibility for any person during their attendance at CES. Attendance at CES is subject to CTA's Terms and Conditions.</em>
+    </p>
+  </div>
+
+  <div class="email-footer">zeeland@sparklab.city</div>
+
+</div>
+
+</body>
+</html>
