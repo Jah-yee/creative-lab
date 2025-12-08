@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meet The Startups</title>
+  <style>
+    /* --- Design System Variables --- */
+    :root {
+      --bg: #faf9f3; /* 暖米色背景 */
+      --surface: #FFFFFF;
+      --text: #1A1A1A;
+      --bar: #FA5C21; /* 主题橙色 */
+      --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      
+      --radius-box: 0px; /* 大框直角 */
+      --radius-header: 4px; /* 标题圆角 */
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* 顶部预留空间 (Logo Area) */
+    .top-spacer {
+      height: 120px; /* 为您的Logo留出的高度 */
+      width: 100%;
+      /* border-bottom: 1px dashed #ccc;  可选：辅助线查看区域，发布时可删 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+    }
+
+    /* 主标题 */
+    .main-title {
+      font-size: 48px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin: 0 0 60px 0; /* 下方留出间距 */
+      color: var(--text);
+      text-align: center;
+    }
+
+    .layout-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 70px; /* 框之间的间距加大一点，更透气 */
+      width: 80%;
+      max-width: 800px;
+      padding-bottom: 80px;
+    }
+
+    /* 大框：直角，黑色边框 */
+    .category-box {
+      position: relative;
+      width: 100%;
+      height: 200px; /* 高度稍微加高一点，显得更大气 */
+      background: var(--surface);
+      border: 2px solid var(--text);
+      border-radius: var(--radius-box);
+      box-sizing: border-box;
+    }
+
+    /* 标题小框：圆角 */
+    .category-header {
+      position: absolute;
+      top: -22px; /* 稍微调整位置以适应边框粗细 */
+      left: 50%;
+      transform: translateX(-50%);
+      
+      background-color: var(--bar);
+      color: #000;
+      border: 2px solid var(--text);
+      border-radius: var(--radius-header);
+      
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 10px 40px;
+      white-space: nowrap;
+      z-index: 10;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.05); /* 增加一点点立体感 */
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Logo 预留区域 -->
+  <div class="top-spacer">
+    <!-- (Your Accelerator Logo Goes Here) -->
+  </div>
+
+  <!-- 主标题 -->
+  <h1 class="main-title">Meet The Startups</h1>
+
+  <div class="layout-stack">
+    
+    <!-- Box 1 -->
+    <div class="category-box">
+      <div class="category-header">Hardware, Drones & Robotics</div>
+    </div>
+
+    <!-- Box 2 -->
+    <div class="category-box">
+      <div class="category-header">AI Ecosystems</div>
+    </div>
+
+    <!-- Box 3 -->
+    <div class="category-box">
+      <div class="category-header">Infrastructure</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
