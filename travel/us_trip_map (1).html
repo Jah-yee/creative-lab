@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>US Trip Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <style>
+    body { margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
+    #map { height: 100vh; width: 100vw; }
+    .legend { position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.9); padding:10px 12px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.15); max-width:340px; }
+    .legend h3 { margin:0 0 6px 0; font-size:14px; }
+    .legend p { margin:0; font-size:12px; line-height:1.35; }
+    .tag { display:inline-block; padding:2px 6px; border-radius:999px; font-size:11px; border:1px solid #ddd; margin-right:6px; margin-top:4px; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<div class="legend">
+  <h3>Markers + Fitted Route</h3>
+  <p>Open this file in a browser (internet on) to see the map. Click markers for details.</p>
+  <div style="margin-top:6px;">
+    <span class="tag">P0</span><span class="tag">P1</span><span class="tag">Visit</span><span class="tag">CES</span>
+  </div>
+  <p style="margin-top:8px;"><b>Note:</b> HF0 / Z Fellows are placed at SF center as placeholders because public addresses vary/not public.</p>
+</div>
+
+<script>
+  const locations = [{"priority": "Visit", "name": "A24 (Los Angeles office - address reported as 8321 Beverly Blvd)", "city": "Los Angeles, CA", "address": "8321 Beverly Blvd, Los Angeles, CA 90048", "lat": 34.0763517745919, "lon": -118.370760257972, "notes": "Coords derived from Mapbox static map on PropertyShark page."}, {"priority": "Visit", "name": "Caltech", "city": "Pasadena, CA", "address": "1200 E California Blvd, Pasadena, CA 91125", "lat": 34.1376533, "lon": -118.125282, "notes": "Coords from Bing directions URL."}, {"priority": "CES", "name": "Las Vegas Convention Center (LVCC)", "city": "Las Vegas, NV", "address": "3150 Paradise Rd, Las Vegas, NV 89109", "lat": 36.1311, "lon": -115.1514, "notes": "LVCC address/coords from gps-coordinates.org."}, {"priority": "P0", "name": "South Park Commons (SPC)", "city": "San Francisco, CA", "address": "380 Brannan St, San Francisco, CA 94107", "lat": 37.747964, "lon": -122.394563, "notes": "Coords from Bing maps snippet."}, {"priority": "P0", "name": "Frontier Tower", "city": "San Francisco, CA", "address": "995 Market St, San Francisco, CA 94103", "lat": 37.78208, "lon": -122.409762, "notes": "Coords from Bing maps snippet."}, {"priority": "P0", "name": "Founders, Inc. (Fort Mason Center)", "city": "San Francisco, CA", "address": "2 Marina Blvd, San Francisco, CA 94123", "lat": 37.805999755859375, "lon": -122.42999969482422, "notes": "Coords from Bing maps snippet."}, {"priority": "P0", "name": "AGI House (address reported as 170 St Germain Ave)", "city": "San Francisco, CA", "address": "170 St Germain Ave, San Francisco, CA 94114", "lat": 37.7575534, "lon": -122.4515901, "notes": "Coords from Redfin static map URL (center parameter)."}, {"priority": "P0", "name": "HF0 (SF \u2014 address not public)", "city": "San Francisco, CA", "address": "(not public)", "lat": 37.7749, "lon": -122.4194, "notes": "Placed at SF city center as an approximate placeholder; replace with exact address when confirmed."}, {"priority": "P1", "name": "Z Fellows (SF \u2014 location varies)", "city": "San Francisco, CA", "address": "(varies)", "lat": 37.7749, "lon": -122.4194, "notes": "Placed at SF city center as an approximate placeholder; replace with exact venue when confirmed."}, {"priority": "P0", "name": "a16z (Andreessen Horowitz)", "city": "Menlo Park, CA", "address": "2865 Sand Hill Rd, Menlo Park, CA 94025", "lat": 37.41960144042969, "lon": -122.21410369873047, "notes": "Coords from Bing directions URL."}, {"priority": "Visit", "name": "Stanford University", "city": "Stanford, CA", "address": "450 Jane Stanford Way, Stanford, CA 94305", "lat": 37.42777, "lon": -122.169885, "notes": "Coords from Bing maps snippet."}, {"priority": "P0", "name": "Y Combinator (YC)", "city": "Mountain View, CA", "address": "320 Pioneer Way, Mountain View, CA 94041", "lat": 37.38669, "lon": -122.06791, "notes": "Coords from MapQuest URL pattern."}, {"priority": "Visit", "name": "Googleplex (Google HQ)", "city": "Mountain View, CA", "address": "1600 Amphitheatre Pkwy, Mountain View, CA 94043", "lat": 37.422131, "lon": -122.084801, "notes": "Coords from LatLong.net."}, {"priority": "Visit", "name": "Apple Park", "city": "Cupertino, CA", "address": "1 Apple Park Way, Cupertino, CA 95014", "lat": 37.3325, "lon": -122.008611, "notes": "Coords from Wikipedia."}, {"priority": "Visit", "name": "UC Berkeley (Sproul Hall)", "city": "Berkeley, CA", "address": "110 Sproul Hall, Berkeley, CA 94720", "lat": 37.869565, "lon": -122.2587865, "notes": "Coords from MapLogs elevation page."}];
+
+  const map = L.map('map', { zoomControl: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const bounds = L.latLngBounds([]);
+
+  function popupHtml(l) {
+    const lines = [
+      `<div style="font-size:14px;"><b>${l.name}</b></div>`,
+      `<div style="margin-top:4px;"><b>Priority:</b> ${l.priority}</div>`,
+      `<div><b>City:</b> ${l.city}</div>`,
+      `<div><b>Address:</b> ${l.address}</div>`,
+      `<div style="margin-top:6px; font-size:12px; color:#444;">${l.notes}</div>`
+    ];
+    return lines.join('');
+  }
+
+  // Markers
+  locations.forEach(l => {
+    const m = L.marker([l.lat, l.lon]).addTo(map).bindPopup(popupHtml(l));
+    bounds.extend([l.lat, l.lon]);
+  });
+
+  // Route polyline (macro fitted route)
+  const routeOrder = ["A24 (Los Angeles office - address reported as 8321 Beverly Blvd)", "Caltech", "Las Vegas Convention Center (LVCC)", "South Park Commons (SPC)", "Frontier Tower", "Founders, Inc. (Fort Mason Center)", "AGI House (address reported as 170 St Germain Ave)", "a16z (Andreessen Horowitz)", "Stanford University", "Y Combinator (YC)", "Googleplex (Google HQ)", "Apple Park", "UC Berkeley (Sproul Hall)"];
+  const nameToLoc = new Map(locations.map(l => [l.name, l]));
+  const routeLatLngs = routeOrder.map(n => {
+    const l = nameToLoc.get(n);
+    return [l.lat, l.lon];
+  });
+
+  const routeLine = L.polyline(routeLatLngs, { weight: 4, opacity: 0.9 }).addTo(map);
+  bounds.extend(routeLine.getBounds());
+
+  map.fitBounds(bounds.pad(0.15));
+</script>
+</body>
+</html>
