@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design for Cyborg Education | EDUPUNK</title>
+  <meta name="description" content="Design for Cyborg Education. A minimal manifesto-style personal site." />
+  <style>
+    :root{
+      --bg: #fafafa;
+      --fg: #111;
+      --muted: #666;
+      --hairline: rgba(0,0,0,.12);
+      --card: rgba(0,0,0,.03);
+      --focus: rgba(0,0,0,.08);
+      --max: 1120px;
+      --navw: 280px;
+      --radius: 10px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      line-height: 1.45;
+      letter-spacing: .1px;
+    }
+
+    /* Subtle “industrial paper” grid */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to right, rgba(0,0,0,.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,.028) 1px, transparent 1px);
+      background-size: 72px 72px;
+      opacity: .5;
+      mix-blend-mode: multiply;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+
+    .wrap{
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--navw) 1fr;
+      min-height: 100%;
+      max-width: calc(var(--max) + 64px);
+      margin: 0 auto;
+      padding: 24px 16px;
+      gap: 24px;
+    }
+
+    /* NAV */
+    .nav{
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(6px);
+      padding: 16px 14px;
+    }
+    .brand{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 12px;
+    }
+    .brand h1{
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: .22em;
+      font-weight: 700;
+      font-family: var(--mono);
+    }
+    .badge{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(255,255,255,.6);
+    }
+
+    .nav a{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 10px;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .06em;
+      color: rgba(0,0,0,.82);
+    }
+    .nav a .idx{
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .nav a.active{
+      background: var(--focus);
+      outline: 1px solid var(--hairline);
+    }
+
+    .nav .meta{
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--hairline);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      display: grid;
+      gap: 8px;
+    }
+
+    /* CONTENT */
+    main{
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.68);
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+    .hero{
+      padding: 28px 28px 18px 28px;
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      gap: 10px;
+    }
+    .kicker{
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .18em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .title{
+      margin: 0;
+      font-size: clamp(28px, 3.2vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      font-weight: 650;
+    }
+    .subtitle{
+      max-width: 68ch;
+      color: rgba(0,0,0,.78);
+      margin: 0;
+      font-size: 15px;
+    }
+    .hero .chips{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .chip{
+      font-family: var(--mono);
+      font-size: 11px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(0,0,0,.02);
+      color: rgba(0,0,0,.8);
+    }
+
+    section{
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    section:last-child{ border-bottom: none; }
+
+    .sec-head{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .sec-head h2{
+      margin: 0;
+      font-size: 15px;
+      font-family: var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .sec-head .tag{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 16px;
+    }
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns: 1fr; }
+      .nav{ position: relative; top: 0; }
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      background: var(--card);
+      padding: 14px 14px;
+    }
+    .card h3{
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      font-family: var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .card p, .card li{
+      margin: 0;
+      color: rgba(0,0,0,.78);
+      font-size: 14px;
+    }
+    .list{
+      margin: 10px 0 0 0;
+      padding-left: 18px;
+      color: rgba(0,0,0,.78);
+    }
+    .list li{ margin: 8px 0; }
+    .quote{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(0,0,0,.68);
+      border-left: 2px solid rgba(0,0,0,.18);
+      padding-left: 12px;
+      margin: 12px 0 0 0;
+    }
+
+    .items{
+      display: grid;
+      gap: 10px;
+    }
+    .item{
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.5);
+    }
+    .item .label{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .item .body{
+      display: grid;
+      gap: 6px;
+    }
+    .item .body strong{
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .item .body span{
+      font-size: 13px;
+      color: rgba(0,0,0,.72);
+    }
+
+    .footer{
+      padding: 18px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      border-top: 1px solid var(--hairline);
+      background: rgba(0,0,0,.01);
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      background: rgba(255,255,255,.65);
+    }
+    .btn:hover{
+      background: rgba(0,0,0,.04);
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <aside class="nav" aria-label="Primary">
+      <div class="brand">
+        <h1>EDUPUNK</h1>
+        <span class="badge">v0.1</span>
+      </div>
+
+      <nav>
+        <a href="#manifesto" data-section="manifesto"><span>Manifesto</span><span class="idx">01</span></a>
+        <a href="#methods" data-section="methods"><span>Methods</span><span class="idx">02</span></a>
+        <a href="#reading" data-section="reading"><span>Reading</span><span class="idx">03</span></a>
+        <a href="#projects" data-section="projects"><span>Projects</span><span class="idx">04</span></a>
+        <a href="#contact" data-section="contact"><span>Contact</span><span class="idx">05</span></a>
+      </nav>
+
+      <div class="meta">
+        <div>Mode: editorial / industrial</div>
+        <div>Stack: “Wix-like” SPA</div>
+        <div>Scroll: section-aware</div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="kicker">Design for Cyborg Education</div>
+        <h1 class="title">Tools, rituals, and interfaces for learning outside the institution.</h1>
+        <p class="subtitle">
+          A compact, manifesto-driven site: minimal UI, maximal intent. Replace the copy + links to match your real EDUPUNK content.
+        </p>
+        <div class="chips" aria-label="tags">
+          <span class="chip">DIY pedagogy</span>
+          <span class="chip">anti-platform</span>
+          <span class="chip">small tools</span>
+          <span class="chip">cyborg literacy</span>
+        </div>
+      </header>
+
+      <section id="manifesto">
+        <div class="sec-head">
+          <h2>Manifesto</h2>
+          <div class="tag">01 / principles</div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Less, but better</h3>
+            <p>
+              Use fewer systems, make them legible. Prefer composable primitives over “all-in-one” learning platforms.
+     
+::contentReference[oaicite:3]{index=3}

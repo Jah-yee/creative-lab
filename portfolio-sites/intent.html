@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>the intent company</title>
+  <meta name="description" content="Bridging intent and experience. We build interfaces that grow with your intent." />
+
+  <style>
+    :root{
+      --bg: #fbfbfb;
+      --fg: #101010;
+      --muted: rgba(16,16,16,.62);
+      --hairline: rgba(16,16,16,.14);
+      --chip: rgba(16,16,16,.04);
+      --focus: rgba(16,16,16,.08);
+      --radius: 999px;
+      --maxw: 980px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* subtle industrial grid (optional but fits the vibe) */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to right, rgba(0,0,0,.028) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,.02) 1px, transparent 1px);
+      background-size: 84px 84px;
+      opacity: .6;
+      mix-blend-mode: multiply;
+    }
+
+    .wrap{
+      position: relative;
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 36px 18px;
+    }
+
+    .panel{
+      width: 100%;
+      max-width: var(--maxw);
+      border: 1px solid var(--hairline);
+      background: rgba(255,255,255,.62);
+      backdrop-filter: blur(6px);
+      border-radius: 18px;
+      padding: clamp(22px, 4vw, 44px);
+    }
+
+    .title{
+      margin: 0;
+      font-family: var(--mono);
+      font-size: clamp(14px, 1.7vw, 18px);
+      font-weight: 650;
+      letter-spacing: .26em;
+      text-transform: lowercase;
+    }
+
+    .title + .title{
+      margin-top: 10px;
+    }
+
+    .copy{
+      margin-top: 28px;
+      display: grid;
+      gap: 10px;
+      max-width: 62ch;
+    }
+
+    .copy p{
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.5;
+      color: rgba(16,16,16,.86);
+    }
+
+    .copy p.muted{
+      color: var(--muted);
+    }
+
+    .ctaRow{
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 760px){
+      .ctaRow{ grid-template-columns: 1fr; }
+    }
+
+    .btn{
+      appearance: none;
+      border: 1px solid var(--hairline);
+      background: rgba(255,255,255,.55);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .15s ease, transform .08s ease, box-shadow .15s ease;
+    }
+
+    .btn:hover{
+      background: var(--chip);
+    }
+    .btn:active{
+      transform: translateY(1px);
+    }
+    .btn:focus-visible{
+      outline: none;
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+
+    .foot{
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* modal */
+    .overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.35);
+      display: none;
+      place-items: center;
+      padding: 18px;
+    }
+    .overlay.open{ display: grid; }
+
+    .modal{
+      width: min(560px, 100%);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(18,18,18,.92);
+      color: #fff;
+      padding: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.28);
+    }
+    .modalHead{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .modalHead strong{
+      font-family: var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    .close{
+      border: 1px solid rgba(255,255,255,.22);
+      background: transparent;
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+
+    .modal p{
+      margin: 0 0 12px 0;
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .field{
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .field{ grid-template-columns: 1fr; }
+    }
+
+    input{
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      padding: 12px 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      outline: none;
+    }
+    input:focus{
+      box-shadow: 0 0 0 4px rgba(255,255,255,.10);
+    }
+
+    .send{
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .08em;
+      cursor: pointer;
+    }
+    .send:hover{ background: rgba(255,255,255,.16); }
+
+    .hint{
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,.62);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="panel" role="main" aria-label="the intent company landing">
+      <!-- replicate the repeated heading -->
+      <h3 class="title">t h e i n t e n t c o m p a n y</h3>
+      <h3 class="title">t h e i n t e n t c o m p a n y</h3>
+
+      <div class="copy">
+        <p>Bridging intent and experience.</p>
+        <p class="muted">We build interfaces that grow with your intent.</p>
+      </div>
+
+      <!-- replicate the three CTAs -->
+      <div class="ctaRow" aria-label="Get Notified actions">
+        <button class="btn" type="button" data-open="notify">Get Notified</button>
+        <button class="btn" type="button" data-open="notify">Get Notified</button>
+        <button class="btn" type="button" data-open="notify">Get Notified</button>
+      </div>
+
+      <div class="foot">
+        <span>Minimal landing / editorial layout</span>
+        <span id="status">No subscription stored</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Get Notified">
+      <div class="modalHead">
+        <strong>Get Notified</strong>
+        <button class="close" type="button" id="close">Close</button>
+      </div>
+
+      <p>Enter your email. This demo stores it locally (no backend). Replace the handler with your real provider (Mailchimp/Buttondown/ConvertKit/etc.).</p>
+
+      <div class="field">
+        <input id="email" type="email" inputmode="email" placeholder="you@domain.com" autocomplete="email" />
+        <button class="send" type="button" id="save">Save</button>
+      </div>
+
+      <div class="hint">Esc to close. This is intentionally minimal—copy and spacing do most of the work.</div>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('close');
+    const saveBtn = document.getElementById('save');
+    const emailInput = document.getElementById('email');
+    const status = document.getElementById('status');
+
+    function openModal(){
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      setTimeout(() => emailInput.focus(), 0);
+    }
+    function closeModal(){
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('[data-open="notify"]').forEach(btn => {
+      btn.addEventListener('click', openModal);
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    function setStatus(){
+      const v = localStorage.getItem('intent_notify_email');
+      status.textContent = v ? `Saved: ${v}` : 'No subscription stored';
+    }
+
+    function isValidEmail(v){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    }
+
+    saveBtn.addEventListener('click', () => {
+      const v = (emailInput.value || '').trim();
+      if (!isValidEmail(v)) {
+        emailInput.focus();
+        emailInput.select();
+        status.textContent = 'Invalid email — please try again';
+        return;
+      }
+      localStorage.setItem('intent_notify_email', v);
+      setStatus();
+      closeModal();
+    });
+
+    setStatus();
+  </script>
+</body>
+</html>
