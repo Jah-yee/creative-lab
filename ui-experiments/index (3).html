@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>考就完了 - 高保真原型展示</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+    
+    .dark .glass-card {
+      background: rgba(17, 25, 40, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.125);
+    }
+    
+    .prototype-card {
+      transition: all 0.3s ease;
+    }
+    
+    .prototype-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.5);
+      border-radius: 20px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(156, 163, 175, 0.8);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-indigo-950 transition-colors duration-300">
+  <div class="container mx-auto px-4 py-8">
+    <!-- 头部 -->
+    <header class="glass-card rounded-xl p-6 mb-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <svg class="h-10 w-auto" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5L30 25L20 35L10 25L20 5Z" fill="url(#gradient)" stroke="#6366F1" stroke-width="2" />
+            <defs>
+              <linearGradient id="gradient" x1="20" y1="5" x2="20" y2="35" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#C4B5FD" />
+                <stop offset="1" stop-color="#818CF8" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="ml-4">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">考就完了</h1>
+            <p class="text-gray-600 dark:text-gray-300">AI学习助手平台 - 高保真原型设计</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button id="theme-toggle" class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700">
+            <svg class="w-6 h-6 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg class="w-6 h-6 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <!-- 项目概述 -->
+    <section class="glass-card rounded-xl p-6 mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">项目概述</h2>
+      <div class="space-y-4">
+        <p class="text-gray-700 dark:text-gray-300">
+          "考就完了"是一个面向学生的AI学习助手平台，旨在帮助学生提高学习效率，特别是在期末备考阶段。平台提供AI对话、智能考纲生成、学科图谱、个性化学习规划、难度自适应系统和增强阅读等功能，帮助学生解放时间，让学习回归本质。
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+            <h3 class="font-medium text-gray-900 dark:text-white mb-2">目标用户</h3>
+            <p class="text-gray-600 dark:text-gray-400">学生，特别是期末备考阶段的大学生和研究生</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+            <h3 class="font-medium text-gray-900 dark:text-white mb-2">核心功能</h3>
+            <p class="text-gray-600 dark:text-gray-400">AI对话、知识图谱、学习规划、增强阅读等</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+            <h3 class="font-medium text-gray-900 dark:text-white mb-2">设计风格</h3>
+            <p class="text-gray-600 dark:text-gray-400">Glassmorphism为主，参考Apple Design和Linear App</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 设计系统 -->
+    <section class="glass-card rounded-xl p-6 mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">设计系统</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-medium text-gray-900 dark:text-white mb-3">颜色系统</h3>
+          <div class="grid grid-cols-5 gap-2">
+            <div class="flex flex-col items-center">
+              <div class="w-12 h-12 rounded-md bg-indigo-600"></div>
+              <span class="text-xs text-gray-600 dark:text-gray-400 mt-1">#6366F1</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-12 h-12 rounded-md bg-purple-500"></div>
+              <span class="text-xs text-gray-600 dark:text-gray-400 mt-1">#8B5CF6</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-12 h-12 rounded-md bg-green-500"></div>
+              <span class="text-xs text-gray-600 dark:text-gray-400 mt-1">#10B981</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-12 h-12 rounded-md bg-yellow-500"></div>
+              <span class="text-xs text-gray-600 dark:text-gray-400 mt-1">#F59E0B</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-12 h-12 rounded-md bg-red-500"></div>
+              <span class="text-xs text-gray-600 dark:text-gray-400 mt-1">#EF4444</span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-medium text-gray-900 dark:text-white mb-3">排版系统</h3>
+          <div class="space-y-2">
+            <div class="bg-white dark:bg-gray-800 p-2 rounded-md">
+              <h1 class="text-2xl font-bold">超大标题 (24px)</h1>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded-md">
+              <h2 class="text-xl font-semibold">大标题 (20px)</h2>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded-md">
+              <h3 class="text-base font-medium">中标题 (16px)</h3>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded-md">
+              <p class="text-sm">正文文本 (14px)</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-2 rounded-md">
+              <p class="text-xs">小文本 (12px)</p>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-medium text-gray-900 dark:text-white mb-3">组件示例</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-white dark:bg-gray-800 p-3 rounded-md flex flex-col space-y-2">
+              <button class="px-4 py-2 bg-indigo-600 text-white rounded-md">主要按钮</button>
+              <button class="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md">次要按钮</button>
+              <button class="px-4 py-2 text-indigo-600 dark:text-indigo-400">文本按钮</button>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-3 rounded-md flex flex-col space-y-2">
+              <div class="flex items-center space-x-2">
+                <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-full text-xs">标签</span>
+                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full text-xs">成功</span>
+              </div>
+              <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div class="h-full bg-indigo-600 rounded-full" style="width: 70%"></div>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" class="h-4 w-4 text-indigo-600 rounded" checked>
+                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">复选框</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-medium text-gray-900 dark:text-white mb-3">Glassmorphism 效果</h3>
+          <div class="relative h-40 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="bg-white/70 dark:bg-gray-900/70 backdrop-blur-md p-4 rounded-lg border border-white/20 dark:border-white/10">
+                <h4 class="font-medium text-gray-900 dark:text-white">玻璃态卡片</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">带有模糊背景效果</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 flex justify-center">
+        <a href="design_system_documentation.md" target="_blank" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md inline-flex items-center">
+          <i class="fas fa-book mr-2"></i> 查看完整设计系统文档
+        </a>
+      </div>
+    </section>
+    
+    <!-- 高保真原型 -->
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">高保真原型</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- AI对话界面 -->
+        <div class="glass-card rounded-xl overflow-hidden prototype-card">
+          <div class="relative">
+            <img src="ai_chat_page.png" alt="AI对话界面" class="w-full h-auto">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+              <div class="p-4 w-full">
+                <h3 class="text-white font-semibold text-lg">AI对话界面（首页）</h3>
+                <p class="text-white/80 text-sm">用户可以通过文本、语音或上传文件的方式与AI助手进行对话</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 bg-white dark:bg-gray-800">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded text-xs">首页</span>
+                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded text-xs ml-2">核心功能</span>
+              </div>
+              <a href="ai_chat_page.html" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">查看原型</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 知识图谱界面 -->
+        <div class="glass-card rounded-xl overflow-hidden prototype-card">
+          <div class="relative">
+            <img src="knowledge_graph_page.png" alt="知识图谱界面" class="w-full h-auto">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+              <div class="p-4 w-full">
+                <h3 class="text-white font-semibold text-lg">知识图谱界面</h3>
+                <p class="text-white/80 text-sm">展示学科知识的关联性，帮助用户理解知识体系</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 bg-white dark:bg-gray-800">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded text-xs">可视化</span>
+                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded text-xs ml-2">交互式</span>
+              </div>
+              <a href="knowledge_graph_page.html" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">查看原型</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 学习规划界面 -->
+        <div class="glass-card rounded-xl overflow-hidden prototype-card">
+          <div class="relative">
+            <img src="learning_plan_page.png" alt="学习规划界面" class="w-full h-auto">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+              <div class="p-4 w-full">
+                <h3 class="text-white font-semibold text-lg">学习规划界面</h3>
+                <p class="text-white/80 text-sm">帮助用户制定个性化的学习计划，跟踪学习进度</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 bg-white dark:bg-gray-800">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 rounded text-xs">规划</span>
+                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded text-xs ml-2">进度跟踪</span>
+              </div>
+              <a href="learning_plan_page.html" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">查看原型</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 增强阅读界面 -->
+        <div class="glass-card rounded-xl overflow-hidden prototype-card">
+          <div class="relative">
+            <img src="enhanced_reading_page.png" alt="增强阅读界面" class="w-full h-auto">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+              <div class="p-4 w-full">
+                <h3 class="text-white font-semibold text-lg">增强阅读界面</h3>
+                <p class="text-white/80 text-sm">提供多种阅读辅助功能，如Bionic Reading、文本高亮、注释等</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 bg-white dark:bg-gray-800">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded text-xs">Bionic</span>
+                <span class="px-2 py-1 bg-pink-100 dark:bg-pink-900/50 text-pink-700 dark:text-pink-300 rounded text-xs ml-2">阅读增强</span>
+              </div>
+              <a href="enhanced_reading_page.html" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">查看原型</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 个人中心界面 -->
+        <div class="glass-card rounded-xl overflow-hidden prototype-card md:col-span-2">
+          <div class="relative">
+            <img src="profile_page.png" alt="个人中心界面" class="w-full h-auto">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+              <div class="p-4 w-full">
+                <h3 class="text-white font-semibold text-lg">个人中心界面</h3>
+                <p class="text-white/80 text-sm">展示用户的学习数据、成就和账户信息，提供个性化设置选项</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 bg-white dark:bg-gray-800">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-xs">用户资料</span>
+                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded text-xs ml-2">数据统计</span>
+                <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 rounded text-xs ml-2">会员中心</span>
+              </div>
+              <a href="profile_page.html" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">查看原型</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 交互说明 -->
+    <section class="glass-card rounded-xl p-6 mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">交互说明</h2>
+      <div class="space-y-4">
+        <p class="text-gray-700 dark:text-gray-300">
+          所有原型界面都实现了基本的交互效果，包括：
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <li>响应式布局，适配不同屏幕尺寸</li>
+          <li>明暗模式切换</li>
+          <li>Glassmorphism风格的UI元素</li>
+          <li>GSAP动画效果，提升用户体验</li>
+          <li>交互式导航和菜单</li>
+          <li>表单元素的状态反馈</li>
+        </ul>
+        <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border-l-4 border-yellow-500">
+          <h4 class="font-medium text-gray-900 dark:text-white mb-2">注意</h4>
+          <p class="text-gray-700 dark:text-gray-300">
+            原型界面主要展示UI设计和基本交互，部分功能（如AI对话、数据处理等）需要在实际开发中实现。点击"查看原型"可以查看完整的HTML原型文件。
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 设计资源 -->
+    <section class="glass-card rounded-xl p-6 mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">设计资源</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+          <h3 class="font-medium text-gray-900 dark:text-white mb-3">设计文件</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center justify-between">
+              <div class="flex items-center">
+                <i class="fas fa-file-code text-indigo-500 mr-2"></i>
+                <span class="text-gray-700 dark:text-gray-300">HTML原型文件</span>
+              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400">5个页面</span>
+            </li>
+            <li class="flex items-center justify-between">
+              <div class="flex items-center">
+                <i class="fas fa-file-alt text-blue-500 mr-2"></i>
+                <span class="text-gray-700 dark:text-gray-300">设计系统文档</span>
+              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400">1个文件</span>
+            </li>
+            <li class="flex items-center justify-between">
+              <div class="flex items-center">
+                <i class="fas fa-file-image text-green-500 mr-2"></i>
+                <span class="text-gray-700 dark:text-gray-300">界面截图</span>
+              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400">5个文件</span>
+            </li>
+            <li class="flex items-center justify-between">
+              <div class="flex items-center">
+                <i class="fas fa-file-code text-purple-500 mr-2"></i>
+                <span class="text-gray-700 dark:text-gray-300">CSS样式表</span>
+              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400">1个文件</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+          <h3 class="font-medium text-gray-900 dark:text-white mb-3">技术栈</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center">
+              <i class="fab fa-html5 text-orange-500 mr-2"></i>
+              <span class="text-gray-700 dark:text-gray-300">HTML5 - 页面结构</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fab fa-css3-alt text-blue-500 mr-2"></i>
+              <span class="text-gray-700 dark:text-gray-300">CSS3 - 样式和动画</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fab fa-js text-yellow-500 mr-2"></i>
+              <span class="text-gray-700 dark:text-gray-300">JavaScript - 交互效果</span>
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none">
+                <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z" fill="#38bdf8"/>
+              </svg>
+              <span class="text-gray-700 dark:text-gray-300">Tailwind CSS - 响应式UI框架</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-magic text-purple-500 mr-2"></i>
+              <span class="text-gray-700 dark:text-gray-300">GSAP - 高级动画库</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 下一步建议 -->
+    <section class="glass-card rounded-xl p-6 mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">下一步建议</h2>
+      <div class="space-y-4">
+        <p class="text-gray-700 dark:text-gray-300">
+          基于当前的高保真原型，建议进行以下后续工作：
+        </p>
+        <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-300">
+          <li>进行用户测试，收集反馈并优化设计</li>
+          <li>与开发团队协作，确保设计的可实现性</li>
+          <li>开发组件库，确保UI一致性</li>
+          <li>实现AI功能和数据处理逻辑</li>
+          <li>进行性能优化和可访问性测试</li>
+          <li>准备发布和推广策略</li>
+        </ol>
+      </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer class="text-center text-gray-600 dark:text-gray-400 mt-12 mb-6">
+      <p>© 2025 考就完了 - AI学习助手平台</p>
+      <p class="text-sm mt-1">设计由 Manus AI 完成</p>
+    </footer>
+  </div>
+  
+  <script>
+    // 主题切换
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+      document.documentElement.classList.toggle('dark');
+    });
+  </script>
+</body>
+</html>
