@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aetheron.</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
+
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --bg: #f3f4f0;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --border-color: rgba(30, 30, 30, 0.18);
+    --btn-bg: #1a1a1a;
+    --btn-text: #f3f4f0;
+    --nav-link: #3a3a3a;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--nav-link);
+    transition: color 0.2s;
+  }
+
+  .nav-links li a.active {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .nav-links li a:hover {
+    color: var(--text-primary);
+  }
+
+  .try-btn {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 22px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.01em;
+  }
+
+  .try-btn:hover {
+    background: var(--text-primary);
+    color: var(--bg);
+    border-color: var(--text-primary);
+  }
+
+  /* ── HERO ── */
+  .hero-wrapper {
+    padding: 0 40px 40px;
+  }
+
+  .hero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: calc(100vh - 100px);
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  /* ── FRAME LINES ── */
+  .frame-border {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* top line */
+  .frame-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-color);
+  }
+
+  /* left line */
+  .frame-border::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-color);
+  }
+
+  .frame-border-right {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* right line */
+  .frame-border-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-color);
+  }
+
+  /* bottom line */
+  .frame-border-right::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-color);
+  }
+
+  /* corner tick marks */
+  .tick {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .tick::before,
+  .tick::after {
+    content: '';
+    position: absolute;
+    background: rgba(30, 30, 30, 0.35);
+  }
+
+  /* top-left */
+  .tick.tl { top: -1px; left: -1px; }
+  .tick.tl::before { width: 12px; height: 1px; top: 0; left: 0; }
+  .tick.tl::after  { width: 1px; height: 12px; top: 0; left: 0; }
+
+  /* top-right */
+  .tick.tr { top: -1px; right: -1px; }
+  .tick.tr::before { width: 12px; height: 1px; top: 0; right: 0; }
+  .tick.tr::after  { width: 1px; height: 12px; top: 0; right: 0; }
+
+  /* bottom-left */
+  .tick.bl { bottom: -1px; left: -1px; }
+  .tick.bl::before { width: 12px; height: 1px; bottom: 0; left: 0; }
+  .tick.bl::after  { width: 1px; height: 12px; bottom: 0; left: 0; }
+
+  /* bottom-right */
+  .tick.br { bottom: -1px; right: -1px; }
+  .tick.br::before { width: 12px; height: 1px; bottom: 0; right: 0; }
+  .tick.br::after  { width: 1px; height: 12px; bottom: 0; right: 0; }
+
+  /* ── HERO CONTENT ── */
+  .hero-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 48px 56px;
+    gap: 80px;
+    z-index: 5;
+  }
+
+  .hero-headline {
+    flex: 0 1 580px;
+  }
+
+  .hero-headline h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: clamp(28px, 3.2vw, 46px);
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+  }
+
+  .hero-right {
+    flex: 0 1 440px;
+  }
+
+  .hero-desc {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    max-width: 420px;
+    letter-spacing: 0.005em;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .btn-primary {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 13px 28px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover {
+    background: #333;
+  }
+
+  .btn-secondary {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.25s, color 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-secondary:hover {
+    gap: 10px;
+  }
+
+  .btn-secondary span {
+    font-size: 16px;
+    transition: transform 0.25s;
+  }
+
+  /* ── DIVIDER between hero-left and hero-right at bottom ── */
+  .hero-divider {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 160px;
+    width: 1px;
+    background: var(--border-color);
+    z-index: 4;
+    transform: translateX(20px);
+  }
+
+  /* ── Horizontal line above bottom content ── */
+  .hero-bottom-line {
+    position: absolute;
+    bottom: 160px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-color);
+    z-index: 4;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 20px; }
+    .hero-wrapper { padding: 0 24px 24px; }
+    .hero { aspect-ratio: auto; min-height: 60vh; }
+    .hero-content {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 32px;
+      gap: 32px;
+    }
+    .hero-divider { display: none; }
+    .hero-bottom-line { display: none; }
+    .hero-headline, .hero-right { flex: 1 1 auto; }
+  }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero-headline h1 { font-size: 26px; }
+    .hero-content { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Aetheron.</div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">How it works</a></li>
+      <li><a href="#">Trending</a></li>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">FAQs</a></li>
+    </ul>
+    <button class="try-btn">Try for free</button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero-wrapper">
+    <div class="hero">
+
+      <!-- frame lines -->
+      <div class="frame-border"></div>
+      <div class="frame-border-right"></div>
+      <div class="tick tl"></div>
+      <div class="tick tr"></div>
+      <div class="tick bl"></div>
+      <div class="tick br"></div>
+
+      <!-- horizontal divider above bottom content -->
+      <div class="hero-bottom-line"></div>
+
+      <!-- vertical divider between left/right content -->
+      <div class="hero-divider"></div>
+
+      <!-- bottom content -->
+      <div class="hero-content">
+        <div class="hero-headline">
+          <h1>Where human thought ventures past the cosmic horizon.</h1>
+        </div>
+        <div class="hero-right">
+          <p class="hero-desc">Aetheron explores the space between imagination and intelligence — where AI becomes the artist, and creation knows no bounds.</p>
+          <div class="hero-actions">
+            <button class="btn-primary">Start Your Journey</button>
+            <a href="#" class="btn-secondary">See How It Works <span>›</span></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
