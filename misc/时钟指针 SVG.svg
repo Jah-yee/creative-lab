@@ -1,0 +1,20 @@
+<svg viewBox="0 -120 280 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .hour-pointer-group {
+        opacity: 1 !important;
+        transform-origin: 140px 140px;
+        transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+      }
+    </style>
+  </defs>
+  
+  <!-- 时针指针 -->
+  <g id="hourPointerGroup" class="hour-pointer-group">
+    <g transform="translate(140 140) rotate(0) translate(-7 -60)">
+      <path d="M12.8277 1.90648L9.67581 11.362C9.40973 12.1603 8.36814 12.3519 7.83531 11.7007L0.74367 3.03314C0.196858 2.36482 0.627666 1.35753 1.48864 1.2913L11.7321 0.503343C12.494 0.444738 13.0693 1.18158 12.8277 1.90648Z"
+            fill="#5E5D61"
+            transform="scale(0.55)"/>
+    </g>
+  </g>
+</svg>
