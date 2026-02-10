@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考就完了 - 启发知识的内在连接</title>
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
+    <!-- 引入字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <!-- 引入图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // 检测暗色模式
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches && 
+             localStorage.getItem('darkMode') !== 'false')) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</head>
+<body class="bg-background text-text-primary">
+    <!-- 页面加载动画 -->
+    <div id="page-loader" class="fixed inset-0 bg-background flex items-center justify-center z-50">
+        <div class="animate-pulse">
+            <svg width="64" height="64" viewBox="0 0 229 229" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-16 h-16">
+                <rect width="229" height="229" rx="39.7031" fill="var(--color-primary)"/>
+                <path d="M105.271 37.296C98.6953 38.0404 89.688 40.1496 84.6757 42.1347C71.9713 47.147 63.1873 52.7796 54.6515 61.365C44.2051 71.8611 36.9596 84.2926 33.4609 97.7662C31.451 105.508 30.7314 111.215 30.5577 120.967L30.4337 127.989L29.4659 130.024C27.1087 135.16 24.3048 144.539 23.1634 151.264C22.6671 154.068 22.6671 154.514 23.1137 155.011C23.4363 155.358 23.3867 155.681 22.8408 157.517C22.3941 159.03 22.1708 160.47 22.0964 162.529C21.8731 167.12 22.6175 169.75 24.801 172.107C25.3469 172.703 25.7439 173.224 25.6943 173.298C25.6199 173.348 24.9251 173.273 24.1063 173.124C22.3445 172.802 20.9053 172.951 20.2602 173.546C20.0121 173.77 19.1684 175.134 18.3992 176.549C17.6548 177.988 16.5382 179.824 15.9178 180.643C12.2703 185.606 12.047 189.179 15.2231 191.983L16.3893 193H114.799C207.13 192.975 213.259 192.95 213.978 192.553C214.871 192.082 215.765 191.065 216.46 189.774C216.807 189.129 216.931 188.385 216.931 186.921C216.931 184.787 216.608 183.918 214.698 180.941C214.251 180.246 213.358 178.459 212.738 176.946C212.092 175.432 211.373 174.018 211.1 173.77C210.852 173.546 210.182 173.298 209.636 173.224C208.693 173.1 205.07 173.497 204.202 173.844C203.954 173.918 204.301 173.373 204.971 172.653C206.683 170.693 207.155 169.204 207.328 165.532C207.427 162.976 207.353 162.132 206.882 160.073C206.584 158.733 206.137 157.244 205.889 156.772C205.517 156.053 205.467 155.507 205.566 153.795C205.839 149.254 203.581 136.45 201.323 129.8C200.777 128.187 200.753 127.865 200.877 122.952C201.249 107.245 197.974 93.151 191.051 80.4713C184.55 68.5609 176.014 59.2311 164.823 51.7622C153.161 43.9957 141.424 39.5789 127.355 37.6434C122.516 36.9735 109.836 36.775 105.271 37.296Z" fill="white"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-md border-b border-border-light z-40">
+        <div class="container mx-auto">
+            <nav class="navbar">
+                <a href="index.html" class="navbar-brand flex items-center gap-2">
+                    <svg width="32" height="32" viewBox="0 0 229 229" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="229" height="229" rx="39.7031" fill="var(--color-primary)"/>
+                        <path d="M105.271 37.296C98.6953 38.0404 89.688 40.1496 84.6757 42.1347C71.9713 47.147 63.1873 52.7796 54.6515 61.365C44.2051 71.8611 36.9596 84.2926 33.4609 97.7662C31.451 105.508 30.7314 111.215 30.5577 120.967L30.4337 127.989L29.4659 130.024C27.1087 135.16 24.3048 144.539 23.1634 151.264C22.6671 154.068 22.6671 154.514 23.1137 155.011C23.4363 155.358 23.3867 155.681 22.8408 157.517C22.3941 159.03 22.1708 160.47 22.0964 162.529C21.8731 167.12 22.6175 169.75 24.801 172.107C25.3469 172.703 25.7439 173.224 25.6943 173.298C25.6199 173.348 24.9251 173.273 24.1063 173.124C22.3445 172.802 20.9053 172.951 20.2602 173.546C20.0121 173.77 19.1684 175.134 18.3992 176.549C17.6548 177.988 16.5382 179.824 15.9178 180.643C12.2703 185.606 12.047 189.179 15.2231 191.983L16.3893 193H114.799C207.13 192.975 213.259 192.95 213.978 192.553C214.871 192.082 215.765 191.065 216.46 189.774C216.807 189.129 216.931 188.385 216.931 186.921C216.931 184.787 216.608 183.918 214.698 180.941C214.251 180.246 213.358 178.459 212.738 176.946C212.092 175.432 211.373 174.018 211.1 173.77C210.852 173.546 210.182 173.298 209.636 173.224C208.693 173.1 205.07 173.497 204.202 173.844C203.954 173.918 204.301 173.373 204.971 172.653C206.683 170.693 207.155 169.204 207.328 165.532C207.427 162.976 207.353 162.132 206.882 160.073C206.584 158.733 206.137 157.244 205.889 156.772C205.517 156.053 205.467 155.507 205.566 153.795C205.839 149.254 203.581 136.45 201.323 129.8C200.777 128.187 200.753 127.865 200.877 122.952C201.249 107.245 197.974 93.151 191.051 80.4713C184.55 68.5609 176.014 59.2311 164.823 51.7622C153.161 43.9957 141.424 39.5789 127.355 37.6434C122.516 36.9735 109.836 36.775 105.271 37.296Z" fill="white"/>
+                    </svg>
+                    <span class="text-lg font-semibold">考就完了</span>
+                </a>
+                
+                <div class="hidden md:flex items-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="#features" class="nav-link">功能</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="visualization.html" class="nav-link">可视化</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#pricing" class="nav-link">价格</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="faq.html" class="nav-link">常见问题</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="ai-chat.html" class="nav-link">AI对话</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-background-alt transition-colors" aria-label="切换主题">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                    
+                    <div class="hidden md:flex items-center gap-3">
+                        <a href="login.html" class="btn btn-secondary">登录</a>
+                        <a href="#invite-modal" id="invite-btn" class="btn btn-primary">申请试用</a>
+                    </div>
+                    
+                    <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-md hover:bg-background-alt transition-colors">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="fixed inset-0 bg-background/80 backdrop-blur-md z-50 hidden">
+        <div class="container mx-auto h-full flex flex-col">
+            <div class="flex justify-end p-4">
+                <button id="mobile-menu-close" class="p-2 rounded-md hover:bg-background-alt transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center gap-8 text-center">
+                <a href="#features" class="text-xl font-medium hover:text-primary transition-colors">功能</a>
+                <a href="visualization.html" class="text-xl font-medium hover:text-primary transition-colors">可视化</a>
+                <a href="#pricing" class="text-xl font-medium hover:text-primary transition-colors">价格</a>
+                <a href="faq.html" class="text-xl font-medium hover:text-primary transition-colors">常见问题</a>
+                <a href="ai-chat.html" class="text-xl font-medium hover:text-primary transition-colors">AI对话</a>
+                <div class="flex flex-col gap-4 mt-8">
+                    <a href="login.html" class="btn btn-secondary">登录</a>
+                    <a href="#invite-modal" class="btn btn-primary invite-btn-mobile">申请试用</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 邀请码申请模态框 -->
+    <div id="invite-modal" class="fixed inset-0 bg-background/80 backdrop-blur-md z-50 hidden flex items-center justify-center">
+        <div class="bg-background rounded-xl shadow-xl max-w-md w-full p-6 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">申请试用资格</h3>
+                <button id="invite-modal-close" class="p-2 rounded-md hover:bg-background-alt transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <p class="text-secondary mb-6">
+                「考就完了」目前处于邀请制试用阶段。请填写以下信息申请试用资格，我们会在审核后发送邀请码到您的邮箱。
+            </p>
+            
+            <form id="invite-form" class="space-y-4">
+                <div>
+                    <label for="invite-name" class="block text-sm font-medium mb-1">姓名</label>
+                    <input type="text" id="invite-name" class="input" placeholder="您的姓名" required>
+                </div>
+                
+                <div>
+                    <label for="invite-email" class="block text-sm font-medium mb-1">邮箱</label>
+                    <input type="email" id="invite-email" class="input" placeholder="您的邮箱地址" required>
+                </div>
+                
+                <div>
+                    <label for="invite-reason" class="block text-sm font-medium mb-1">申请理由</label>
+                    <textarea id="invite-reason" class="input min-h-[100px]" placeholder="请简要描述您想使用「考就完了」的原因..." required></textarea>
+                </div>
+                
+                <div>
+                    <label for="invite-code" class="block text-sm font-medium mb-1">邀请码（如有）</label>
+                    <input type="text" id="invite-code" class="input" placeholder="已有邀请码可直接填写">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">提交申请</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section id="hero" class="pt-32 pb-20 relative overflow-hidden">
+            <div class="container mx-auto">
+                <div class="max-w-3xl mx-auto text-center mb-12 animate-slide-up">
+                    <h1 class="heading-1 mb-6">
+                        启发<span class="text-primary">知识的内在连接</span><br>点亮与世界对话的能力
+                    </h1>
+                    <p class="text-lg text-secondary mb-8">
+                        「考就完了」不是逃避学习的捷径，而是重新定义学习的方式。我们帮助你发现知识间的联系，培养独立思考的能力，让学习成为一段探索与成长的旅程。
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#invite-modal" class="btn btn-primary btn-lg invite-btn">
+                            申请试用
+                        </a>
+                        <a href="#features" class="btn btn-secondary btn-lg">
+                            探索功能
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 演示界面 -->
+                <div class="relative max-w-4xl mx-auto rounded-xl shadow-xl overflow-hidden animate-fade-in">
+                    <div class="aspect-video bg-background-alt relative">
+                        <!-- 聊天界面模拟 -->
+                        <div class="absolute inset-0 p-6 flex flex-col">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-error"></div>
+                                    <div class="w-3 h-3 rounded-full bg-warning"></div>
+                                    <div class="w-3 h-3 rounded-full bg-success"></div>
+                                </div>
+                                <div class="text-sm text-tertiary">考就完了 AI 助手</div>
+                                <div></div>
+                            </div>
+                            
+                            <div class="flex-1 overflow-y-auto pr-2 space-y-6">
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold">
+                                        U
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="bg-background-alt rounded-lg p-3 inline-block">
+                                            我想理解量子力学和相对论之间的关系，它们如何共同塑造了我们对宇宙的理解？
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                                        AI
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="bg-primary-light rounded-lg p-4">
+                                            <p class="mb-3">量子力学和相对论是20世纪物理学的两大支柱，它们从不同角度揭示了宇宙的本质：</p>
+                                            <p class="mb-3"><strong>相对论</strong>主要描述宏观宇宙，解释了时空、引力与能量的关系，改变了我们对空间和时间的理解。</p>
+                                            <p class="mb-3"><strong>量子力学</strong>则探索微观世界，揭示了粒子的波粒二象性、测量的概率性和量子纠缠等现象。</p>
+                                            <p>这两个理论在各自领域都取得了巨大成功，但它们的基本原理存在冲突。寻找统一这两个理论的方法，即所谓的"量子引力理论"，是当代理论物理学的最大挑战之一。这种探索不仅关乎物理学本身，也触及我们对实在性、确定性和宇宙本质的哲学思考。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 flex gap-2">
+                                <input type="text" class="input" placeholder="输入你的问题，探索知识的深度..." />
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 背景装饰 -->
+            <div class="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden">
+                <div class="absolute top-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full filter blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-1/2 h-1/2 bg-primary/5 rounded-full filter blur-3xl transform translate-x-1/4 translate-y-1/4"></div>
+            </div>
+        </section>
+        
+        <!-- 信任背书 -->
+        <section class="py-12 bg-background">
+            <div class="container mx-auto">
+                <p class="text-center text-tertiary mb-8">受到教育创新者和思想领袖的信任</p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                    <img src="https://via.placeholder.com/120x40?text=清华大学" alt="清华大学" class="h-8 opacity-60 hover:opacity-100 transition-opacity">
+                    <img src="https://via.placeholder.com/120x40?text=北京大学" alt="北京大学" class="h-8 opacity-60 hover:opacity-100 transition-opacity">
+                    <img src="https://via.placeholder.com/120x40?text=复旦大学" alt="复旦大学" class="h-8 opacity-60 hover:opacity-100 transition-opacity">
+                    <img src="https://via.placeholder.com/120x40?text=浙江大学" alt="浙江大学" class="h-8 opacity-60 hover:opacity-100 transition-opacity">
+                    <img src="https://via.placeholder.com/120x40?text=新东方" alt="新东方" class="h-8 opacity-60 hover:opacity-100 transition-opacity">
+                </div>
+            </div>
+        </section>
+        
+        <!-- 特性部分 -->
+        <section id="features" class="py-20 bg-background-alt">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="heading-2">重新定义知识探索</h2>
+                    <p class="text-lg text-secondary max-w-2xl mx-auto">
+                        我们不只是提供答案，更致力于启发思考，连接知识，培养终身学习的能力
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 特性卡片 1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="feature-title">思维对话</h3>
+                        <p class="feature-description">
+                            不只是回答问题，而是引导你思考问题背后的原理，培养批判性思维和探索精神
+                        </p>
+                    </div>
+                    
+                    <!-- 特性卡片 2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h3 class="feature-title">知识连接</h3>
+                        <p class="feature-description">
+                            揭示知识间的内在联系，帮助你构建完整的认知体系，理解而非记忆
+                        </p>
+                    </div>
+                    
+                    <!-- 特性卡片 3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="feature-title">思维启发</h3>
+                        <p class="feature-description">
+                            提供多角度的思考视角，激发创造性思维，培养解决复杂问题的能力
+                        </p>
+                    </div>
+                    
+                    <!-- 特性卡片 4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <h3 class="feature-title">深度阅读</h3>
+                        <p class="feature-description">
+                            提供专注、沉浸的阅读体验，帮助你深入理解文本，培养专注力和理解力
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 价格部分 -->
+        <section id="pricing" class="py-20 bg-background">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="heading-2">邀请制试用计划</h2>
+                    <p class="text-lg text-secondary max-w-2xl mx-auto">
+                        「考就完了」目前处于邀请制试用阶段，我们正在寻找志同道合的探索者
+                    </p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto">
+                    <div class="pricing-card pricing-card-featured">
+                        <div class="pricing-badge">限量</div>
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">先行者计划</h3>
+                            <div class="pricing-price">
+                                <span class="price">免费</span>
+                                <span class="period">/试用期</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>完整的AI思维对话功能</li>
+                            <li>知识图谱可视化</li>
+                            <li>深度阅读与理解工具</li>
+                            <li>思维导图与笔记功能</li>
+                            <li>优先获取新功能</li>
+                            <li>参与产品设计与反馈</li>
+                        </ul>
+                        <a href="#invite-modal" class="btn btn-primary btn-block invite-btn">申请试用资格</a>
+                        <p class="text-center text-sm text-tertiary mt-4">
+                            已有邀请码？<a href="login.html" class="text-primary hover:underline">直接登录</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 用户评价 -->
+        <section class="py-20 bg-background-alt">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="heading-2">先行者的声音</h2>
+                    <p class="text-lg text-secondary max-w-2xl mx-auto">
+                        听听已经加入我们的探索者们怎么说
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- 评价 1 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"「考就完了」改变了我对学习的理解。它不只是帮我解答问题，更引导我思考问题背后的原理，让我真正理解而非简单记忆。"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <span>L</span>
+                            </div>
+                            <div>
+                                <div class="testimonial-name">李明</div>
+                                <div class="testimonial-title">清华大学 计算机系</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 评价 2 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"知识图谱功能太棒了！它帮我看到了不同知识点之间的联系，让我对整个学科有了更全面的理解，不再是孤立地记忆每个知识点。"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <span>Z</span>
+                            </div>
+                            <div>
+                                <div class="testimonial-name">张华</div>
+                                <div class="testimonial-title">北京大学 物理系</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 评价 3 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"深度阅读功能帮我克服了阅读障碍，让我能够更专注、更深入地理解复杂文本。这不仅提高了我的学习效率，也增强了我的理解力。"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <span>W</span>
+                            </div>
+                            <div>
+                                <div class="testimonial-name">王芳</div>
+                                <div class="testimonial-title">复旦大学 文学院</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 行动召唤 -->
+        <section class="py-20 bg-primary-light">
+            <div class="container mx-auto">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="heading-2 mb-6">加入知识探索的旅程</h2>
+                    <p class="text-lg text-secondary mb-8">
+                        成为「考就完了」的先行者，与我们一起重新定义学习的方式
+                    </p>
+                    <a href="#invite-modal" class="btn btn-primary btn-lg invite-btn">
+                        申请试用资格
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="py-12 bg-background-alt border-t border-border-light">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">功能</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">思维对话</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">知识连接</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">思维启发</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">深度阅读</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">可视化</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">知识图谱</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">思维导图</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">概念关联</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">学习路径</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">价格</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">先行者计划</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">邀请机制</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">未来定价</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">教育优惠</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">AI对话</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">对话能力</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">学科覆盖</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">思维训练</a></li>
+                        <li><a href="#" class="text-tertiary hover:text-primary transition-colors">个性化体验</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-border-light flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center gap-2 mb-6 md:mb-0">
+                    <svg width="24" height="24" viewBox="0 0 229 229" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="229" height="229" rx="39.7031" fill="var(--color-primary)"/>
+                        <path d="M105.271 37.296C98.6953 38.0404 89.688 40.1496 84.6757 42.1347C71.9713 47.147 63.1873 52.7796 54.6515 61.365C44.2051 71.8611 36.9596 84.2926 33.4609 97.7662C31.451 105.508 30.7314 111.215 30.5577 120.967L30.4337 127.989L29.4659 130.024C27.1087 135.16 24.3048 144.539 23.1634 151.264C22.6671 154.068 22.6671 154.514 23.1137 155.011C23.4363 155.358 23.3867 155.681 22.8408 157.517C22.3941 159.03 22.1708 160.47 22.0964 162.529C21.8731 167.12 22.6175 169.75 24.801 172.107C25.3469 172.703 25.7439 173.224 25.6943 173.298C25.6199 173.348 24.9251 173.273 24.1063 173.124C22.3445 172.802 20.9053 172.951 20.2602 173.546C20.0121 173.77 19.1684 175.134 18.3992 176.549C17.6548 177.988 16.5382 179.824 15.9178 180.643C12.2703 185.606 12.047 189.179 15.2231 191.983L16.3893 193H114.799C207.13 192.975 213.259 192.95 213.978 192.553C214.871 192.082 215.765 191.065 216.46 189.774C216.807 189.129 216.931 188.385 216.931 186.921C216.931 184.787 216.608 183.918 214.698 180.941C214.251 180.246 213.358 178.459 212.738 176.946C212.092 175.432 211.373 174.018 211.1 173.77C210.852 173.546 210.182 173.298 209.636 173.224C208.693 173.1 205.07 173.497 204.202 173.844C203.954 173.918 204.301 173.373 204.971 172.653C206.683 170.693 207.155 169.204 207.328 165.532C207.427 162.976 207.353 162.132 206.882 160.073C206.584 158.733 206.137 157.244 205.889 156.772C205.517 156.053 205.467 155.507 205.566 153.795C205.839 149.254 203.581 136.45 201.323 129.8C200.777 128.187 200.753 127.865 200.877 122.952C201.249 107.245 197.974 93.151 191.051 80.4713C184.55 68.5609 176.014 59.2311 164.823 51.7622C153.161 43.9957 141.424 39.5789 127.355 37.6434C122.516 36.9735 109.836 36.775 105.271 37.296Z" fill="white"/>
+                    </svg>
+                    <span class="text-sm">© 2025 考就完了. 保留所有权利</span>
+                </div>
+                
+                <div class="flex gap-4">
+                    <a href="#" class="text-tertiary hover:text-primary transition-colors">
+                        <i class="fab fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-tertiary hover:text-primary transition-colors">
+                        <i class="fab fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-tertiary hover:text-primary transition-colors">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript代码 -->
+    <script>
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('page-loader').classList.add('opacity-0');
+                setTimeout(() => {
+                    document.getElementById('page-loader').style.display = 'none';
+                }, 300);
+            }, 500);
+        });
+        
+        // 暗色模式切换
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+            }
+        });
+        
+        // 移动端菜单
+        document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+        
+        document.getElementById('mobile-menu-close').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+        
+        // 邀请模态框
+        const inviteModal = document.getElementById('invite-modal');
+        const inviteButtons = document.querySelectorAll('.invite-btn, .invite-btn-mobile');
+        const inviteModalClose = document.getElementById('invite-modal-close');
+        
+        inviteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                inviteModal.classList.remove('hidden');
+            });
+        });
+        
+        inviteModalClose.addEventListener('click', () => {
+            inviteModal.classList.add('hidden');
+        });
+        
+        // 点击模态框外部关闭
+        inviteModal.addEventListener('click', (e) => {
+            if (e.target === inviteModal) {
+                inviteModal.classList.add('hidden');
+            }
+        });
+        
+        // 邀请表单提交
+        document.getElementById('invite-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // 模拟提交
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+            
+            setTimeout(() => {
+                inviteModal.innerHTML = `
+                    <div class="bg-background rounded-xl shadow-xl max-w-md w-full p-6 m-4">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-check text-success text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-4">申请已提交</h3>
+                            <p class="text-secondary mb-6">
+                                感谢您的申请！我们会在审核后尽快通过邮件通知您。请留意您的邮箱。
+                            </p>
+                            <button id="invite-success-close" class="btn btn-primary">关闭</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('invite-success-close').addEventListener('click', () => {
+                    inviteModal.classList.add('hidden');
+                });
+            }, 1500);
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#invite-modal') return;
+                
+                e.preventDefault();
+                
+                document.getElementById('mobile-menu').classList.add('hidden');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+<manus-content-root></manus-content-root><script>
+			var __manus_space_editor_info = {
+			spaceId : 'tmtlbrpf',
+			patchList : [],
+			hideBadge : false,
+			sessionId : '',
+			isWebDev : false,
+			usageStatus : 'UsageStatus_Unknown',
+			};
+			var __manus__global_env = {
+				apiHost: 'https://api.manus.im',
+				host: 'https://manus.im',
+				amplitudeKey: '46ac3f9abb41dd2d17a5785e052bc6d3',
+			};
+			</script><script src="https://files.manuscdn.com/manus-space-dispatcher/spaceEditor-DPV-_I11.js" async></script><script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>
