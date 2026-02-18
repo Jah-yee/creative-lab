@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid meet"
+    viewBox="-200 -1256 1560 1552">
+    <style> 
+        svg {
+            --textColor: rgba(0, 0, 255, 1);
+        }
+        .guide { 
+            stroke: var(--textColor); 
+            stroke-width: 0px;
+            stroke-dasharray: 1px 3px;
+        } 
+        .label { 
+            font: 1.2rem sans-serif; 
+            fill: var(--textColor);
+            /* opacity: 0.8; */
+        }
+        .text { 
+            /* font-family: "MaterialSymbolsSharp-Regular"; */ 
+            font-size: 960px;
+            font-variation-settings: "FILL" var(--axis-FILL), "GRAD" var(--axis-GRAD), "opsz" var(--axis-opsz), "wght" var(--axis-wght);
+            stroke-width: 1px;
+            stroke: var(--textColor);
+            fill: rgba(0, 0, 255, 0.666);
+        }
+        /* Node circle styles */
+        circle.moveTo,
+        circle.lineTo,
+        circle.endPoint {
+          fill: var(--textColor);
+          stroke: none;
+        }
+        circle.controlPoint,
+        circle.controlPoint1,
+        circle.controlPoint2 {
+          fill: none;
+          stroke: var(--textColor);
+          stroke-width: 1px;
+        }
+        /* Square node styles for straight lines */
+        rect.moveTo,
+        rect.lineTo {
+          fill: var(--textColor);
+          stroke: none;
+        }
+        rect.firstNode, circle.firstNode {
+          fill: rgba(0, 0, 255, 0.5);
+          stroke: var(--textColor);
+          stroke-width: 1px;
+        }
+        /* Center vertical axis */
+        .axis {
+            stroke: rgba(0, 0, 255, 0.1);
+            stroke-width: 1px;
+        }
+        .baseline {
+            stroke-dasharray: 9px 1px;
+        }
+    </style>
+    <line class="guide" x1="0" y1="96" x2="0" y2="-1056" />
+    <line id="advanceWidth" class="guide" x1="960" y1="96" x2="960" y2="-1056" />
+    <!-- Center vertical axis --><line class="axis" x1="480" y1="96" x2="480" y2="-1056" />
+    <!-- Center horizontal axis --><line class="axis" x1="0" y1="-480" x2="960" y2="-480" />
+    <!-- metric guides -->
+    
+        <line class="guide" x1="-200" y1="-1056" x2="960" y2="-1056" />
+        <text class="label" x="968" y="-1056" alignment-baseline="middle">
+        ascender (1056)
+        </text>
+    
+        <line class="guide" x1="-200" y1="-960" x2="960" y2="-960" />
+        <text class="label" x="968" y="-960" alignment-baseline="middle">
+        capHeight (960)
+        </text>
+    
+        <line class="guide" x1="-200" y1="-960" x2="960" y2="-960" />
+        <text class="label" x="968" y="-960" alignment-baseline="middle">
+        xHeight (960)
+        </text>
+    
+        <line class="guide baseline" x1="-200" y1="0" x2="960" y2="0" />
+        <text class="label" x="968" y="0" alignment-baseline="middle">
+        baseline (0)
+        </text>
+    
+        <line class="guide" x1="-200" y1="96" x2="960" y2="96" />
+        <text class="label" x="968" y="96" alignment-baseline="middle">
+        descender (-96)
+        </text>
+    
+
+    <!-- the string on baseline -->
+    <!-- <text class="text" x="0" y="0"></text> -->
+
+    <!-- SVG Path from glyph -->
+    <g id="glyph-path" transform="scale(1, -1)">
+      <path class="text" d="M158 602L158 681L237 681L237 602ZM158 278L158 523L237 523L237 278ZM279 278L279 682L519 682L519 278ZM358 357L442 357L442 603L358 603ZM562 278L562 357L723 357L723 442L562 442L562 682L802 682L802 603L641 603L641 520L802 520L802 278Z" />
+    </g>
+    <rect class="firstNode moveTo" x="153.2" y="-606.8" width="9.6" height="9.6" /><rect class="lineTo" x="153.2" y="-685.8" width="9.6" height="9.6" /><rect class="lineTo" x="232.2" y="-685.8" width="9.6" height="9.6" /><rect class="lineTo" x="232.2" y="-606.8" width="9.6" height="9.6" /><rect class="firstNode moveTo" x="153.2" y="-282.8" width="9.6" height="9.6" /><rect class="lineTo" x="153.2" y="-527.8" width="9.6" height="9.6" /><rect class="lineTo" x="232.2" y="-527.8" width="9.6" height="9.6" /><rect class="lineTo" x="232.2" y="-282.8" width="9.6" height="9.6" /><rect class="firstNode moveTo" x="274.2" y="-282.8" width="9.6" height="9.6" /><rect class="lineTo" x="274.2" y="-686.8" width="9.6" height="9.6" /><rect class="lineTo" x="514.2" y="-686.8" width="9.6" height="9.6" /><rect class="lineTo" x="514.2" y="-282.8" width="9.6" height="9.6" /><rect class="firstNode moveTo" x="353.2" y="-361.8" width="9.6" height="9.6" /><rect class="lineTo" x="437.2" y="-361.8" width="9.6" height="9.6" /><rect class="lineTo" x="437.2" y="-607.8" width="9.6" height="9.6" /><rect class="lineTo" x="353.2" y="-607.8" width="9.6" height="9.6" /><rect class="firstNode moveTo" x="557.2" y="-282.8" width="9.6" height="9.6" /><rect class="lineTo" x="557.2" y="-361.8" width="9.6" height="9.6" /><rect class="lineTo" x="718.2" y="-361.8" width="9.6" height="9.6" /><rect class="lineTo" x="718.2" y="-446.8" width="9.6" height="9.6" /><rect class="lineTo" x="557.2" y="-446.8" width="9.6" height="9.6" /><rect class="lineTo" x="557.2" y="-686.8" width="9.6" height="9.6" /><rect class="lineTo" x="797.2" y="-686.8" width="9.6" height="9.6" /><rect class="lineTo" x="797.2" y="-607.8" width="9.6" height="9.6" /><rect class="lineTo" x="636.2" y="-607.8" width="9.6" height="9.6" /><rect class="lineTo" x="636.2" y="-524.8" width="9.6" height="9.6" /><rect class="lineTo" x="797.2" y="-524.8" width="9.6" height="9.6" /><rect class="lineTo" x="797.2" y="-282.8" width="9.6" height="9.6" />
+
+</svg>

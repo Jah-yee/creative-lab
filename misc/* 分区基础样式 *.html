@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Runtime Infrastructure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* 分区基础样式 */
+        .section {
+            padding: 80px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 第一分区 - 深色背景 + 内容 */
+        .section-hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 斜线纹理背景 */
+        .section-features {
+            background: white;
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(0, 0, 0, 0.03) 10px,
+                    rgba(0, 0, 0, 0.03) 20px
+                );
+            position: relative;
+        }
+
+        /* 点阵纹理背景 */
+        .section-showcase {
+            background: #f5f5f5;
+            background-image: 
+                radial-gradient(circle, #ddd 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        /* 内容容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        /* 强调色 */
+        .highlight {
+            color: #ff5722;
+        }
+
+        /* 网格布局 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #ff5722;
+        }
+
+        /* 分隔线 */
+        .divider {
+            height: 1px;
+            background: linear-gradient(
+                to right,
+                transparent,
+                #ddd,
+                transparent
+            );
+            margin: 60px 0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 英雄区 -->
+    <section class="section section-hero">
+        <div class="container">
+            <h1>Agent Runtime <br>Infrastructure</h1>
+            <p>Deploy any containerized application.</p>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 特性区 -->
+    <section class="section section-features">
+        <div class="container">
+            <h2>Infrastructure For Autonomous AI Agents</h2>
+            <p>CoreSpeed delivers instant boot, secure isolation, and global-scale throughput for production-grade agent ecosystems.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>127ms Turbo-Start Containers</h3>
+                    <p>Built-in Warm Pool mechanism achieving millisecond-level fast startup for agent containers.</p>
+                </div>
+                <div class="card">
+                    <h3>Intelligent User Isolation</h3>
+                    <p>Secure and efficient resource management for multi-tenant environments.</p>
+                </div>
+                <div class="card">
+                    <h3>Unlimited Horizontal Scale</h3>
+                    <p>Scale your infrastructure globally without performance degradation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 展示区 -->
+    <section class="section section-showcase">
+        <div class="container">
+            <h2>Build Your Own Agents</h2>
+            <!-- 内容放这里 -->
+        </div>
+    </section>
+</body>
+</html>

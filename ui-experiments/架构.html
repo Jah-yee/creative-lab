@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Architecture Layers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f0f0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        /* ========== 分层容器 ========== */
+        .architecture-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* 基础层样式 */
+        .layer {
+            position: relative;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        /* ========== Decision Layer (决策层) ========== */
+        .layer-decision {
+            width: 100%;
+            height: auto;
+            min-height: 300px;
+            background: #FDE4DE;
+            border: 2px solid #F24822;
+            box-shadow: 0 8px 24px rgba(242, 72, 34, 0.15);
+        }
+
+        .layer-decision::before {
+            content: "Decision Layer";
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #F24822;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== Sensing Layer (感知层) ========== */
+        .layer-sensing {
+            width: 100%;
+            height: auto;
+            min-height: 250px;
+            background: #F4F4F4;
+            border: 1px solid #B3B3B3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .layer-sensing::before {
+            content: "Sensing Layer";
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== Execution & Processing Layer ========== */
+        .layers-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .layer-execution {
+            position: relative;
+            height: 250px;
+            background: #FFF2DF;
+            border: 1px solid #FFA629;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(255, 166, 41, 0.1);
+        }
+
+        .layer-execution::before {
+            content: "Execution Layer";
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #FFA629;
+        }
+
+        .layer-processing {
+            position: relative;
+            height: 250px;
+            background: #DBF0FF;
+            border: 1px solid #0D99FF;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(13, 153, 255, 0.1);
+        }
+
+        .layer-processing::before {
+            content: "Processing Layer";
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0D99FF;
+        }
+
+        /* ========== Service Card 样式 ========== */
+        .service-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            filter: drop-shadow(10px 10px 0px rgba(51, 54, 56, 0.8));
+            min-width: 160px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translate(-2px, -2px);
+            filter: drop-shadow(12px 12px 0px rgba(51, 54, 56, 0.9));
+        }
+
+        .service-card-icon {
+            width: 60px;
+            height: 48px;
+            background: #F9FAFA;
+            border: 10px solid #F9FAFA;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .service-card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .service-card-desc {
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* ========== Connector Lines ========== */
+        .connector {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connector::after {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, #999, transparent);
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 768px) {
+            .layers-row {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .layer {
+                padding: 20px;
+            }
+
+            .service-card {
+                min-width: 140px;
+                padding: 12px;
+            }
+        }
+
+        /* ========== 动画效果 ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .layer {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .layer-decision {
+            animation-delay: 0.1s;
+        }
+
+        .layer-sensing {
+            animation-delay: 0.2s;
+        }
+
+        .layers-row {
+            animation-delay: 0.3s;
+        }
+
+        /* ========== 标签样式 ========== */
+        .layer-label {
+            position: absolute;
+            top: -35px;
+            left: 0;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ========== 内容网格 ========== */
+        .layer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Agent Architecture</h1>
+
+        <div class="architecture-wrapper">
+            <!-- Decision Layer -->
+            <div class="layer layer-decision">
+                <div class="layer-content">
+                    <div class="service-card">
+                        <div class="service-card-icon">🧠</div>
+                        <div class="service-card-title">Decision Engine</div>
+                        <div class="service-card-desc">Strategic planning and reasoning</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-icon">⚙️</div>
+                        <div class="service-card-title">Policy Manager</div>
+                        <div class="service-card-desc">Constraint enforcement</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-icon">📊</div>
+                        <div class="service-card-title">Analytics</div>
+                        <div class="service-card-desc">Performance metrics</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- Sensing Layer -->
+            <div class="layer layer-sensing">
+                <div class="layer-content">
+                    <div class="service-card">
+                        <div class="service-card-icon">📷</div>
+                        <div class="service-card-title">Vision</div>
+                        <div class="service-card-desc">Image processing</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-icon">🎤</div>
+                        <div class="service-card-title">Audio</div>
+                        <div class="service-card-desc">Sound detection</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-icon">📡</div>
+                        <div class="service-card-title">Sensors</div>
+                        <div class="service-card-desc">Data collection</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-card-icon">🔍</div>
+                        <div class="service-card-title">Recognition</div>
+                        <div class="service-card-desc">Pattern matching</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- Execution & Processing Layers -->
+            <div class="layers-row">
+                <div class="layer layer-execution">
+                    <div class="layer-content">
+                        <div class="service-card">
+                            <div class="service-card-icon">⚡</div>
+                            <div class="service-card-title">Actuators</div>
+                            <div class="service-card-desc">Action execution</div>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card-icon">🎯</div>
+                            <div class="service-card-title">Control</div>
+                            <div class="service-card-desc">Movement control</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layer layer-processing">
+                    <div class="layer-content">
+                        <div class="service-card">
+                            <div class="service-card-icon">💾</div>
+                            <div class="service-card-title">Memory</div>
+                            <div class="service-card-desc">State management</div>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card-icon">🔄</div>
+                            <div class="service-card-title">Processing</div>
+                            <div class="service-card-desc">Data pipeline</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
