@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For we live by faith, not by sight</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+    
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ed7446;
+    }
+
+    .container {
+      text-align: center;
+      padding: 40px;
+    }
+
+    /* 方案1：标准 Letterpress 效果 - 基于 HTMLGoodies 教程 */
+    .letterpress-standard {
+      font-family: 'Instrument Serif', serif;
+      font-size: 100px;
+      font-weight: 400;
+      letter-spacing: 6px;
+      line-height: 1.2;
+      
+      /* 文字颜色必须比背景深 */
+      color: #c85d38;
+      
+      /* 关键：浅色阴影在下方1px，制造凹陷感 */
+      text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+    }
+
+    .letterpress-standard .italic {
+      font-style: italic;
+    }
+
+    /* 方案2：增强版 Inset - 基于 CSS Reset 方法 */
+    .inset-enhanced {
+      font-family: 'Instrument Serif', serif;
+      font-size: 100px;
+      font-weight: 400;
+      letter-spacing: 6px;
+      margin-top: 80px;
+      
+      color: #c25836;
+      
+      /* 负值阴影 + 0模糊 = 锐利边缘 */
+      text-shadow: 
+        -1px -1px 0px rgba(255, 255, 255, 0.6),
+        1px 1px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .inset-enhanced .italic {
+      font-style: italic;
+    }
+
+    /* 方案3：深度雕刻效果 - 基于 Stack Overflow 方案 */
+    .engraved-deep {
+      font-family: 'Instrument Serif', serif;
+      font-size: 100px;
+      font-weight: 400;
+      letter-spacing: 6px;
+      margin-top: 80px;
+      
+      color: #b85434;
+      
+      /* 多层阴影模拟深度 */
+      text-shadow: 
+        0px 1px 0px rgba(255, 255, 255, 0.6),
+        0px 2px 0px rgba(255, 255, 255, 0.4),
+        0px -1px 0px rgba(0, 0, 0, 0.3),
+        1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .engraved-deep .italic {
+      font-style: italic;
+    }
+
+    /* 方案4：柔和 Letterpress - 基于 SitePoint 教程 */
+    .letterpress-soft {
+      font-family: 'Instrument Serif', serif;
+      font-size: 100px;
+      font-weight: 400;
+      letter-spacing: 6px;
+      margin-top: 80px;
+      
+      color: #d06640;
+      
+      /* 使用模糊值创造柔和过渡 */
+      text-shadow: 
+        0px -1px 1px rgba(0, 0, 0, 0.4),
+        0px 1px 1px rgba(255, 255, 255, 0.6);
+    }
+
+    .letterpress-soft .italic {
+      font-style: italic;
+    }
+
+    /* 方案5：极致立体 - 综合多个来源 */
+    .ultimate-3d {
+      font-family: 'Instrument Serif', serif;
+      font-size: 100px;
+      font-weight: 400;
+      letter-spacing: 6px;
+      margin-top: 80px;
+      
+      color: #ba5533;
+      
+      /* 结合所有技巧 */
+      text-shadow: 
+        /* 顶部高光层 */
+        0px -1px 0px rgba(255, 255, 255, 0.7),
+        0px -2px 2px rgba(255, 255, 255, 0.5),
+        
+        /* 底部阴影层 */
+        0px 1px 0px rgba(0, 0, 0, 0.4),
+        0px 2px 3px rgba(0, 0, 0, 0.3),
+        
+        /* 对角增强 */
+        -1px -1px 0px rgba(255, 255, 255, 0.5),
+        1px 1px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .ultimate-3d .italic {
+      font-style: italic;
+    }
+
+    .label {
+      font-family: 'Instrument Serif', serif;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 方案1 -->
+    <div class="letterpress-standard">
+      For <span class="italic">we</span> live <span class="italic">by</span> faith, <span class="italic">not</span> <span class="italic">by</span> sight.
+    </div>
+    <div class="label">Standard Letterpress</div>
+    
+    <!-- 方案2 -->
+    <div class="inset-enhanced">
+      For <span class="italic">we</span> live <span class="italic">by</span> faith, <span class="italic">not</span> <span class="italic">by</span> sight.
+    </div>
+    <div class="label">Enhanced Inset</div>
+    
+    <!-- 方案3 -->
+    <div class="engraved-deep">
+      For <span class="italic">we</span> live <span class="italic">by</span> faith, <span class="italic">not</span> <span class="italic">by</span> sight.
+    </div>
+    <div class="label">Deep Engraved</div>
+    
+    <!-- 方案4 -->
+    <div class="letterpress-soft">
+      For <span class="italic">we</span> live <span class="italic">by</span> faith, <span class="italic">not</span> <span class="italic">by</span> sight.
+    </div>
+    <div class="label">Soft Letterpress</div>
+    
+    <!-- 方案5 -->
+    <div class="ultimate-3d">
+      For <span class="italic">we</span> live <span class="italic">by</span> faith, <span class="italic">not</span> <span class="italic">by</span> sight.
+    </div>
+    <div class="label">Ultimate 3D</div>
+  </div>
+</body>
+</html>
