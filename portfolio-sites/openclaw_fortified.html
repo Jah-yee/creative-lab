@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>OpenClaw Control · eyeOS</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='16' y='24' text-anchor='middle' font-size='22'%3E🦞%3C/text%3E%3C/svg%3E">
+  
+  <!-- 字体加载 - 加固版本 -->
+  <!-- Nulshock: CDN + 本地fallback -->
+  <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+  <link href="https://fonts.cdnfonts.com/css/nulshock" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* 本地Nulshock字体作为fallback */
+    @font-face {
+      font-family: 'Nulshock Local';
+      src: url('/assets/fonts/Nulshock.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* 與 index 官網一致的 Design Tokens */
+    :root {
+      --bg:       #0D0C10;
+      --surface:  #131218;
+      --elevated: #1C1A26;
+      --border:   rgba(255,255,255,0.10);
+      --border-h: rgba(255,255,255,0.20);
+      --t1: #EAE6E0;
+      --t2: #8A8680;
+      --t3: #4E4C48;
+      --purple:       #7B50C2;
+      --purple-dim:   rgba(123,80,194,0.12);
+      --purple-ghost: rgba(123,80,194,0.05);
+      --purple-hl:    rgba(123,80,194,0.18);
+      --max: 1160px;
+      --pad: clamp(0.75rem, 2vw, 1.75rem);
+      --display: 'DM Sans', sans-serif;
+      --display-serif: 'Playfair Display', Georgia, serif;
+      --news:         'Newsreader', Georgia, serif;
+      --mono:         'IBM Plex Mono', monospace;
+      --nulshock: 'Nulshock', 'Nulshock Local', sans-serif;
+    }
+    /* 相機 main-screen 等線框圖 */
+    --font-display: var(--display);
+    --font-serif: var(--news);
+    --font-mono: var(--mono);
+    --font-ui: var(--mono);
+    --border-focus: var(--purple);
+    /* 調色盤 */
+    --bg-t1: var(--surface);
+    --bg-t2: #242428;
+    --text-t1: var(--t1);
+    --text-t2: var(--t2);
+    --text-t3: var(--t3);
+    --accent: var(--purple);
+    --accent-h: #987BF5;
+    --accent-dim: var(--purple-dim);
+    --green: #4ADE80;
+    --red: #F87171;
+    --orange: #FB923C;
+    --blue: #60A5FA;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+  }
+
+  html { min-height: 100%; }
+  body { font-family: var(--none); background: var(--bg); color: var(--t1); font-size: 17px; line-height: 1.7; padding: 0; margin: 0; }
+  #app { width: 100%; min-height: 100vh; }
+  /* 神經圖 */
+  ::selection { background: transparent; color: inherit; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgba(140,140,140,0.3); border-radius: 3px; }
+  .neural-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+  .neural-path { fill: none; stroke: rgba(140,140,140,0.3); stroke-width: 1.2; }
+  .neural-path.active { stroke: rgba(123,80,194,0.25); }
+  .neural-node { fill: none; stroke: rgba(140,140,140,0.3); stroke-width: 1.2; stroke-dasharray: 4 8; animation: neuralFlow 48s linear infinite; }
+  .neural-node.active { fill: rgba(123,80,194,0.3); stroke: rgba(123,80,194,0.4); stroke-width: 1.2; }
+  @keyframes neuralFlow { to { stroke-dashoffset: -48; } }
+  .newframe { position: relative; }
+  /* Inputs */
+  input, textarea { font-family: var(--none); font-size: 16px; color: var(--t1); background: var(--bg); border: 1px solid var(--border); border-radius: 0; padding: 16px 28px; box-shadow: 0 0 0 3px var(--purple-dim); }
+  input:focus, textarea:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 0 3px var(--purple-dim); }
+  input::placeholder, textarea:placeholder { color: var(--t3); }
+  input:placeholder, textarea:placeholder { color: var(--t3); }
+  /* Buttons — index 風格 */
+  /* -- 神經網路佈局 -- */
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 16px 28px; background: rgba(123,80,194,0.12); color: var(--t1); border: 1px solid rgba(123,80,194,0.4); border-radius: 8px; font-size: 15px; font-weight: 500; text-decoration: none; cursor: pointer; transition: all 0.2s; filter: brightness(1.0) saturate(1.0) hue-rotate(0deg); }
+  .btn-primary:hover { filter: brightness(1.04) saturate(1.04) hue-rotate(0deg); box-shadow: 0 0 0 3px var(--purple-dim); }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-primary:disabled { opacity: .6; cursor: not-allowed; filter: none; }
+  /* -- 神經網路佈局(二級) -- */
+  .connect-layout { display: flex; align-items: flex-start; gap: 5rem; position: relative; }
+  @media (max-width: 1024px) {
+    .connect-layout { flex-direction: column; gap: 3rem; }
+  }
+  .neural-path-active { stroke: rgba(123,80,194,0.6); }
+  .neural-node-active { fill: rgba(140,140,140,0.4); stroke: rgba(140,140,140,0.6); }
+  .newframe { position: relative; }
+  /* 左側表單區 */
+  .form-area { flex: 1; max-width: 520px; }
+  /* 右側 Markdown 說明區 */
+  .docs-area { flex: 1; max-width: 640px; }
+  /* 標題 */
+  h1 { font-family: var(--nulshock); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 0.5rem; }
+  h1 span { display: block; font-size: 0.4em; color: var(--t2); margin-top: 0.75rem; }
+  /* 表單 label */
+  label { display: block; font-family: var(--nulshock); font-size: 18px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--t1); margin-bottom: 0.5rem; }
+  .help-text { font-size: 14px; color: var(--t2); margin-top: 0.5rem; }
+  /* Advanced 按鈕 */
+  #adv-toggle { background: none; border: none; color: var(--t2); font-size: 14px; cursor: pointer; padding: 8px 0; margin-top: 1rem; text-decoration: underline; }
+  #adv-toggle:hover { color: var(--t1); }
+  /* Markdown 區塊 */
+  .markdown-content { font-size: 16px; line-height: 1.8; color: var(--t1); }
+  .markdown-content h2 { font-size: 1.5rem; font-weight: 600; margin: 2rem 0 1rem; color: var(--t1); }
+  .markdown-content h3 { font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--t1); }
+  .markdown-content p { margin: 0.75rem 0; }
+  .markdown-content ul, .markdown-content ol { margin: 0.75rem 0; padding-left: 1.5rem; }
+  .markdown-content li { margin: 0.5rem 0; }
+  .markdown-content code { font-family: var(--mono); font-size: 0.9em; background: var(--surface); padding: 0.2em 0.4em; border-radius: 3px; }
+  .markdown-content pre { background: var(--surface); padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+  .markdown-content pre code { background: none; padding: 0; }
+  .markdown-content a { color: var(--accent); text-decoration: none; }
+  .markdown-content a:hover { text-decoration: underline; }
+  .markdown-content strong { font-weight: 600; color: var(--t1); }
+  /* details/summary 折疊區 */
+  details { margin: 1.5rem 0; }
+  summary { font-size: 1.1rem; font-weight: 600; color: var(--accent); cursor: pointer; padding: 0.75rem 0; user-select: none; }
+  summary:hover { color: var(--accent-h); }
+  details[open] summary { margin-bottom: 1rem; }
+  /* Token 顯示/隱藏按鈕 */
+  #btn-toggle-token { background: none; border: none; cursor: pointer; padding: 8px; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--t2); font-size: 18px; }
+  #btn-toggle-token:hover { color: var(--t1); }
+  .input-wrapper { position: relative; }
+  /* 複製按鈕 */
+  button[data-copy] { background: var(--surface); border: 1px solid var(--border); color: var(--t2); font-size: 13px; padding: 4px 12px; border-radius: 4px; cursor: pointer; margin-left: 8px; }
+  button[data-copy]:hover { background: var(--elevated); color: var(--t1); }
+  /* 頁尾 */
+  footer { text-align: center; padding: 2rem 0; color: var(--t3); font-size: 14px; }
+  footer a { color: var(--t2); text-decoration: none; }
+  footer a:hover { color: var(--t1); }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div style="max-width: var(--max); margin: 0 auto; padding: var(--pad); padding-top: 3rem; padding-bottom: 3rem;">
+      <h1>
+        OPENCLAW GATEWAY<span>On-device AI for spatial perception.<br>Your Personal Infra of AI, through a single Gateway.</span>
+      </h1>
+      
+      <div class="connect-layout" style="margin-top: 3rem;">
+        <!-- 左側表單 -->
+        <div class="form-area">
+          <div style="margin-bottom: 2rem;">
+            <label for="inp-url">GATEWAY<span style="font-size: 0.7em; opacity: 0.6;">/ URL</span></label>
+            <input id="inp-url" type="text" placeholder="wss://your-server:18789 或 ws://localhost:18789" style="width: 100%;">
+            <div class="help-text">WebSocket 地址，例如 wss://1.2.3.4:18789 或 ws://localhost:18789。你的内网或公网服务器地址均可。</div>
+          </div>
+          
+          <div style="margin-bottom: 2rem;">
+            <label for="inp-token">AUTHORIZE TOKEN</label>
+            <div class="input-wrapper">
+              <input id="inp-token" type="password" placeholder="粘贴你的 Gateway 令牌" style="width: 100%; padding-right: 48px;">
+              <button id="btn-toggle-token" title="显示/隐藏令牌">👁</button>
+            </div>
+            <div class="help-text">在 onboarding 时生成的 Gateway 令牌</div>
+          </div>
+          
+          <button id="adv-toggle">Advanced</button>
+          
+          <div style="margin-top: 2rem;">
+            <button id="btn-connect" class="btn-primary" style="width: 100%; font-size: 16px;">
+              CONNECT <span style="opacity: 0.6;">SECURE LINK</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- 右側說明 -->
+        <div class="docs-area markdown-content">
+          <details>
+            <summary>配置指南 ›</summary>
+            
+            <details>
+              <summary>Gateway 远程访问配置 ›</summary>
+              <p>在你的腾讯云服务器上修改 <code>~/.openclaw/openclaw.json</code>：</p>
+              <pre><code>{
+  "gateway": {
+    "port": 18789,
+    "bind": "0.0.0.0",
+    "auth": {
+      "mode": "token",
+      "token": "你的安全令牌"
+    },
+    "controlUi": {
+      "allowedOrigins": ["https://eyeos.tech"],
+      "allowInsecureAuth": true,
+      "dangerouslyDisableDeviceAuth": true
+    }
+  }
+}</code></pre>
+              <p>然后重启 Gateway：<button data-copy="openclaw gateway restart">复制</button></p>
+              <pre><code>openclaw gateway restart</code></pre>
+              <p><strong>重要</strong> 确保服务器防火墙已开放 18789 端口（TCP）。<button data-copy="sudo ufw allow 18789/tcp">复制</button></p>
+            </details>
+            
+            <details>
+              <summary>Node 节点加入 ›</summary>
+              <p>在新机器上安装 OpenClaw 并连接为节点：<button data-copy="curl -fsSL https://openclaw.ai/install.sh | bash">复制</button></p>
+              <pre><code># 安装 OpenClaw
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# 作为节点连接到 Gateway
+openclaw node \
+  --gateway wss://你的服务器:18789 \
+  --token 你的Gateway令牌</code></pre>
+              <p>首次连接需要审批：<button data-copy="openclaw devices list">复制</button></p>
+              <pre><code># 在 Gateway 主机上执行
+openclaw devices list
+openclaw devices approve &lt;requestId&gt;</code></pre>
+            </details>
+            
+            <details>
+              <summary>使用 Tailscale（推荐） ›</summary>
+              <p>最安全的远程访问方式是使用 Tailscale：<button data-copy="openclaw gateway --tailscale serve">复制</button></p>
+              <pre><code># 在 Gateway 主机上启用 Tailscale Serve
+openclaw gateway --tailscale serve</code></pre>
+              <p>然后使用 Tailscale 域名连接：<code>wss://你的主机名/</code></p>
+              <ul>
+                <li>Gateway 保持 loopback 绑定，由 Tailscale 代理</li>
+                <li>自动获取 HTTPS 证书</li>
+                <li>支持 Tailscale 身份认证</li>
+              </ul>
+            </details>
+            
+            <details>
+              <summary>SSH 隧道（备选方案） ›</summary>
+              <p>通过 SSH 隧道安全地转发 Gateway 端口：<button data-copy="ssh -N -L 18789:127.0.0.1:18789 user@你的服务器">复制</button></p>
+              <pre><code>ssh -N -L 18789:127.0.0.1:18789 user@你的服务器</code></pre>
+              <p>隧道建立后，使用 <code>ws://127.0.0.1:18789</code> 连接。</p>
+            </details>
+            
+            <details>
+              <summary>安全注意事项 ›</summary>
+              <ul>
+                <li>生产环境中请使用 <code>wss://</code>（TLS 加密）</li>
+                <li>定期轮换 Gateway Token</li>
+                <li><code>dangerouslyDisableDeviceAuth</code> 仅建议在受信环境使用</li>
+                <li>非必要不要将 Gateway 绑定到 <code>0.0.0.0</code></li>
+                <li>使用 Tailscale 或 SSH 隧道代替直接暴露端口</li>
+              </ul>
+            </details>
+          </details>
+        </div>
+      </div>
+      
+      <!-- 神經圖 SVG -->
+      <svg class="neural-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <path class="neural-path" d="M 100 200 Q 300 100 500 200 T 900 200"/>
+        <path class="neural-path active" d="M 200 400 Q 400 300 600 400 T 1000 400"/>
+        <circle class="neural-node" cx="300" cy="150" r="4"/>
+        <circle class="neural-node active" cx="600" cy="350" r="4"/>
+        <circle class="neural-node" cx="800" cy="250" r="4"/>
+      </svg>
+    </div>
+    
+    <footer>
+      <div>© 2025-2026 <a href="https://eyeos.tech">eyeOS Dev</a>. All rights reserved.</div>
+    </footer>
+  </div>
+  
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.6/marked.min.js"></script>
+  <script>
+    // Toggle token visibility
+    document.getElementById('btn-toggle-token').addEventListener('click', () => {
+      const inp = document.getElementById('inp-token');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    });
+    
+    // Copy buttons
+    document.querySelectorAll('button[data-copy]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(btn.dataset.copy);
+        btn.textContent = '已复制';
+        setTimeout(() => btn.textContent = '复制', 2000);
+      });
+    });
+    
+    // Connect button
+    document.getElementById('btn-connect').addEventListener('click', () => {
+      const url = document.getElementById('inp-url').value;
+      const token = document.getElementById('inp-token').value;
+      
+      if (!url || !token) {
+        alert('请填写 Gateway URL 和 Token');
+        return;
+      }
+      
+      console.log('Connecting to:', url);
+      // TODO: WebSocket connection logic
+      alert('连接功能开发中...');
+    });
+  </script>
+</body>
+</html>
